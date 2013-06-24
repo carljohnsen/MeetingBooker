@@ -35,7 +35,7 @@ public class SettingsActivity extends Activity {
 		
 		extendEndCheck = (CheckBox) findViewById(R.id.extendEndCheck);
 		
-		config = ConfigReader.readConfig(getApplicationContext());
+		config = StatMeth.readConfig(getApplicationContext());
 		setViews(config);
 		Log.d(TAG, "onCreate()");
 	}
@@ -52,7 +52,7 @@ public class SettingsActivity extends Activity {
 	public void save(View view) {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("extendendtime", extendEndCheck.isChecked() + "");
-		ConfigReader.write(map, getApplicationContext());
+		StatMeth.write(map, getApplicationContext());
 		Log.d(TAG, "Save the new configuration");
 		finish();
 	}

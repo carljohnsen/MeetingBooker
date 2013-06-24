@@ -147,7 +147,7 @@ public class EditActivity extends Activity {
 		// Create a new CalEvent
 		CalEvent newEvent = new CalEvent(start, end, title, desc, event.getId());
 		Context context = getApplicationContext();
-		if (CalendarChecker.isBefore(newEvent)) {
+		if (StatMeth.isBefore(newEvent)) {
 			AlertDialog dialog = new AlertDialog.Builder(this).create();
 			dialog.setTitle("Error");
 			dialog.setMessage("End time is before start time");
@@ -162,8 +162,8 @@ public class EditActivity extends Activity {
 			dialog.show();
 			return;
 		}
-		if (CalendarChecker.isUpdatable(newEvent, index)) {
-			UpdateEvent.update(newEvent, context);
+		if (StatMeth.isUpdatable(newEvent, index)) {
+			StatMeth.update(newEvent, context);
 			Log.d(TAG, "event inserted");
 			finish();
 		} else {

@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
 		
 		// Get the context
 		context = getApplicationContext();
-		ConfigReader.readConfig(context);
+		StatMeth.readConfig(context);
 		
 		// Casting all the Views
 		calendarName 		= (TextView) findViewById(R.id.calendarName);
@@ -91,7 +91,7 @@ public class MainActivity extends Activity {
 		listView 			= (ListView) findViewById(R.id.listView1);
 		
 		// Set the name of the Calendar
-		calendarName.setText(ReadCalendar.getCalendarName(context));
+		calendarName.setText(StatMeth.getCalendarName(context));
 		
 		// ArrayAdapter for the ListView of events
 		adapter = new ArrayAdapter<CalEvent>(MainActivity.context, 
@@ -165,7 +165,7 @@ public class MainActivity extends Activity {
 	 * @param view The View from the button
 	 */
 	public void startNextMeeting(View view) {
-		UpdateEvent.updateStart(current, context);
+		StatMeth.updateStart(current, context);
 	}
 	
 	/**
@@ -175,7 +175,7 @@ public class MainActivity extends Activity {
 	 * @param view The View from the button
 	 */
 	public void endMeeting(View view) {
-		UpdateEvent.updateEnd(current, context);
+		StatMeth.updateEnd(current, context);
 	}
 	
 	public void settings(View view) {
@@ -222,8 +222,8 @@ public class MainActivity extends Activity {
 	}
 	
 	private static void deleteCurrent() {
-		UpdateEvent.updateStart(current, context);
-		UpdateEvent.updateEnd(current, context);
+		StatMeth.updateStart(current, context);
+		StatMeth.updateEnd(current, context);
 	}
 	
 	// Pushes the current event forward by, up to 15 minutes if nobody pressed End Meeting
@@ -231,7 +231,7 @@ public class MainActivity extends Activity {
 		Long currentTime = new Date().getTime() + 60000;
 		if (current != null && !isOverTime && current.getEnd() <= currentTime) {
 			isOverTime = true;
-			UpdateEvent.updateEnd(current, context, findExtendedTimeWindow());
+			StatMeth.updateEnd(current, context, findExtendedTimeWindow());
 		}
 	}
 	
@@ -240,9 +240,9 @@ public class MainActivity extends Activity {
 		if (current != null && !current.isUnderway() && !isDelayed && current.getStart() <= currentTime) {
 			isDelayed = true;
 			if ((current.getEnd() - current.getStart()) > (16 * 60000) ) {
-				UpdateEvent.updateStart(current, context, current.getStart() + (15 * 60000));
+				StatMeth.updateStart(current, context, current.getStart() + (15 * 60000));
 			} else {
-				UpdateEvent.updateStart(current, context, current.getEnd() - 60000);
+				StatMeth.updateStart(current, context, current.getEnd() - 60000);
 			}
 		}
 		if (current != null && !current.isUnderway() && isDelayed && current.getStart() <= currentTime) {
@@ -270,7 +270,7 @@ public class MainActivity extends Activity {
 		current = null;
 		
 		// Reads all events from the calendar on the present day into an ArrayList
-		eventlist = ReadCalendar.readCalendar(MainActivity.context);
+		eventlist = StatMeth.readCalendar(MainActivity.context);
 		
 		// Checks if any of the event in the ArrayList is underway,
 		// and sets it as current event and removes it from the list

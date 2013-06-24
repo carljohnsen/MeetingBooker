@@ -134,7 +134,7 @@ public class NewMeetingActivity extends Activity {
 		// Create a new CalEvent
 		CalEvent event = new CalEvent(start,end,title,desc);
 		Context context = getApplicationContext();
-		if(CalendarChecker.isBefore(event)) {
+		if(StatMeth.isBefore(event)) {
 			AlertDialog dialog = new AlertDialog.Builder(this).create();
 			dialog.setTitle("Error");
 			dialog.setMessage("End time is before start time");
@@ -149,9 +149,9 @@ public class NewMeetingActivity extends Activity {
 			add.setClickable(true);
 			return;
 		}
-		Log.d(TAG, "" + CalendarChecker.isFree(event));
-		if(CalendarChecker.isFree(event)) {
-			EventCreate.setNewEvent(event, context);
+		Log.d(TAG, "" + StatMeth.isFree(event));
+		if(StatMeth.isFree(event)) {
+			StatMeth.setNewEvent(event, context);
 			Log.d(TAG, "event inserted");
 			finish();
 		} else {
