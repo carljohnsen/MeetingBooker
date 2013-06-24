@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MeetingBooker</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_new_meeting">NewMeetingActivity</string>
+    <string name="text_title">Title</string>
+    <string name="text_description">Description</string>
+    <string name="text_spontaneous">Spontaneous Meeting</string>
+    <string name="text_start">Start</string>
+    <string name="text_end">End</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_add">Add</string>
+    <string name="text_newmeeting">New Meeting</string>
+    <string name="text_nextmeeting">Start Meeting</string>
+    <string name="text_endmeeting">End Meeting</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_edit">EditActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="text_settings">Settings</string>
+    <string name="text_extendEnd">Extend End</string>
+    <string name="text_save">Save</string>
+
+</resources>

@@ -1,0 +1,161 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <Button
+        android:id="@+id/settingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:onClick="settings"
+        android:text="@string/text_settings"
+        android:textColor="@android:color/black" />
+
+    <RelativeLayout
+        android:id="@+id/margain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp" >
+
+        <TextView
+            android:id="@+id/calendarName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="25sp" />
+
+        <DigitalClock
+            android:id="@+id/clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/calendarName"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/currentAvail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/clock"
+            android:layout_centerHorizontal="true"
+            android:textSize="70sp" />
+
+        <RelativeLayout
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/currentAvail"
+            android:layout_marginBottom="5dp"
+            android:background="#55555555" />
+
+        <RelativeLayout
+            android:id="@+id/curnextLay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/borders"
+            android:clickable="true"
+            android:onClick="editCurrent" >
+
+            <TextView
+                android:id="@+id/currentUpcom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/currentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/currentUpcom"
+                android:layout_centerHorizontal="true"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/currentOrganizer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/currentTitle"
+                android:layout_centerHorizontal="true"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/currentDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/currentOrganizer"
+                android:layout_centerHorizontal="true"
+                android:textSize="20sp" />
+
+            <RelativeLayout
+                android:id="@+id/startEndLay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/currentDesc"
+                android:layout_centerHorizontal="true" >
+
+                <TextView
+                    android:id="@+id/currentStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/currentEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/currentStart"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/buttonLay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/curnextLay" >
+
+            <Button
+                android:id="@+id/nextMeetingButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="startNextMeeting"
+                android:text="@string/text_nextmeeting"
+                android:textColor="@android:color/black" />
+
+            <Button
+                android:id="@+id/endMeetingButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="endMeeting"
+                android:text="@string/text_endmeeting"
+                android:textColor="@android:color/black" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/newMeetingButton"
+            android:layout_below="@+id/buttonLay" />
+
+        <Button
+            android:id="@+id/newMeetingButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:onClick="startNewMeeting"
+            android:text="@string/text_newmeeting"
+            android:textColor="@android:color/black" />
+    </RelativeLayout>
+
+</RelativeLayout>
