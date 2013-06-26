@@ -327,12 +327,19 @@ public class MainActivity extends Activity {
 					
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
-						EditText pwtext = (EditText) v.findViewById(R.id.pwEdit);
+						EditText pwtext = (EditText) v
+								.findViewById(R.id.pwEdit);
 						String typedpw = pwtext.getText().toString();
-						if (typedpw.equals("1234")) {
-							Intent intent = new Intent(MainActivity.context, SettingsActivity.class);
+						String storedpw = StatMeth.getPassword(context);
+						if (typedpw.equals(storedpw)) {
+							Intent intent = new Intent(MainActivity.context, 
+									SettingsActivity.class);
 							startActivityForResult(intent,1);
 						}
+						
+						/*
+						 * TODO inflate errormsg, if password is wrong
+						 */
 					}
 				})
 				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

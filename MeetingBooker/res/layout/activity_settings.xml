@@ -16,6 +16,14 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/extendEnd" />
     
+    <Button
+        android:id="@+id/changePassword"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:onClick="newPassword"
+        android:layout_above="@+id/settingSave"
+        android:text="@string/text_change_password" />
+    
     <Button 
         android:id="@+id/settingSave"
         android:layout_height="wrap_content"

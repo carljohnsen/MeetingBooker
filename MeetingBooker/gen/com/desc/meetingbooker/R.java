@@ -22,6 +22,7 @@ public final class R {
         public static final int buttonLay=0x7f07000f;
         public static final int calendarName=0x7f070003;
         public static final int cancelButton=0x7f070020;
+        public static final int changePassword=0x7f070023;
         public static final int clock=0x7f070004;
         public static final int curnextLay=0x7f070007;
         public static final int currentAvail=0x7f070005;
@@ -40,16 +41,18 @@ public final class R {
         public static final int intervalView=0x7f07001e;
         public static final int line=0x7f070006;
         public static final int listView1=0x7f070012;
-        public static final int list_content=0x7f070025;
+        public static final int list_content=0x7f070029;
         public static final int mainLay=0x7f070000;
         public static final int margain=0x7f070002;
-        public static final int menu_settings=0x7f070028;
+        public static final int menu_settings=0x7f07002b;
         public static final int newMeetingButton=0x7f070013;
         public static final int nextMeetingButton=0x7f070010;
-        public static final int pwEdit=0x7f070027;
-        public static final int pwTitle=0x7f070026;
-        public static final int settingCancel=0x7f070024;
-        public static final int settingSave=0x7f070023;
+        public static final int pwEdit=0x7f07002a;
+        public static final int pwNew1=0x7f070027;
+        public static final int pwNew2=0x7f070028;
+        public static final int pwOld=0x7f070026;
+        public static final int settingCancel=0x7f070025;
+        public static final int settingSave=0x7f070024;
         public static final int settingsButton=0x7f070001;
         public static final int startEndLay=0x7f07000c;
         public static final int textEnd=0x7f07001c;
@@ -65,8 +68,9 @@ public final class R {
         public static final int activity_main=0x7f030001;
         public static final int activity_new_meeting=0x7f030002;
         public static final int activity_settings=0x7f030003;
-        public static final int list_black_text=0x7f030004;
-        public static final int password_layout=0x7f030005;
+        public static final int change_password_layout=0x7f030004;
+        public static final int list_black_text=0x7f030005;
+        public static final int password_layout=0x7f030006;
     }
     public static final class menu {
         public static final int activity_edit=0x7f060000;
@@ -80,12 +84,17 @@ public final class R {
         public static final int menu_settings=0x7f040001;
         public static final int text_add=0x7f040009;
         public static final int text_cancel=0x7f040008;
+        public static final int text_change_password=0x7f040017;
+        public static final int text_confirm_password=0x7f040016;
         public static final int text_description=0x7f040004;
         public static final int text_end=0x7f040007;
         public static final int text_endmeeting=0x7f04000c;
         public static final int text_extendEnd=0x7f040011;
+        public static final int text_new_password=0x7f040015;
         public static final int text_newmeeting=0x7f04000a;
         public static final int text_nextmeeting=0x7f04000b;
+        public static final int text_old_password=0x7f040014;
+        public static final int text_password=0x7f040013;
         public static final int text_save=0x7f040012;
         public static final int text_settings=0x7f040010;
         public static final int text_spontaneous=0x7f040005;

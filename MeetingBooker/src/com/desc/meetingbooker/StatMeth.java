@@ -14,12 +14,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.text.format.DateFormat;
@@ -76,8 +80,8 @@ public class StatMeth {
 	 */
 	public static boolean isUpdatable(CalEvent event, int index) {
 		ArrayList<CalEvent> eventlist = MainActivity.eventlist;
-		// Ensure that current is added, and the event that is being updated, is
-		// removed
+		// Ensure that current is checked, and the event that is being updated,
+		// is removed from the list
 		if (!(index == -1)) {
 			eventlist.add(MainActivity.current);
 			eventlist.remove(index);
@@ -405,6 +409,65 @@ public class StatMeth {
 		cv.put(Events.DESCRIPTION, event.getDescription());
 		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.getId());
 		cr.update(uri, cv, null, null);
+	}
+	
+	/**
+	 * Used for changing the password for the settings menu
+	 * 
+	 * @param password The new password
+	 * @param context The context of the application
+	 */
+	public static void savePassword(String password, Context context) {
+		String filename = "pwd";
+		try {
+			FileOutputStream out = context.openFileOutput(filename, 
+					Context.MODE_PRIVATE);
+			out.write(password.getBytes());
+			out.close();
+		} catch (IOException e) {}
+	}
+	
+	/**
+	 * Used for retrieving the password from private file pwd
+	 * 
+	 * @param context The context of the application
+	 * @return The password needed to unlock the settings menu
+	 */
+	public static String getPassword(Context context) {
+		String filename = "pwd";
+		try {
+			FileInputStream in = context.openFileInput(filename);
+			InputStreamReader reader = new InputStreamReader(in);
+			BufferedReader bufferedReader = new BufferedReader(reader);
+			String password = bufferedReader.readLine();
+			reader.close();
+			in.close();
+			return password;
+		} catch (FileNotFoundException e) {
+			return newPassword(context);
+		} catch (IOException e) {
+			return "ERROR";
+		}
+	}
+	
+	/**
+	 * Used to generate a new default password
+	 * 
+	 * @param context The context of the application
+	 * @return The default password, if everything went well
+	 */
+	public static String newPassword(Context context) {
+		String filename = "pwd";
+		String stdPwd = "password";
+		try {
+			FileOutputStream out = context.openFileOutput(filename, 
+					Context.MODE_PRIVATE);
+			out.write(stdPwd.getBytes());
+			out.close();
+			return stdPwd;
+		} catch (IOException e) {
+			return "ERROR";
+		}
 	}
 
 }
