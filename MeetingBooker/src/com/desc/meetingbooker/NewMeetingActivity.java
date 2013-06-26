@@ -26,8 +26,8 @@ import android.widget.TimePicker;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * An Activity that displays a formula for event details, and creates and inserts a
- * new event, if the "Add" button is being pressed
+ * An Activity that displays a formula for event details, and creates and 
+ * inserts a new event, if the "Add" button is being pressed
  * 
  * @author Carl Johnsen, Daniel Pedersen, Emil Pedersen and Sune Bartels
  * @version 0.9
@@ -51,7 +51,8 @@ public class NewMeetingActivity extends Activity {
 		Log.d(TAG, "called onCreate()");
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_new_meeting);
 		
 		eventlist = MainActivity.eventlist;
@@ -74,7 +75,8 @@ public class NewMeetingActivity extends Activity {
 		
 		intervalPicker.setOnItemClickListener(new OnItemClickListener(){
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, 
+					int position, long arg3) {
 				setTimePickers(windowList.get(position));
 			}
 		});
@@ -114,8 +116,11 @@ public class NewMeetingActivity extends Activity {
 		int endMin = timeEnd.getCurrentMinute();
 		
 		// Convert timePicker readings to long
-		String startTime = cal.get(Calendar.DAY_OF_MONTH) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR) + " " + startHour + ":" + startMin;
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
+		String startTime = cal.get(Calendar.DAY_OF_MONTH) + "-" + 
+				(cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR) + 
+				" " + startHour + ":" + startMin;
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm", 
+				Locale.getDefault());
 		try {
 			date = formatter.parse(startTime);
 			Log.d(TAG, startTime);
@@ -123,7 +128,9 @@ public class NewMeetingActivity extends Activity {
 			Log.e(TAG, e.getMessage());
 		}
 		long start = date.getTime();
-		String endTime = cal.get(Calendar.DAY_OF_MONTH) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR) + " " + endHour + ":" + endMin;
+		String endTime = cal.get(Calendar.DAY_OF_MONTH) + "-" + 
+				(cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR) + 
+				" " + endHour + ":" + endMin;
 		try {
 			date = formatter.parse(endTime);
 		} catch (Exception e) {
@@ -138,7 +145,8 @@ public class NewMeetingActivity extends Activity {
 			AlertDialog dialog = new AlertDialog.Builder(this).create();
 			dialog.setTitle("Error");
 			dialog.setMessage("End time is before start time");
-			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", 
+					new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -158,7 +166,8 @@ public class NewMeetingActivity extends Activity {
 			AlertDialog dialog = new AlertDialog.Builder(this).create();
 			dialog.setTitle("Error");
 			dialog.setMessage("Meeting is overlapping");
-			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", 
+					new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -171,7 +180,8 @@ public class NewMeetingActivity extends Activity {
 	}
 	
 	/**
-	 * The method called by the "Cancel" button. Returns the user to the MainActivity
+	 * The method called by the "Cancel" button. Returns the user to the 
+	 * MainActivity
 	 * 
 	 * @param view The View of the button
 	 */
@@ -188,14 +198,18 @@ public class NewMeetingActivity extends Activity {
 		timeStart.setIs24HourView(true);
 		timeEnd.setIs24HourView(true);
 		
-		int hour = Integer.parseInt(new SimpleDateFormat("HH").format(new Date(window.getStart())));
-		int minute = Integer.parseInt(new SimpleDateFormat("mm").format(new Date(window.getStart())));
+		int hour = Integer.parseInt(new SimpleDateFormat("HH")
+			.format(new Date(window.getStart())));
+		int minute = Integer.parseInt(new SimpleDateFormat("mm")
+			.format(new Date(window.getStart())));
 		
 		timeStart.setCurrentHour(hour);
 		timeStart.setCurrentMinute(minute);
 		
-		hour = Integer.parseInt(new SimpleDateFormat("HH").format(new Date(window.getEnd())));
-		minute = Integer.parseInt(new SimpleDateFormat("mm").format(new Date(window.getEnd())));
+		hour = Integer.parseInt(new SimpleDateFormat("HH")
+			.format(new Date(window.getEnd())));
+		minute = Integer.parseInt(new SimpleDateFormat("mm")
+			.format(new Date(window.getEnd())));
 		
 		timeEnd.setCurrentHour(hour);
 		timeEnd.setCurrentMinute(minute);
@@ -223,19 +237,24 @@ public class NewMeetingActivity extends Activity {
 		if (!eventlist.isEmpty()) {
 			long interval = eventlist.get(0).getStart() - current.getEnd();
 			if (interval >= fiveMin) {
-				returnList.add(new TimeWindow(current.getEnd(), eventlist.get(0).getStart()));
+				returnList.add(new TimeWindow(current.getEnd(), 
+						eventlist.get(0).getStart()));
 			} else {
 				for (int i = 0; i < eventlist.size()-1; i++) {
-					interval = eventlist.get(i+1).getStart() - eventlist.get(i).getEnd();
+					interval = eventlist.get(i+1).getStart() - 
+							eventlist.get(i).getEnd();
 					if (interval >= fiveMin) {
-						returnList.add(new TimeWindow(eventlist.get(i).getEnd(), eventlist.get(i+1).getStart()));
+						returnList.add(new TimeWindow(eventlist.get(i).getEnd(),
+								eventlist.get(i+1).getStart()));
 					}
 				}
 			}
 			long eventlistLast = eventlist.get(eventlist.size()-1).getEnd();
-			returnList.add(new TimeWindow(eventlistLast, eventlistLast + oneHour));
+			returnList.add(new TimeWindow(eventlistLast, 
+					eventlistLast + oneHour));
 		} else {
-			returnList.add(new TimeWindow(current.getEnd(), current.getEnd() + oneHour));
+			returnList.add(new TimeWindow(current.getEnd(), 
+					current.getEnd() + oneHour));
 		}
 		return returnList;
 	}

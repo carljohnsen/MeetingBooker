@@ -7,10 +7,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * An activity that reads the config file, and then displays a formula, to edit
@@ -40,7 +39,8 @@ public class SettingsActivity extends Activity {
 		
 		// Hide system UI
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_settings);
 		
 		extendEndCheck = (CheckBox) findViewById(R.id.extendEndCheck);
@@ -53,7 +53,8 @@ public class SettingsActivity extends Activity {
 	}
 	
 	private void setViews(HashMap<String, String> map) {
-		extendEndCheck.setChecked(Boolean.parseBoolean(map.get("extendendtime")));
+		extendEndCheck.setChecked(Boolean.parseBoolean(
+				map.get("extendendtime")));
 	}
 	
 	/**
@@ -91,19 +92,37 @@ public class SettingsActivity extends Activity {
 	
 	public static class PasswordFragment extends DialogFragment {
 		
+		private static int error = 0;
+		
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					getActivity());
 			LayoutInflater inflater = getActivity().getLayoutInflater();
-			final View v = inflater.inflate(R.layout.change_password_layout, null);
+			final View v = inflater.inflate(R.layout.change_password_layout, 
+					null);
+			TextView prompt = (TextView) v.findViewById(R.id.changePrompt);
+			switch (error) {
+			case 0: prompt.setVisibility(TextView.GONE);
+				break;
+			case 1: prompt.setVisibility(TextView.VISIBLE);
+				prompt.setText("The new passwords didn't match");
+				break;
+			case 2: prompt.setVisibility(TextView.VISIBLE);
+				prompt.setText("The old password was wrong");
+				break;
+			}
 			builder.setView(v)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
-						EditText oldText = (EditText) v.findViewById(R.id.pwOld);
-						EditText newText = (EditText) v.findViewById(R.id.pwNew1);
-						EditText confText = (EditText) v.findViewById(R.id.pwNew2);
+						EditText oldText = (EditText) v
+								.findViewById(R.id.pwOld);
+						EditText newText = (EditText) v
+								.findViewById(R.id.pwNew1);
+						EditText confText = (EditText) v
+								.findViewById(R.id.pwNew2);
 						
 						String old = oldText.getText().toString();
 						String new1 = newText.getText().toString();
@@ -111,24 +130,31 @@ public class SettingsActivity extends Activity {
 						String storedpw = StatMeth.getPassword(context);
 						
 						if (new1.equals(new2) && old.equals(storedpw)) {
+							error = 0;
 							StatMeth.savePassword(new1, context);
+							return;
 						}
-						
-						/* 
-						 * TODO if new1 != new2 inflate errormsg
-						 */
-						
-						/* 
-						 * TODO if old != storedpw inflate errormsg
-						 */
+						if (!new1.equals(new2)) {
+							error = 1;
+							PasswordFragment fragment = new PasswordFragment();
+							fragment.show(getFragmentManager(), "BLA");
+							return;
+						}
+						if (!old.equals(storedpw)) {
+							error = 2;
+							PasswordFragment fragment = new PasswordFragment();
+							fragment.show(getFragmentManager(), "BLA");
+							return;
+						}
 					}
 					
 				})
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				.setNegativeButton("Cancel", 
+						new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// NOTHING
+						error = 0;
 					}
 					
 				});

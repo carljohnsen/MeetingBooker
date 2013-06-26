@@ -14,16 +14,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.text.format.DateFormat;

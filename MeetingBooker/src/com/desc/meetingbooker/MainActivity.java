@@ -29,7 +29,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * An Activity that displays todays agenda, current/next meeting and all the links to the other activities
+ * An Activity that displays todays agenda, current/next meeting and all the 
+ * links to the other activities
  * 
  * @author Carl Johnsen, Daniel Pedersen, Emil Pedersen and Sune Bartels
  * @version 0.9
@@ -67,7 +68,8 @@ public class MainActivity extends Activity {
 		
 		// Hide Status bar and App title bar (before setContentView())
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
 		setContentView(R.layout.activity_main);
 		
@@ -104,8 +106,10 @@ public class MainActivity extends Activity {
 		// Setting a custom ItemClickListener
 		listView.setOnItemClickListener(new OnItemClickListener(){
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				Intent intent = new Intent(MainActivity.this, EditActivity.class);
+			public void onItemClick(AdapterView<?> arg0, View arg1, 
+					int position, long arg3) {
+				Intent intent = new Intent(MainActivity.this, 
+						EditActivity.class);
 				intent.putExtra("event", position);
 				startActivityForResult(intent, 1);
 			}
@@ -148,7 +152,8 @@ public class MainActivity extends Activity {
 	}
 	
 	@Override
-	protected void onActivityResult(int requestcode, int resultcode, Intent data) {
+	protected void onActivityResult(int requestcode, int resultcode, 
+			Intent data) {
 		//startActivity(new Intent(this,MainActivity.class));
 	}
 	
@@ -159,8 +164,8 @@ public class MainActivity extends Activity {
 	}
 	
 	/**
-	 * The method called by the "StartNextMeeting button". Changes the start time of the next
-	 * event, to the current time.
+	 * The method called by the "StartNextMeeting button". 
+	 * Changes the start time of the next event, to the current time.
 	 * 
 	 * @param view The View from the button
 	 */
@@ -169,8 +174,8 @@ public class MainActivity extends Activity {
 	}
 	
 	/**
-	 * The method called by the "EndMeeting" button. Changes the end time of the current event,
-	 * to the current time
+	 * The method called by the "EndMeeting" button. Changes the end time of 
+	 * the current event, to the current time
 	 * 
 	 * @param view The View from the button
 	 */
@@ -184,7 +189,8 @@ public class MainActivity extends Activity {
 	}
 	
 	/**
-	 * The method called by the "NewMeeting" button. Starts the NewMeetingActivity
+	 * The method called by the "NewMeeting" button. Starts the 
+	 * NewMeetingActivity
 	 * 
 	 * @param view The View from the button
 	 */
@@ -226,7 +232,8 @@ public class MainActivity extends Activity {
 		StatMeth.updateEnd(current, context);
 	}
 	
-	// Pushes the current event forward by, up to 15 minutes if nobody pressed End Meeting
+	// Pushes the current event forward by, up to 15 minutes if nobody pressed 
+	// End Meeting
 	private static void currentOvertime() {
 		Long currentTime = new Date().getTime() + 60000;
 		if (current != null && !isOverTime && current.getEnd() <= currentTime) {
@@ -237,15 +244,19 @@ public class MainActivity extends Activity {
 	
 	private static void currentDelayed() {
 		Long currentTime = new Date().getTime() + 10000;
-		if (current != null && !current.isUnderway() && !isDelayed && current.getStart() <= currentTime) {
+		if (current != null && !current.isUnderway() && !isDelayed && current
+				.getStart() <= currentTime) {
 			isDelayed = true;
 			if ((current.getEnd() - current.getStart()) > (16 * 60000) ) {
-				StatMeth.updateStart(current, context, current.getStart() + (15 * 60000));
+				StatMeth.updateStart(current, context, current.getStart() + 
+						(15 * 60000));
 			} else {
-				StatMeth.updateStart(current, context, current.getEnd() - 60000);
+				StatMeth.updateStart(current, context, current.getEnd() - 
+						60000);
 			}
 		}
-		if (current != null && !current.isUnderway() && isDelayed && current.getStart() <= currentTime) {
+		if (current != null && !current.isUnderway() && isDelayed && 
+				current.getStart() <= currentTime) {
 			deleteCurrent();
 		}
 	}
@@ -262,14 +273,15 @@ public class MainActivity extends Activity {
 	}
 	
 	/**
-	 * The method called by the Timer every 5 seconds. It reads the calendar, and updates
-	 * the UI if changes have been made
+	 * The method called by the Timer every 5 seconds. It reads the calendar, 
+	 * and updates the UI if changes have been made
 	 */
 	protected static void sync() {		
 		// The event that is currently underway
 		current = null;
 		
-		// Reads all events from the calendar on the present day into an ArrayList
+		// Reads all events from the calendar on the present day into an 
+		// ArrayList
 		eventlist = StatMeth.readCalendar(MainActivity.context);
 		
 		// Checks if any of the event in the ArrayList is underway,
@@ -317,11 +329,19 @@ public class MainActivity extends Activity {
 	
 	public static class SettingsFragment extends DialogFragment {
 		
+		private static boolean wasWrong = false;
+		
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			AlertDialog.Builder builder = 
+					new AlertDialog.Builder(getActivity());
 			LayoutInflater inflater = getActivity().getLayoutInflater();
 			final View v = inflater.inflate(R.layout.password_layout, null);
+			if (wasWrong) {
+				v.findViewById(R.id.pwPrompt).setVisibility(TextView.VISIBLE);
+			} else {
+				v.findViewById(R.id.pwPrompt).setVisibility(TextView.GONE);
+			}
 			builder.setView(v)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					
@@ -332,21 +352,25 @@ public class MainActivity extends Activity {
 						String typedpw = pwtext.getText().toString();
 						String storedpw = StatMeth.getPassword(context);
 						if (typedpw.equals(storedpw)) {
+							wasWrong = false;
 							Intent intent = new Intent(MainActivity.context, 
 									SettingsActivity.class);
 							startActivityForResult(intent,1);
+							return;
+						} else {
+							wasWrong = true;
+							DialogFragment fragment = new SettingsFragment();
+							fragment.show(getFragmentManager(), "BLA");
 						}
 						
-						/*
-						 * TODO inflate errormsg, if password is wrong
-						 */
 					}
 				})
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				.setNegativeButton("Cancel", 
+						new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// NOTHING
+						wasWrong = false;
 					}
 				});
 			return builder.create();
