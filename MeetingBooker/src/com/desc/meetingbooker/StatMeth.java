@@ -47,12 +47,12 @@ public class StatMeth {
 		}
 		if (!eventlist.isEmpty()) {
 			for (CalEvent ev : eventlist) {
-				if (ev.getStart() > event.getStart() && 
-					ev.getStart() < event.getEnd()) {
-					return false;
-				}
-				if (ev.getEnd() > event.getStart() && 
-					ev.getEnd() < event.getEnd()) {
+				if ((event.getStart() >= ev.getStart() && 
+						event.getEnd() <= ev.getEnd()) ||
+						(event.getStart() <= ev.getStart() &&
+						ev.getStart() < event.getEnd()) ||
+						(event.getStart() < ev.getEnd() &&
+						event.getEnd() >= ev.getEnd())) {
 					return false;
 				}
 			}
