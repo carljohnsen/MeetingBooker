@@ -42,15 +42,20 @@ public class StatMeth {
 	 */
 	public static boolean isFree(CalEvent event) {
 		ArrayList<CalEvent> eventlist = MainActivity.eventlist;
+		// Ensure that current is also checked
 		if (MainActivity.current != null) {
 			eventlist.add(MainActivity.current);
 		}
 		if (!eventlist.isEmpty()) {
+			// Check against all other events today
 			for (CalEvent ev : eventlist) {
-				if ((event.getStart() >= ev.getStart() && 
+				if ((// If new event is between start & end time
+						event.getStart() >= ev.getStart() && 
 						event.getEnd() <= ev.getEnd()) ||
+						// If new event overlaps the start time
 						(event.getStart() <= ev.getStart() &&
 						ev.getStart() < event.getEnd()) ||
+						// If new event overlaps the end time
 						(event.getStart() < ev.getEnd() &&
 						event.getEnd() >= ev.getEnd())) {
 					return false;
@@ -71,20 +76,27 @@ public class StatMeth {
 	 */
 	public static boolean isUpdatable(CalEvent event, int index) {
 		ArrayList<CalEvent> eventlist = MainActivity.eventlist;
+		// Ensure that current is added, and the event that is being updated, is
+		// removed
 		if (!(index == -1)) {
 			eventlist.add(MainActivity.current);
 			eventlist.remove(index);
 		}
+		// Return true, if the only event, is the one that is being updated
 		if (eventlist.isEmpty()) {
 			return true;
 		}
+		// Check against all events today
 		for (CalEvent ev : eventlist) {
-			if (ev.getStart() > event.getStart() && 
-				ev.getStart() < event.getEnd()) {
-				return false;
-			}
-			if (ev.getEnd() > event.getStart() && 
-				ev.getEnd() < event.getEnd()) {
+			if ((// If new event is between start & end time
+					event.getStart() >= ev.getStart() && 
+					event.getEnd() <= ev.getEnd()) ||
+					// If new event overlaps the start time
+					(event.getStart() <= ev.getStart() &&
+					ev.getStart() < event.getEnd()) ||
+					// If new event overlaps the end time
+					(event.getStart() < ev.getEnd() &&
+					event.getEnd() >= ev.getEnd())) {
 				return false;
 			}
 		}
