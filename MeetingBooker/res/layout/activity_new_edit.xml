@@ -114,6 +114,14 @@
         android:layout_above="@+id/cancelButton"
         android:onClick="add"
         android:text="@string/text_add" />
+    
+    <Button
+        android:id="@+id/updateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cancelButton"
+        android:onClick="update"
+        android:text="@string/text_update" />
 
     <Button
         android:id="@+id/cancelButton"

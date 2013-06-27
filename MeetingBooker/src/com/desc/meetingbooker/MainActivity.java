@@ -111,8 +111,9 @@ public class MainActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, 
 					int position, long arg3) {
 				Intent intent = new Intent(MainActivity.this, 
-						EditActivity.class);
+						NewEditActivity.class);
 				intent.putExtra("event", position);
+				intent.putExtra("type", 1);
 				startActivityForResult(intent, 1);
 			}
 		});
@@ -160,8 +161,9 @@ public class MainActivity extends Activity {
 	}
 	
 	public void editCurrent(View view) {
-		Intent intent = new Intent(this, EditActivity.class);
+		Intent intent = new Intent(this, NewEditActivity.class);
 		intent.putExtra("event", -1);
+		intent.putExtra("type", 1);
 		startActivityForResult(intent, 1);
 	}
 	
@@ -199,7 +201,8 @@ public class MainActivity extends Activity {
 	public void startNewMeeting(View view) {
 		Log.d(TAG, "New Meeting button pressed");
 		// Creates NewMeetingActivity, for user input in booking a new meeting
-		Intent intent = new Intent(this, NewMeetingActivity.class);
+		Intent intent = new Intent(this, NewEditActivity.class);
+		intent.putExtra("type", 0);
 		startActivityForResult(intent, 1);
 	}
 	

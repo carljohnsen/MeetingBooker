@@ -13,7 +13,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -32,9 +31,9 @@ import android.widget.AdapterView.OnItemClickListener;
  * @version 0.9
  * @since 14-05-2013
  */
-public class EditActivity extends Activity {
+public class NewEditActivity extends Activity {
 
-	private static final String TAG = EditActivity.class.getSimpleName();
+	private static final String TAG = NewEditActivity.class.getSimpleName();
 	private TimePicker timeStart;
 	private TimePicker timeEnd;
 	private ListView intervalPicker;
@@ -48,7 +47,9 @@ public class EditActivity extends Activity {
 	private EditText descText;
 	private CalEvent event;
 	private Context context;
-	
+
+	private Button add;
+	private Button update;
 	private Button delete;
 
 	@Override
@@ -58,26 +59,22 @@ public class EditActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, 
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		setContentView(R.layout.activity_new_meeting);
+		setContentView(R.layout.activity_new_edit);
 
+		int type = this.getIntent().getIntExtra("type", 0);
 		eventlist = MainActivity.eventlist;
-		index = this.getIntent().getIntExtra("event", -2);
-		if (index == -1) {
-			event = MainActivity.current;
-		} else {
-			event = eventlist.get(index);
-		}
+		titleText = (EditText) findViewById(R.id.editTitle);
+		descText = (EditText) findViewById(R.id.editDesc);
+		add = (Button) findViewById(R.id.addButton);
+		update = (Button) findViewById(R.id.updateButton);
 		delete = (Button) findViewById(R.id.deleteButton);
-		delete.setVisibility(Button.VISIBLE);
 		context = getApplicationContext();
 
 		// Finds the TimePickers
 		timeStart = (TimePicker) findViewById(R.id.timePickerStart);
 		timeEnd = (TimePicker) findViewById(R.id.timePickerEnd);
-		titleText = (EditText) findViewById(R.id.editTitle);
-		descText = (EditText) findViewById(R.id.editDesc);
 
 		intervalPicker = (ListView) findViewById(R.id.intervalView);
 		windowList = findTimeWindow();
@@ -96,11 +93,132 @@ public class EditActivity extends Activity {
 			}
 		});
 
+		if (type == 0) {
+			setNew();
+		} else {
+			setEdit();
+		}
+	}
+
+	/**
+	 * Called by onCreate(). Used when it should show Edit formula
+	 */
+	public void setEdit() {
+		index = this.getIntent().getIntExtra("event", -2);
+		if (index == -1) {
+			event = MainActivity.current;
+		} else {
+			event = eventlist.get(index);
+		}
+		delete.setVisibility(Button.VISIBLE);
+
 		titleText.setText(event.getTitle());
 		descText.setText(event.getDescription());
 		setTimePickers(event.getTimeWindow());
+		add.setVisibility(Button.GONE);
+		update.setVisibility(Button.VISIBLE);
+	}
+
+	/**
+	 * Called by onCreate. Used when it should show new meeting formula
+	 */
+	public void setNew() {
+		delete.setVisibility(Button.GONE);
+		setTimePickers(windowList.get(0));
+		add.setVisibility(Button.VISIBLE);
+		update.setVisibility(Button.GONE);
+	}
+
+	/**
+	 * The method called by the "Add" button. Reads all of the fields in the UI,
+	 * inserts them into a new CalEvent and then sends it to EventCreate
+	 * 
+	 * @param view
+	 *            The View of the button
+	 */
+	public void add(View view) {
+		add.setClickable(false);
+
+		Log.d(TAG, "Adding event to calendar");
+		// Get the different UI fields
+		EditText titleText = (EditText) findViewById(R.id.editTitle);
+		EditText descText = (EditText) findViewById(R.id.editDesc);
+
+		// Read the fields
+		String title = titleText.getText().toString();
+		String desc = descText.getText().toString();
+		int startHour = timeStart.getCurrentHour();
+		int startMin = timeStart.getCurrentMinute();
+		int endHour = timeEnd.getCurrentHour();
+		Log.d(TAG, "END " + endHour);
+		int endMin = timeEnd.getCurrentMinute();
+
+		// Convert timePicker readings to long
+		String startTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
+				+ (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR)
+				+ " " + startHour + ":" + startMin;
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm",
+				Locale.getDefault());
+		try {
+			date = formatter.parse(startTime);
+			Log.d(TAG, startTime);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+		long start = date.getTime();
+		String endTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
+				+ (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR)
+				+ " " + endHour + ":" + endMin;
+		try {
+			date = formatter.parse(endTime);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+		long end = date.getTime();
+
+		// Create a new CalEvent
+		CalEvent event = new CalEvent(start, end, title, desc);
+		Context context = getApplicationContext();
+		if (StatMeth.isBefore(event)) {
+			AlertDialog dialog = new AlertDialog.Builder(this).create();
+			dialog.setTitle("Error");
+			dialog.setMessage("End time is before start time");
+			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+						}
+
+					});
+			dialog.show();
+			add.setClickable(true);
+			return;
+		}
+		Log.d(TAG, "" + StatMeth.isFree(event));
+		if (StatMeth.isFree(event)) {
+			StatMeth.setNewEvent(event, context);
+			Log.d(TAG, "event inserted");
+			finish();
+		} else {
+			AlertDialog dialog = new AlertDialog.Builder(this).create();
+			dialog.setTitle("Error");
+			dialog.setMessage("Meeting is overlapping");
+			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+						}
+
+					});
+			dialog.show();
+			add.setClickable(true);
+		}
 		Button add = (Button) findViewById(R.id.addButton);
-		add.setText("Update");
+		add.setVisibility(Button.VISIBLE);
+		Button update = (Button) findViewById(R.id.updateButton);
+		update.setVisibility(Button.GONE);
 	}
 
 	public void delete(View view) {
@@ -118,9 +236,9 @@ public class EditActivity extends Activity {
 					}
 
 				});
-		dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", 
+		dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
 				new DialogInterface.OnClickListener() {
-					
+
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 					}
@@ -135,7 +253,7 @@ public class EditActivity extends Activity {
 	 * @param view
 	 *            The View of the button
 	 */
-	public void add(View view) {
+	public void update(View view) {
 		Log.d(TAG, "Adding event to calendar");
 
 		// Read the fields
@@ -206,6 +324,10 @@ public class EditActivity extends Activity {
 					});
 			dialog.show();
 		}
+		Button add = (Button) findViewById(R.id.addButton);
+		add.setVisibility(Button.GONE);
+		Button update = (Button) findViewById(R.id.updateButton);
+		update.setVisibility(Button.VISIBLE);
 	}
 
 	/**

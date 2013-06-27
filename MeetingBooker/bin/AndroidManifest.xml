@@ -33,7 +33,7 @@
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
-            android:name="com.desc.meetingbooker.EditActivity"
+            android:name="com.desc.meetingbooker.NewEditActivity"
             android:label="@string/title_activity_edit" >
         </activity>
         <activity
