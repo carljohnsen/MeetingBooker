@@ -35,9 +35,9 @@
             android:id="@+id/clock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/calendarName"
-            android:layout_centerHorizontal="true"
-            android:textSize="20sp" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/currentAvail"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/clock"
             android:layout_centerHorizontal="true"
-            android:textSize="70sp" />
+            android:textSize="100sp" />
 
         <RelativeLayout
             android:id="@+id/line"
