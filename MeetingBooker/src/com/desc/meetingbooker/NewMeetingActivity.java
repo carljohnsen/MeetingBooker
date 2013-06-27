@@ -45,6 +45,7 @@ public class NewMeetingActivity extends Activity {
 	private ArrayList<TimeWindow> windowList;
 	private ArrayAdapter<TimeWindow> adapter;
 	private Button add;
+	private Button delete;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,8 @@ public class NewMeetingActivity extends Activity {
 		
 		eventlist = MainActivity.eventlist;
 		add = (Button) findViewById(R.id.addButton);
+		delete = (Button) findViewById(R.id.deleteButton);
+		delete.setVisibility(Button.GONE);
 		
 		// Finds the TimePickers
 		timeStart = (TimePicker) findViewById(R.id.timePickerStart);

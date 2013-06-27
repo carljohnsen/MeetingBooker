@@ -47,6 +47,9 @@ public class EditActivity extends Activity {
 	private EditText titleText;
 	private EditText descText;
 	private CalEvent event;
+	private Context context;
+	
+	private Button delete;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,9 @@ public class EditActivity extends Activity {
 		} else {
 			event = eventlist.get(index);
 		}
+		delete = (Button) findViewById(R.id.deleteButton);
+		delete.setVisibility(Button.VISIBLE);
+		context = getApplicationContext();
 
 		// Finds the TimePickers
 		timeStart = (TimePicker) findViewById(R.id.timePickerStart);
@@ -97,11 +103,29 @@ public class EditActivity extends Activity {
 		add.setText("Update");
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_new_meeting, menu);
-		return true;
+	public void delete(View view) {
+		AlertDialog dialog = new AlertDialog.Builder(this).create();
+		dialog.setTitle("Delete");
+		dialog.setMessage("Are you sure you want to delete this event?");
+		dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						StatMeth.updateStart(event, context);
+						StatMeth.updateEnd(event, context);
+						finish();
+					}
+
+				});
+		dialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", 
+				new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+		dialog.show();
 	}
 
 	/**

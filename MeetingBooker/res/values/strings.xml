@@ -26,5 +26,6 @@
     <string name="text_confirm_password">Confirm new password</string>
     <string name="text_change_password">Change password</string>
     <string name="text_wrong_password">Wrong password</string>
+    <string name="text_delete">Delete</string>
 
 </resources>

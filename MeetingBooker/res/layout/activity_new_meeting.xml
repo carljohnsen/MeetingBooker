@@ -19,11 +19,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleTextView"
+        android:layout_toLeftOf="@+id/deleteButton"
         android:layout_centerInParent="true"
         android:ems="15"
         android:inputType="text"
         android:text="@string/text_spontaneous" >
     </EditText>
+    
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:onClick="delete"
+        android:text="@string/text_delete" />
 
     <TextView
         android:id="@+id/descTextView"
@@ -70,7 +80,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editDesc"
-        android:layout_alignParentRight="true" >
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/timeStart" >
 
         <TextView
             android:id="@+id/textEnd"
@@ -82,8 +93,7 @@
         <TimePicker
             android:id="@+id/timePickerEnd"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/timePickerStart" />
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
     <ListView
