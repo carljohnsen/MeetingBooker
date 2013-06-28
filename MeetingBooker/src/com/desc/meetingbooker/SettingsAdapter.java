@@ -52,7 +52,7 @@ public class SettingsAdapter extends ArrayAdapter<Setting>{
 		}
 		final Setting setting = entries.get(position);
 		if (setting != null) {
-			holder.item1.setText(setting.getName());
+			holder.item1.setText(setting.getDesc());
 			if (setting.getValueType().equals("boolean")) {
 				holder.item2.setVisibility(TextView.GONE);
 				holder.item3.setChecked(Boolean.parseBoolean(setting.getValue()));

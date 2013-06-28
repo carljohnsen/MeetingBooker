@@ -9,20 +9,23 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="20sp"
         android:layout_marginLeft="20sp"
-        android:layout_marginTop="10sp"
-        android:layout_marginBottom="10sp"
-        android:textSize="20sp"/>
+        android:layout_marginTop="25sp"
+        android:textSize="25sp" />
 
     <TextView android:id="@+id/settingVal"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/settingName"/>
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20sp" />
     
     <CheckBox android:id="@+id/settingCheck"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_marginRight="20sp"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/settingName"/>
+        android:layout_alignParentRight="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
     
 </RelativeLayout>

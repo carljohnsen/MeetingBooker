@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
 	private static boolean isOverTime = false;
 	
 	public static boolean extendEnd;
-	// TODO add extendstart
+	// TODO add extendstart i senere checks
 	public static boolean extendStart;
 	
 	@Override
@@ -301,7 +301,9 @@ public class MainActivity extends Activity {
 		if (extendEnd) {
 			currentOvertime();
 		}
-		currentDelayed();
+		if (extendStart) {
+			currentDelayed();
+		}
 		
 		// Sets the background color(Red if any event is underway, green if not)
 		if (current != null && current.isUnderway()) {

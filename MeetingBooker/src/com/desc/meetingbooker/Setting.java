@@ -9,6 +9,7 @@ package com.desc.meetingbooker;
  */
 public class Setting {
 	
+	private String desc;
 	private String name;
 	private String value;
 	private String valueType;
@@ -22,10 +23,21 @@ public class Setting {
 	 */
 	public Setting(final String name, 
 			final String value, 
-			final String valueType) {
+			final String valueType,
+			final String desc) {
+		this.desc = desc;
 		this.name = name;
 		this.value = value;
 		this.valueType = valueType;
+	}
+	
+	/**
+	 * Setting description getter
+	 * 
+	 * @return The description of the setting
+	 */
+	public String getDesc() {
+		return desc;
 	}
 
 	/**

@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -50,10 +52,22 @@ public class SettingsActivity extends Activity {
 		context = getApplicationContext();
 		config = StatMeth.readConfig(context);
 		
-		// TODO Add onClickListener to ListView
 		settingList = (ListView) findViewById(R.id.settingList);
 		adapter = new SettingsAdapter(this, R.id.settingList, config);
 		settingList.setAdapter(adapter);
+		
+		settingList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, 
+					int position, long arg3) {
+				Log.d(TAG,"List was clicked!");
+				if (config.get(position).getValueType().equals("boolean")) {
+					CheckBox box = (CheckBox) arg1.findViewById(R.id.settingCheck);
+					box.setChecked(!box.isChecked());
+				}
+				//TODO open selection fragment hvis det ikke er en boolean
+			}
+		});
 		
 		Log.d(TAG, "onCreate()");
 	}

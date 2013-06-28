@@ -161,12 +161,12 @@ public class StatMeth {
 		Setting setting;
 		if (command.equals("extendendtime")) {
 			MainActivity.extendEnd = Boolean.parseBoolean(value);
-			setting = new Setting(command, value, "boolean");
+			setting = new Setting(command, value, "boolean", "Extend end time");
 			settings.add(setting);
 		}
 		if (command.equals("extendstarttime")) {
 			MainActivity.extendStart = Boolean.parseBoolean(value);
-			setting = new Setting(command, value, "boolean");
+			setting = new Setting(command, value, "boolean", "Extend start time");
 			settings.add(setting);
 		}
 	}
@@ -213,6 +213,7 @@ public class StatMeth {
 		} catch (IOException e) {
 			Log.d("ConfigReader", e.getMessage());
 		}
+		readConfig(context);
 	}
 
 	/**
