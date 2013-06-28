@@ -11,7 +11,6 @@ import java.text.Format;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.TimeZone;
 
 import android.content.ContentResolver;
@@ -113,7 +112,7 @@ public class StatMeth {
 		return event.getEnd() < event.getStart();
 	}
 
-	private static HashMap<String, String> map;
+	private static ArrayList<Setting> settings;
 
 	/**
 	 * Reads the config file, and then it interprets it
@@ -121,7 +120,7 @@ public class StatMeth {
 	 * @param context The context of the application
 	 * @return A HashMap of (command, value) pairs
 	 */
-	public static HashMap<String, String> readConfig(Context context) {
+	public static ArrayList<Setting> readConfig(Context context) {
 		ArrayList<String> config = new ArrayList<String>();
 
 		boolean hasRead = false;
@@ -144,13 +143,13 @@ public class StatMeth {
 			}
 		}
 
-		map = new HashMap<String, String>();
+		settings = new ArrayList<Setting>();
 
 		for (String st : config) {
 			interpret(st);
 		}
 
-		return map;
+		return settings;
 	}
 
 	private static void interpret(String str) {
@@ -159,10 +158,17 @@ public class StatMeth {
 		String value = str.substring(index + 1, str.length());
 		Log.d("TAG", command);
 		Log.d("TAG", value);
+		Setting setting;
 		if (command.equals("extendendtime")) {
 			MainActivity.extendEnd = Boolean.parseBoolean(value);
+			setting = new Setting(command, value, "boolean");
+			settings.add(setting);
 		}
-		map.put(command, value);
+		if (command.equals("extendstarttime")) {
+			MainActivity.extendStart = Boolean.parseBoolean(value);
+			setting = new Setting(command, value, "boolean");
+			settings.add(setting);
+		}
 	}
 
 	private static void configMake(Context context) {
@@ -171,10 +177,15 @@ public class StatMeth {
 			FileOutputStream out = context.openFileOutput("config.cfg",
 					Context.MODE_PRIVATE);
 			OutputStreamWriter outputStream = new OutputStreamWriter(out);
-			outputStream.write("extendendtime true", 0, 18);
+			String line;
+			line = "extendendtime true\n";
+			outputStream.write(line, 0, line.length());
+			line = "extendstarttime true\n";
+			outputStream.write(line, 0, line.length());
 			outputStream.close();
 			out.close();
 			MainActivity.extendEnd = true;
+			MainActivity.extendStart = true;
 		} catch (IOException e) {
 			Log.d("ConfigReader", e.getMessage());
 		}
@@ -186,16 +197,16 @@ public class StatMeth {
 	 * @param map The given HashMap
 	 * @param context The context of the application
 	 */
-	public static void write(HashMap<String, String> map, Context context) {
+	public static void write(ArrayList<Setting> sett, Context context) {
 		try {
 			FileOutputStream out = context.openFileOutput("config.cfg",
 					Context.MODE_PRIVATE);
 			OutputStreamWriter outputStream = new OutputStreamWriter(out);
 
-			String extendEnd = "extendendtime " + map.get("extendendtime");
-			MainActivity.extendEnd = Boolean.parseBoolean(map
-					.get("extendendtime"));
-			outputStream.write(extendEnd, 0, extendEnd.length());
+			for (Setting set : sett) {
+				String setting = set.getName() + " " + set.getValue() + "\n";
+				outputStream.write(setting, 0, setting.length());
+			}
 
 			outputStream.close();
 			out.close();

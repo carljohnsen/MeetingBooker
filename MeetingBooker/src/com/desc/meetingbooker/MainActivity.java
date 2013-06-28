@@ -60,6 +60,8 @@ public class MainActivity extends Activity {
 	private static boolean isOverTime = false;
 	
 	public static boolean extendEnd;
+	// TODO add extendstart
+	public static boolean extendStart;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

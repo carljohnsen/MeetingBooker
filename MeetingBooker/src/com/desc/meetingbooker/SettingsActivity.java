@@ -1,6 +1,6 @@
 package com.desc.meetingbooker;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -16,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -29,8 +30,9 @@ import android.widget.TextView;
 public class SettingsActivity extends Activity {
 	
 	private final String TAG = SettingsActivity.class.getSimpleName();
-	private HashMap<String, String> config;
-	private CheckBox extendEndCheck;
+	private ArrayList<Setting> config;
+	private ListView settingList;
+	private SettingsAdapter adapter;
 	private static Context context;
 
 	@Override
@@ -45,18 +47,15 @@ public class SettingsActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_settings);
 		
-		extendEndCheck = (CheckBox) findViewById(R.id.extendEndCheck);
-		
 		context = getApplicationContext();
+		config = StatMeth.readConfig(context);
 		
-		config = StatMeth.readConfig(getApplicationContext());
-		setViews(config);
+		// TODO Add onClickListener to ListView
+		settingList = (ListView) findViewById(R.id.settingList);
+		adapter = new SettingsAdapter(this, R.id.settingList, config);
+		settingList.setAdapter(adapter);
+		
 		Log.d(TAG, "onCreate()");
-	}
-	
-	private void setViews(HashMap<String, String> map) {
-		extendEndCheck.setChecked(Boolean.parseBoolean(
-				map.get("extendendtime")));
 	}
 	
 	/**
@@ -75,11 +74,35 @@ public class SettingsActivity extends Activity {
 	 * @param view The View from the button
 	 */
 	public void save(View view) {
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("extendendtime", extendEndCheck.isChecked() + "");
-		StatMeth.write(map, getApplicationContext());
+		config = readList();
+		StatMeth.write(config, getApplicationContext());
 		Log.d(TAG, "Save the new configuration");
 		finish();
+	}
+	
+	/**
+	 * Reads the fields in the ListView, and returns the new list of settings
+	 * 
+	 * @return The new list of settings
+	 */
+	public ArrayList<Setting> readList() {
+		ArrayList<Setting> temp = new ArrayList<Setting>();
+		for (int i = 0; i < config.size(); i++) {
+			View v = settingList.getChildAt(i);
+			Setting set = config.get(i);
+			String value;
+			if (set.getValueType().equals("boolean")) {
+				CheckBox box = (CheckBox) v.findViewById(R.id.settingCheck);
+				value = "" + box.isChecked();
+			} else {
+				TextView tv = (TextView) v.findViewById(R.id.settingVal);
+				value = "" + tv.getText();
+			}
+			Log.d("SettingsActivity", "Field value : " + value);
+			set.setValue(value);
+			temp.add(set);
+		}
+		return temp;
 	}
 	
 	/**
