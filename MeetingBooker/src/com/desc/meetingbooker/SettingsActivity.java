@@ -19,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 /**
@@ -33,7 +34,7 @@ public class SettingsActivity extends Activity {
 	
 	private final String TAG = SettingsActivity.class.getSimpleName();
 	private ArrayList<Setting> config;
-	private ListView settingList;
+	private static ListView settingList;
 	private SettingsAdapter adapter;
 	private static Context context;
 
@@ -65,7 +66,11 @@ public class SettingsActivity extends Activity {
 					CheckBox box = (CheckBox) arg1.findViewById(R.id.settingCheck);
 					box.setChecked(!box.isChecked());
 				}
-				//TODO open selection fragment hvis det ikke er en boolean
+				if (config.get(position).getValueType().equals("int")) {
+					NumberFragment.index = position;
+					NumberFragment fragment = new NumberFragment();
+					fragment.show(getFragmentManager(), "BLA");
+				}
 			}
 		});
 		
@@ -127,6 +132,39 @@ public class SettingsActivity extends Activity {
 	public void cancel(View view) {
 		Log.d(TAG, "cancel()");
 		finish();
+	}
+	
+	public static class NumberFragment extends DialogFragment {
+	
+		private static int index; 
+		
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					getActivity());
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			final View v = inflater.inflate(R.layout.number_picker_layout, 
+					null);
+			NumberPicker n = (NumberPicker) v.findViewById(R.id.numberPicker);
+			n.setMaxValue(30);
+			n.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+			
+			builder.setView(v)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						NumberPicker picker = (NumberPicker) v.findViewById(R.id.numberPicker);
+						int number = picker.getValue();
+						View vi = settingList.getChildAt(index);
+						TextView tv = (TextView) vi.findViewById(R.id.settingVal);
+						tv.setText("" + number);
+					}
+					
+				});
+			return builder.create();
+		}
+		
 	}
 	
 	public static class PasswordFragment extends DialogFragment {

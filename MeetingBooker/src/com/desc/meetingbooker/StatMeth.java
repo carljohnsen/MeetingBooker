@@ -164,9 +164,19 @@ public class StatMeth {
 			setting = new Setting(command, value, "boolean", "Extend end time");
 			settings.add(setting);
 		}
+		if (command.equals("endtime")) {
+			MainActivity.endExtend = Integer.parseInt(value);
+			setting = new Setting(command, value, "int", "Minutes to extend by");
+			settings.add(setting);
+		}
 		if (command.equals("extendstarttime")) {
 			MainActivity.extendStart = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean", "Extend start time");
+			settings.add(setting);
+		}
+		if (command.equals("starttime")) {
+			MainActivity.startExtend = Integer.parseInt(value);
+			setting = new Setting(command, value, "int", "Minutes to extend with");
 			settings.add(setting);
 		}
 	}
@@ -178,9 +188,13 @@ public class StatMeth {
 					Context.MODE_PRIVATE);
 			OutputStreamWriter outputStream = new OutputStreamWriter(out);
 			String line;
+			line = "extendstarttime true\n";
+			outputStream.write(line, 0, line.length());
+			line = "starttime 15\n";
+			outputStream.write(line, 0, line.length());
 			line = "extendendtime true\n";
 			outputStream.write(line, 0, line.length());
-			line = "extendstarttime true\n";
+			line = "endtime 15\n";
 			outputStream.write(line, 0, line.length());
 			outputStream.close();
 			out.close();

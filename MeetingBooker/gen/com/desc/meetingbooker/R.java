@@ -44,20 +44,21 @@ public final class R {
         public static final int list_content=0x7f07002b;
         public static final int mainLay=0x7f070000;
         public static final int margain=0x7f070002;
-        public static final int menu_settings=0x7f070031;
+        public static final int menu_settings=0x7f070032;
         public static final int newMeetingButton=0x7f070013;
         public static final int nextMeetingButton=0x7f070010;
-        public static final int pwEdit=0x7f07002d;
+        public static final int numberPicker=0x7f07002c;
+        public static final int pwEdit=0x7f07002e;
         public static final int pwNew1=0x7f070029;
         public static final int pwNew2=0x7f07002a;
         public static final int pwOld=0x7f070028;
-        public static final int pwPrompt=0x7f07002c;
+        public static final int pwPrompt=0x7f07002d;
         public static final int settingCancel=0x7f070026;
-        public static final int settingCheck=0x7f070030;
+        public static final int settingCheck=0x7f070031;
         public static final int settingList=0x7f070023;
-        public static final int settingName=0x7f07002e;
+        public static final int settingName=0x7f07002f;
         public static final int settingSave=0x7f070025;
-        public static final int settingVal=0x7f07002f;
+        public static final int settingVal=0x7f070030;
         public static final int settingsButton=0x7f070001;
         public static final int startEndLay=0x7f07000c;
         public static final int textEnd=0x7f07001d;
@@ -75,8 +76,9 @@ public final class R {
         public static final int activity_settings=0x7f030002;
         public static final int change_password_layout=0x7f030003;
         public static final int list_black_text=0x7f030004;
-        public static final int password_prompt_layout=0x7f030005;
-        public static final int setting_item=0x7f030006;
+        public static final int number_picker_layout=0x7f030005;
+        public static final int password_prompt_layout=0x7f030006;
+        public static final int setting_item=0x7f030007;
     }
     public static final class menu {
         public static final int activity_edit=0x7f060000;

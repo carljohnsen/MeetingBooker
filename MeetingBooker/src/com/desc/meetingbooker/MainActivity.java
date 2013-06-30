@@ -60,7 +60,9 @@ public class MainActivity extends Activity {
 	private static boolean isOverTime = false;
 	
 	public static boolean extendEnd;
+	public static int endExtend;
 	public static boolean extendStart;
+	public static int startExtend;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -253,9 +255,9 @@ public class MainActivity extends Activity {
 		if (current != null && !current.isUnderway() && !isDelayed && current
 				.getStart() <= currentTime) {
 			isDelayed = true;
-			if ((current.getEnd() - current.getStart()) > (16 * 60000) ) {
+			if ((current.getEnd() - current.getStart()) > (startExtend * 60000) ) {
 				StatMeth.updateStart(current, context, current.getStart() + 
-						(15 * 60000));
+						(startExtend * 60000));
 			} else {
 				StatMeth.updateStart(current, context, current.getEnd() - 
 						60000);
@@ -271,11 +273,11 @@ public class MainActivity extends Activity {
 	private static long findExtendedTimeWindow() {
 		if (!eventlist.isEmpty()) {
 			long interval = eventlist.get(0).getStart() - current.getEnd();
-			if (interval < (60000 * 15)) {
+			if (interval < (60000 * endExtend)) {
 				return eventlist.get(0).getStart();
 			}
 		}
-		return current.getEnd() + (60000 * 15);
+		return current.getEnd() + (60000 * endExtend);
 	}
 	
 	/**
