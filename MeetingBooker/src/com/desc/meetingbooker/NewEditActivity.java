@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.AdapterView.OnItemClickListener;
@@ -51,7 +52,7 @@ public class NewEditActivity extends Activity {
 
 	private Button add;
 	private Button update;
-	private Button delete;
+	private ImageView delete;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class NewEditActivity extends Activity {
 		descText = (EditText) findViewById(R.id.editDesc);
 		add = (Button) findViewById(R.id.addButton);
 		update = (Button) findViewById(R.id.updateButton);
-		delete = (Button) findViewById(R.id.deleteButton);
+		delete = (ImageView) findViewById(R.id.deleteButton);
 		context = getApplicationContext();
 
 		// Finds the TimePickers

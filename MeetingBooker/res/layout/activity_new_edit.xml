@@ -14,32 +14,42 @@
         android:layout_height="wrap_content"
         android:text="@string/text_title" />
 
-    <EditText
-        android:id="@+id/editTitle"
+    <RelativeLayout
+        android:id="@+id/titleLay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextView"
-        android:layout_toLeftOf="@+id/deleteButton"
-        android:layout_centerInParent="true"
-        android:ems="15"
-        android:inputType="text"
-        android:text="@string/text_spontaneous" >
-    </EditText>
-    
-    <Button
-        android:id="@+id/deleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:onClick="delete"
-        android:text="@string/text_delete" />
+        android:layout_below="@+id/titleTextView" >
+        
+        <EditText
+            android:id="@+id/editTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/deleteButton"
+            android:ems="15"
+            android:inputType="text"
+            android:text="@string/text_spontaneous" >
+        </EditText>
+
+        <ImageView
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5sp"
+            android:minHeight="50dp"
+            android:minWidth="50dp"
+            android:onClick="delete"
+            android:src="@drawable/content_discard" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/descTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTitle"
+        android:layout_below="@+id/titleLay"
         android:text="@string/text_description" />
 
     <EditText
@@ -54,10 +64,10 @@
     </EditText>
 
     <RelativeLayout
-        android:layout_alignParentLeft="true"
         android:id="@+id/timeStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/editDesc" >
 
         <TextView
@@ -79,9 +89,9 @@
         android:id="@+id/timeEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editDesc"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/timeStart" >
+        android:layout_alignTop="@+id/timeStart"
+        android:layout_below="@+id/editDesc" >
 
         <TextView
             android:id="@+id/textEnd"
@@ -101,8 +111,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/addButton"
-        android:layout_alignTop="@+id/timeEnd"
         android:layout_alignBottom="@+id/timeEnd"
+        android:layout_alignTop="@+id/timeEnd"
         android:layout_centerInParent="true"
         android:layout_toLeftOf="@+id/timeEnd"
         android:layout_toRightOf="@+id/timeStart" />
@@ -114,7 +124,7 @@
         android:layout_above="@+id/cancelButton"
         android:onClick="add"
         android:text="@string/text_add" />
-    
+
     <Button
         android:id="@+id/updateButton"
         android:layout_width="match_parent"
