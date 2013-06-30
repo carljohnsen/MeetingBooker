@@ -60,7 +60,6 @@ public class MainActivity extends Activity {
 	private static boolean isOverTime = false;
 	
 	public static boolean extendEnd;
-	// TODO add extendstart i senere checks
 	public static boolean extendStart;
 	
 	@Override
@@ -345,7 +344,7 @@ public class MainActivity extends Activity {
 			AlertDialog.Builder builder = 
 					new AlertDialog.Builder(getActivity());
 			LayoutInflater inflater = getActivity().getLayoutInflater();
-			final View v = inflater.inflate(R.layout.password_layout, null);
+			final View v = inflater.inflate(R.layout.password_prompt_layout, null);
 			if (wasWrong) {
 				v.findViewById(R.id.pwPrompt).setVisibility(TextView.VISIBLE);
 			} else {

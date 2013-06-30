@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import android.os.Bundle;
@@ -368,45 +369,69 @@ public class NewEditActivity extends Activity {
 
 	}
 
+	// Help method for findTimeWindow
+	// Finds all TimeWindows between the given start and end time, that is 
+	// > 5 min and < 1 hour
+	private ArrayList<TimeWindow> findHelp(ArrayList<TimeWindow> list,
+			long start, long end) {
+		long fiveMin = 60000 * 5;
+		long oneHour = 60000 * 60;
+		long interval = end - start;
+		while (interval > 0) {
+			if (interval < fiveMin) {
+				return list;
+			}
+			if (interval > oneHour) {
+				list.add(new TimeWindow(start, start + oneHour));
+				start = start + oneHour;
+				interval = interval - oneHour;
+			} else {
+				list.add(new TimeWindow(start, end));
+				interval = 0;
+			}
+		}
+		return list;
+	}
+
 	// Finds the window to set TimePickers to
 	private ArrayList<TimeWindow> findTimeWindow() {
 		ArrayList<TimeWindow> returnList = new ArrayList<TimeWindow>();
 		CalEvent current = MainActivity.current;
 		long time = new Date().getTime();
-		long fiveMin = 60000 * 5;
-		long oneHour = 60000 * 60;
-
+		// Find next midnight
+		Calendar cal = new GregorianCalendar();
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		long midnight = cal.getTimeInMillis();
+		
 		if (current == null) {
-			returnList.add(new TimeWindow(time, time + oneHour));
+			// Find windows from now and the rest of the day
+			returnList = findHelp(returnList, time, midnight);
 			return returnList;
 		}
 		if (!current.isUnderway()) {
-			long interval = current.getStart() - time;
-			if (interval >= fiveMin) {
-				returnList.add(new TimeWindow(time, current.getStart()));
-			}
+			// Find windows from now until current starts
+			returnList = findHelp(returnList, time, current.getStart());
 		}
-		returnList.add(new TimeWindow(current.getEnd(), current.getEnd()
-				+ oneHour));
-		if (!eventlist.isEmpty()) {
-			long interval = eventlist.get(0).getStart() - current.getEnd();
-			if (interval >= fiveMin) {
-				returnList.add(new TimeWindow(current.getEnd(), eventlist
-						.get(0).getStart()));
-			} else {
-				for (int i = 0; i < eventlist.size() - 1; i++) {
-					interval = eventlist.get(i + 1).getStart()
-							- eventlist.get(i).getEnd();
-					if (interval >= fiveMin) {
-						returnList.add(new TimeWindow(
-								eventlist.get(i).getEnd(), eventlist.get(i + 1)
-										.getStart()));
-					}
-				}
+		if (eventlist.isEmpty()) {
+			// Find windows from the end of current and the rest of the day
+			returnList = findHelp(returnList, current.getEnd(), midnight);
+		} else {
+			// Find windows between current and first event
+			returnList = findHelp(returnList, current.getEnd(), eventlist
+					.get(0).getStart());
+			for (int i = 0; i < eventlist.size() - 1; i++) {
+				// Find windows between individual events
+				CalEvent first = eventlist.get(i);
+				CalEvent second = eventlist.get(i + 1);
+				returnList = findHelp(returnList, first.getEnd(),
+						second.getStart());
 			}
-			long eventlistLast = eventlist.get(eventlist.size() - 1).getEnd();
-			returnList.add(new TimeWindow(eventlistLast, eventlistLast
-					+ oneHour));
+			// Find windows from the last event until midnight
+			CalEvent last = eventlist.get(eventlist.size() - 1);
+			returnList = findHelp(returnList, last.getEnd(), midnight);
 		}
 		return returnList;
 	}
