@@ -11,12 +11,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:background="@drawable/imageview_selector"
         android:contentDescription="@string/settings_description"
-        android:onClick="settings"
         android:minHeight="50dp"
         android:minWidth="50dp"
-        android:src="@drawable/action_settings"
-        android:background="@drawable/imageview_selector" />
+        android:onClick="settings"
+        android:src="@drawable/action_settings" />
 
     <RelativeLayout
         android:id="@+id/margain"
@@ -38,8 +38,8 @@
             android:id="@+id/clock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:textSize="25sp" />
 
         <TextView
@@ -60,11 +60,12 @@
 
         <RelativeLayout
             android:id="@+id/curnextLay"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/line"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/borders"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="10sp"
+            android:background="@drawable/imageview_selector"
             android:clickable="true"
             android:onClick="editCurrent" >
 
@@ -72,52 +73,123 @@
                 android:id="@+id/currentUpcom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:textSize="30sp" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="5sp"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/colon1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/currentUpcom"
+                android:layout_toRightOf="@+id/currentUpcom"
+                android:text="@string/colon"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/currentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/currentUpcom"
-                android:layout_centerHorizontal="true"
-                android:textSize="30sp" />
+                android:layout_marginLeft="5sp"
+                android:layout_toRightOf="@+id/colon1"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/currentOrg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/currentTitle"
+                android:layout_marginRight="5sp"
+                android:text="@string/text_organizer"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/colon2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/colon1"
+                android:layout_alignTop="@+id/currentOrg"
+                android:text="@string/colon"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/currentOrganizer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/currentTitle"
-                android:layout_centerHorizontal="true"
-                android:textSize="25sp" />
+                android:layout_alignTop="@+id/colon2"
+                android:layout_marginLeft="5sp"
+                android:layout_toRightOf="@+id/colon2"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/currentDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/currentOrganizer"
+                android:layout_marginRight="5sp"
+                android:text="@string/text_description"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/colon3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/colon2"
+                android:layout_alignTop="@+id/currentDescription"
+                android:text="@string/colon"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/currentDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/currentOrganizer"
-                android:layout_centerHorizontal="true"
-                android:textSize="20sp" />
+                android:layout_alignTop="@+id/colon3"
+                android:layout_marginLeft="5sp"
+                android:layout_toRightOf="@+id/colon3"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/currentStartEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/currentDesc"
+                android:layout_marginRight="5sp"
+                android:text="@string/text_start_end"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/colon4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/colon3"
+                android:layout_alignTop="@+id/currentStartEnd"
+                android:text="@string/colon"
+                android:textSize="24sp" />
 
             <RelativeLayout
                 android:id="@+id/startEndLay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/currentDesc"
-                android:layout_centerHorizontal="true" >
+                android:layout_alignTop="@+id/colon4"
+                android:layout_marginLeft="5sp"
+                android:layout_toRightOf="@+id/colon4" >
 
                 <TextView
                     android:id="@+id/currentStart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/currentEnd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/currentStart"
-                    android:textSize="20sp" />
+                    android:textSize="24sp" />
             </RelativeLayout>
         </RelativeLayout>
 

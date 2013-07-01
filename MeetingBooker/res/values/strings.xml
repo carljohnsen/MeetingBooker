@@ -30,5 +30,8 @@
     <string name="text_update">Update</string>
     <string name="settings_description">Settings button</string>
     <string name="delete_description">Delete button</string>
+    <string name="colon">:</string>
+    <string name="text_organizer">Organizer</string>
+    <string name="text_start_end">Start | End</string>
 
 </resources>

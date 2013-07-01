@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <drawable name="pressed_color">#798591</drawable>
-    <drawable name="image_pressed">#AA449DEF</drawable>
+    <drawable name="image_pressed">#55449DEF</drawable>
     <color name="white">#FFFFFF</color>
     <color name="grey">#7A7A7A</color>
     <color name="bluelight">#449DEF</color>

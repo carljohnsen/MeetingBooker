@@ -226,8 +226,8 @@ public class MainActivity extends Activity {
 		currentTitle.setText(event.getTitle());
 		currentOrganizer.setText(event.getOrganizer());
 		currentDesc.setText(event.getDescription());
-		currentStart.setText("Start : " + event.getStartTime());
-		currentEnd.setText(" End : " + event.getEndTime());
+		currentStart.setText("" + event.getStartTime() + " | ");
+		currentEnd.setText("" + event.getEndTime());
 	}
 	
 	// Shows and hides the TextViews for current event
@@ -321,7 +321,7 @@ public class MainActivity extends Activity {
 		if (current != null && current.isUnderway()) {
 			mainView.setBackgroundColor(Color.RED);
 			currentAvail.setText("Unavailable");
-			currentUpcom.setText("Current Meeting:");
+			currentUpcom.setText("Current Meeting");
 			nextMeeting.setVisibility(Button.GONE);
 			if (canEnd) {
 				endMeeting.setVisibility(Button.VISIBLE);
@@ -334,7 +334,7 @@ public class MainActivity extends Activity {
 		} else {
 			mainView.setBackgroundColor(Color.GREEN);
 			currentAvail.setText("Available");
-			currentUpcom.setText("Upcoming Meeting:");
+			currentUpcom.setText("Upcoming Meeting");
 			isOverTime = false;
 			if (current != null) {
 				nextMeeting.setVisibility(Button.VISIBLE);
