@@ -53,6 +53,9 @@ public class NewEditActivity extends Activity {
 	private Button add;
 	private Button update;
 	private ImageView delete;
+	
+	public static boolean candelete;
+	public static int windowSize;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +115,11 @@ public class NewEditActivity extends Activity {
 		} else {
 			event = eventlist.get(index);
 		}
-		delete.setVisibility(Button.VISIBLE);
+		if (candelete) {
+			delete.setVisibility(ImageView.VISIBLE);
+		} else {
+			delete.setVisibility(ImageView.GONE);
+		}
 
 		titleText.setText(event.getTitle());
 		descText.setText(event.getDescription());
@@ -376,16 +383,16 @@ public class NewEditActivity extends Activity {
 	private ArrayList<TimeWindow> findHelp(ArrayList<TimeWindow> list,
 			long start, long end) {
 		long fiveMin = 60000 * 5;
-		long oneHour = 60000 * 60;
+		long size = 60000 * windowSize;
 		long interval = end - start;
 		while (interval > 0) {
 			if (interval < fiveMin) {
 				return list;
 			}
-			if (interval > oneHour) {
-				list.add(new TimeWindow(start, start + oneHour));
-				start = start + oneHour;
-				interval = interval - oneHour;
+			if (interval > size) {
+				list.add(new TimeWindow(start, start + size));
+				start = start + size;
+				interval = interval - size;
 			} else {
 				list.add(new TimeWindow(start, end));
 				interval = 0;

@@ -63,6 +63,8 @@ public class MainActivity extends Activity {
 	public static int endExtend;
 	public static boolean extendStart;
 	public static int startExtend;
+	public static boolean canEnd;
+	public static boolean endDelete;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -187,7 +189,13 @@ public class MainActivity extends Activity {
 	 * @param view The View from the button
 	 */
 	public void endMeeting(View view) {
-		StatMeth.updateEnd(current, context);
+		if (endDelete) {
+			StatMeth.updateEnd(current, context);
+		} else {
+			current.setDescription(current.getDescription() + " ended");
+			StatMeth.update(current, context);
+			sync();
+		}
 	}
 	
 	public void settings(View view) {
@@ -243,6 +251,9 @@ public class MainActivity extends Activity {
 	// Pushes the current event forward by, up to 15 minutes if nobody pressed 
 	// End Meeting
 	private static void currentOvertime() {
+		if (current != null && current.getDescription().endsWith("ended")) {
+			return;
+		}
 		Long currentTime = new Date().getTime() + 60000;
 		if (current != null && !isOverTime && current.getEnd() <= currentTime) {
 			isOverTime = true;
@@ -312,7 +323,11 @@ public class MainActivity extends Activity {
 			currentAvail.setText("Unavailable");
 			currentUpcom.setText("Current Meeting:");
 			nextMeeting.setVisibility(Button.GONE);
-			endMeeting.setVisibility(Button.VISIBLE);
+			if (canEnd) {
+				endMeeting.setVisibility(Button.VISIBLE);
+			} else {
+				endMeeting.setVisibility(Button.GONE);
+			}
 			setCurrent(current);
 			isDelayed = false;
 			curShow(true);
@@ -329,6 +344,14 @@ public class MainActivity extends Activity {
 			} else {
 				curShow(false);
 			}
+		}
+		
+		// Check if the end meeting has been checked
+		if (!endDelete && current != null && current.getDescription().endsWith("ended")) {
+			mainView.setBackgroundColor(Color.YELLOW);
+			currentAvail.setText("Available");
+			currentUpcom.setText("Last Meeting:");
+			endMeeting.setVisibility(Button.GONE);
 		}
 		
 		// Creates the listView

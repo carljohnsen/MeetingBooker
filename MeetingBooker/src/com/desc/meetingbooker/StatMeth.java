@@ -179,6 +179,26 @@ public class StatMeth {
 			setting = new Setting(command, value, "int", "Minutes to extend with");
 			settings.add(setting);
 		}
+		if (command.equals("candelete")) {
+			NewEditActivity.candelete = Boolean.parseBoolean(value);
+			setting = new Setting(command, value, "boolean", "Show the delete button");
+			settings.add(setting);
+		}
+		if (command.equals("canend")) {
+			MainActivity.canEnd = Boolean.parseBoolean(value);
+			setting = new Setting(command, value, "boolean", "Show the End Meeting button");
+			settings.add(setting);
+		}
+		if (command.equals("enddelete")) {
+			MainActivity.endDelete = Boolean.parseBoolean(value);
+			setting = new Setting(command, value, "boolean", "End delete");
+			settings.add(setting);
+		}
+		if (command.equals("windowsize")) {
+			NewEditActivity.windowSize = Integer.parseInt(value);
+			setting = new Setting(command, value, "int", "Length of TimeWindows");
+			settings.add(setting);
+		}
 	}
 
 	private static void configMake(Context context) {
@@ -195,6 +215,14 @@ public class StatMeth {
 			line = "extendendtime true\n";
 			outputStream.write(line, 0, line.length());
 			line = "endtime 15\n";
+			outputStream.write(line, 0, line.length());
+			line = "candelete true\n";
+			outputStream.write(line, 0, line.length());
+			line = "canend true\n";
+			outputStream.write(line, 0, line.length());
+			line = "enddelete true\n";
+			outputStream.write(line, 0, line.length());
+			line = "windowsize 60\n";
 			outputStream.write(line, 0, line.length());
 			outputStream.close();
 			out.close();
@@ -480,7 +508,7 @@ public class StatMeth {
 	 */
 	public static String newPassword(Context context) {
 		String filename = "pwd";
-		String stdPwd = "password";
+		String stdPwd = "a";
 		try {
 			FileOutputStream out = context.openFileOutput(filename, 
 					Context.MODE_PRIVATE);

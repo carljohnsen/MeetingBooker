@@ -192,4 +192,13 @@ public class CalEvent {
 		return new TimeWindow(this.startTime, this.endTime);
 	}
 	
+	/**
+	 * Description setter
+	 * 
+	 * @param desc The new description
+	 */
+	public void setDescription(String desc) {
+		this.description = desc;
+	}
+	
 }

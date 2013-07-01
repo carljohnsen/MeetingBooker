@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +32,7 @@ import android.widget.TextView;
  * @since 27-05-2013
  */
 public class SettingsActivity extends Activity {
-	
+
 	private final String TAG = SettingsActivity.class.getSimpleName();
 	private ArrayList<Setting> config;
 	private static ListView settingList;
@@ -41,56 +42,79 @@ public class SettingsActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// Hide system UI
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, 
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_settings);
-		
+
 		context = getApplicationContext();
 		config = StatMeth.readConfig(context);
-		
+
 		settingList = (ListView) findViewById(R.id.settingList);
 		adapter = new SettingsAdapter(this, R.id.settingList, config);
 		settingList.setAdapter(adapter);
-		
+
 		settingList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, 
+			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
-				Log.d(TAG,"List was clicked!");
+				Log.d(TAG, "List was clicked!");
 				if (config.get(position).getValueType().equals("boolean")) {
-					CheckBox box = (CheckBox) arg1.findViewById(R.id.settingCheck);
+					CheckBox box = (CheckBox) arg1
+							.findViewById(R.id.settingCheck);
 					box.setChecked(!box.isChecked());
+					if (position == 0 || position == 2) {
+						View v = settingList.getChildAt(position + 1);
+						TextView com = (TextView) v.findViewById(R.id.settingName);
+						TextView val = (TextView) v.findViewById(R.id.settingVal);
+						if (!box.isChecked()) {
+							com.setTextColor(Color.GRAY);
+							val.setTextColor(Color.GRAY);
+						} else {
+							com.setTextColor(Color.BLACK);
+							val.setTextColor(Color.BLACK);
+						}
+					}
 				}
 				if (config.get(position).getValueType().equals("int")) {
+					if (position == 1 || position == 3) {
+						View v = settingList.getChildAt(position - 1);
+						CheckBox box = (CheckBox) v
+								.findViewById(R.id.settingCheck);
+						if (!box.isChecked()) {
+							return;
+						}
+					}
 					NumberFragment.index = position;
 					NumberFragment fragment = new NumberFragment();
 					fragment.show(getFragmentManager(), "BLA");
 				}
 			}
 		});
-		
+
 		Log.d(TAG, "onCreate()");
 	}
-	
+
 	/**
 	 * The method called by the "Change password" button
 	 * 
-	 * @param view The View of the button
+	 * @param view
+	 *            The View of the button
 	 */
 	public void newPassword(View view) {
 		PasswordFragment fragment = new PasswordFragment();
 		fragment.show(getFragmentManager(), "BLA");
 	}
-	
+
 	/**
 	 * Reads the formula, and then writes it to the config file
 	 * 
-	 * @param view The View from the button
+	 * @param view
+	 *            The View from the button
 	 */
 	public void save(View view) {
 		config = readList();
@@ -98,7 +122,7 @@ public class SettingsActivity extends Activity {
 		Log.d(TAG, "Save the new configuration");
 		finish();
 	}
-	
+
 	/**
 	 * Reads the fields in the ListView, and returns the new list of settings
 	 * 
@@ -123,121 +147,140 @@ public class SettingsActivity extends Activity {
 		}
 		return temp;
 	}
-	
+
 	/**
 	 * Exits the SettingsActivity
 	 * 
-	 * @param view The View of the button
+	 * @param view
+	 *            The View of the button
 	 */
 	public void cancel(View view) {
 		Log.d(TAG, "cancel()");
 		finish();
 	}
-	
+
 	public static class NumberFragment extends DialogFragment {
-	
-		private static int index; 
-		
+
+		private static int index;
+
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(
-					getActivity());
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			LayoutInflater inflater = getActivity().getLayoutInflater();
-			final View v = inflater.inflate(R.layout.number_picker_layout, 
-					null);
+			final View v = inflater
+					.inflate(R.layout.number_picker_layout, null);
 			NumberPicker n = (NumberPicker) v.findViewById(R.id.numberPicker);
-			n.setMaxValue(30);
+			View vi = settingList.getChildAt(index);
+			TextView tv = (TextView) vi.findViewById(R.id.settingName);
+			if ((tv.getText() + "").startsWith("Length")) {
+				n.setMinValue(15);
+				n.setMaxValue(60);
+			} else {
+				n.setMinValue(0);
+				n.setMaxValue(30);
+			}
 			n.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-			
-			builder.setView(v)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						NumberPicker picker = (NumberPicker) v.findViewById(R.id.numberPicker);
-						int number = picker.getValue();
-						View vi = settingList.getChildAt(index);
-						TextView tv = (TextView) vi.findViewById(R.id.settingVal);
-						tv.setText("" + number);
-					}
-					
-				});
+
+			builder.setView(v).setPositiveButton("OK",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							NumberPicker picker = (NumberPicker) v
+									.findViewById(R.id.numberPicker);
+							int number = picker.getValue();
+							View vi = settingList.getChildAt(index);
+							TextView tv = (TextView) vi
+									.findViewById(R.id.settingVal);
+							tv.setText("" + number);
+						}
+
+					});
 			return builder.create();
 		}
-		
+
 	}
-	
+
 	public static class PasswordFragment extends DialogFragment {
-		
+
 		private static int error = 0;
-		
+
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(
-					getActivity());
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			LayoutInflater inflater = getActivity().getLayoutInflater();
-			final View v = inflater.inflate(R.layout.change_password_layout, 
+			final View v = inflater.inflate(R.layout.change_password_layout,
 					null);
 			TextView prompt = (TextView) v.findViewById(R.id.changePrompt);
 			switch (error) {
-			case 0: prompt.setVisibility(TextView.GONE);
+			case 0:
+				prompt.setVisibility(TextView.GONE);
 				break;
-			case 1: prompt.setVisibility(TextView.VISIBLE);
+			case 1:
+				prompt.setVisibility(TextView.VISIBLE);
 				prompt.setText("The new passwords didn't match");
 				break;
-			case 2: prompt.setVisibility(TextView.VISIBLE);
+			case 2:
+				prompt.setVisibility(TextView.VISIBLE);
 				prompt.setText("The old password was wrong");
 				break;
 			}
 			builder.setView(v)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						EditText oldText = (EditText) v
-								.findViewById(R.id.pwOld);
-						EditText newText = (EditText) v
-								.findViewById(R.id.pwNew1);
-						EditText confText = (EditText) v
-								.findViewById(R.id.pwNew2);
-						
-						String old = oldText.getText().toString();
-						String new1 = newText.getText().toString();
-						String new2 = confText.getText().toString();
-						String storedpw = StatMeth.getPassword(context);
-						
-						if (new1.equals(new2) && old.equals(storedpw)) {
-							error = 0;
-							StatMeth.savePassword(new1, context);
-							return;
-						}
-						if (!new1.equals(new2)) {
-							error = 1;
-							PasswordFragment fragment = new PasswordFragment();
-							fragment.show(getFragmentManager(), "BLA");
-							return;
-						}
-						if (!old.equals(storedpw)) {
-							error = 2;
-							PasswordFragment fragment = new PasswordFragment();
-							fragment.show(getFragmentManager(), "BLA");
-							return;
-						}
-					}
-					
-				})
-				.setNegativeButton("Cancel", 
-						new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						error = 0;
-					}
-					
-				});
+					.setPositiveButton("OK",
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+									EditText oldText = (EditText) v
+											.findViewById(R.id.pwOld);
+									EditText newText = (EditText) v
+											.findViewById(R.id.pwNew1);
+									EditText confText = (EditText) v
+											.findViewById(R.id.pwNew2);
+
+									String old = oldText.getText().toString();
+									String new1 = newText.getText().toString();
+									String new2 = confText.getText().toString();
+									String storedpw = StatMeth
+											.getPassword(context);
+
+									if (new1.equals(new2)
+											&& old.equals(storedpw)) {
+										error = 0;
+										StatMeth.savePassword(new1, context);
+										return;
+									}
+									if (!new1.equals(new2)) {
+										error = 1;
+										PasswordFragment fragment = new PasswordFragment();
+										fragment.show(getFragmentManager(),
+												"BLA");
+										return;
+									}
+									if (!old.equals(storedpw)) {
+										error = 2;
+										PasswordFragment fragment = new PasswordFragment();
+										fragment.show(getFragmentManager(),
+												"BLA");
+										return;
+									}
+								}
+
+							})
+					.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									error = 0;
+								}
+
+							});
 			return builder.create();
 		}
-		
+
 	}
 
 }
