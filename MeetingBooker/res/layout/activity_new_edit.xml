@@ -33,6 +33,7 @@
 
         <ImageView
             android:id="@+id/deleteButton"
+            android:contentDescription="@string/delete_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -41,7 +42,8 @@
             android:minHeight="50dp"
             android:minWidth="50dp"
             android:onClick="delete"
-            android:src="@drawable/content_discard" />
+            android:src="@drawable/content_discard"
+            android:background="@drawable/imageview_selector" />
 
     </RelativeLayout>
 

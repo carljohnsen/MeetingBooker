@@ -11,10 +11,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:contentDescription="@string/settings_description"
         android:onClick="settings"
         android:minHeight="50dp"
         android:minWidth="50dp"
-        android:src="@drawable/action_settings" />
+        android:src="@drawable/action_settings"
+        android:background="@drawable/imageview_selector" />
 
     <RelativeLayout
         android:id="@+id/margain"
