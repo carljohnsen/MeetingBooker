@@ -103,10 +103,8 @@ public class MainActivity extends Activity {
 		calendarName.setText(StatMeth.getCalendarName(context));
 		
 		// ArrayAdapter for the ListView of events
-		adapter = new ArrayAdapter<CalEvent>(MainActivity.context, 
-									 		 R.layout.list_black_text, 
-									 		 R.id.list_content,
-									 		 eventlist);
+		adapter = new CalEventAdapter(this,  R.id.list_content, eventlist);
+		
 		// Setting the ListView
 		listView.setAdapter(adapter);
 		

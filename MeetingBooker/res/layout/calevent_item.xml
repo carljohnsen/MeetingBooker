@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <TextView 
+        android:id="@+id/evTitl"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/text_title"
+        android:layout_marginTop="10sp" />
+    
+    <TextView
+        android:id="@+id/evcol1"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/evTitl"
+        android:layout_alignRight="@+id/evcol3"
+        android:text="@string/colon" />
+    
+    <TextView
+        android:id="@+id/evTitle"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/evcol1"
+        android:layout_toRightOf="@+id/evcol1"
+        android:layout_marginLeft="5sp" />
+    
+    <TextView 
+        android:id="@+id/evOrg"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/evTitle"
+        android:text="@string/text_organizer" />
+    
+    <TextView
+        android:id="@+id/evcol2"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/evOrg"
+        android:layout_alignRight="@+id/evcol3"
+        android:text="@string/colon" />
+    
+    <TextView
+        android:id="@+id/evOrganizer"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/evcol2"
+        android:layout_toRightOf="@+id/evcol2"
+        android:layout_marginLeft="5sp" />
+    
+    <TextView 
+        android:id="@+id/evDes"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/evOrganizer"
+        android:text="@string/text_description" />
+    
+    <TextView
+        android:id="@+id/evcol3"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/evDes"
+        android:layout_toRightOf="@+id/evDes"
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:text="@string/colon" />
+    
+    <TextView
+        android:id="@+id/evDescription"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/evcol3"
+        android:layout_toRightOf="@+id/evcol3" />
+    
+    <TextView 
+        android:id="@+id/evStartEnd"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/evDescription"
+        android:text="@string/text_start_end" />
+    
+    <TextView
+        android:id="@+id/evcol4"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/evStartEnd"
+        android:layout_alignRight="@+id/evcol3"
+        android:text="@string/colon" />
+    
+    <TextView 
+        android:id="@+id/evStEn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/evcol4"
+        android:layout_toRightOf="@+id/evcol4"
+        android:layout_marginLeft="5sp" />
+    
+    <TextView 
+        android:id="@+id/blank"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/evStEn"
+        android:text=" "
+        android:textSize="10sp" />
+
+</RelativeLayout>
