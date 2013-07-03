@@ -62,6 +62,8 @@ public final class R {
         public static final int descTVWrap=0x7f080022;
         public static final int descTextView=0x7f080023;
         public static final int editDesc=0x7f080020;
+        public static final int editLayET=0x7f080050;
+        public static final int editLayTV=0x7f08004f;
         public static final int editTitle=0x7f08001d;
         public static final int endMeetingButton=0x7f080018;
         public static final int evDes=0x7f08003e;
@@ -85,7 +87,7 @@ public final class R {
         public static final int list_content=0x7f080048;
         public static final int mainLay=0x7f080000;
         public static final int margain=0x7f080002;
-        public static final int menu_settings=0x7f08004f;
+        public static final int menu_settings=0x7f080051;
         public static final int newEditColon1=0x7f08001f;
         public static final int newEditColon2=0x7f080024;
         public static final int newMeetingButton=0x7f08001b;
@@ -124,6 +126,7 @@ public final class R {
         public static final int number_picker_layout=0x7f030006;
         public static final int password_prompt_layout=0x7f030007;
         public static final int setting_item=0x7f030008;
+        public static final int string_edit_layout=0x7f030009;
     }
     public static final class menu {
         public static final int activity_edit=0x7f070000;

@@ -199,6 +199,11 @@ public class StatMeth {
 			setting = new Setting(command, value, "int", "Length of TimeWindows");
 			settings.add(setting);
 		}
+		if (command.equals("calendarname")) {
+			MainActivity.roomName = value;
+			setting = new Setting(command, value, "String", "Calendar name");
+			settings.add(setting);
+		}
 	}
 
 	private static void configMake(Context context) {
@@ -223,6 +228,8 @@ public class StatMeth {
 			line = "enddelete true\n";
 			outputStream.write(line, 0, line.length());
 			line = "windowsize 60\n";
+			outputStream.write(line, 0, line.length());
+			line = "calendarname " + getCalendarName(context) + "\n";
 			outputStream.write(line, 0, line.length());
 			outputStream.close();
 			out.close();

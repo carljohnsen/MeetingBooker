@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -69,8 +70,10 @@ public class SettingsActivity extends Activity {
 					box.setChecked(!box.isChecked());
 					if (position == 0 || position == 2) {
 						View v = settingList.getChildAt(position + 1);
-						TextView com = (TextView) v.findViewById(R.id.settingName);
-						TextView val = (TextView) v.findViewById(R.id.settingVal);
+						TextView com = (TextView) v
+								.findViewById(R.id.settingName);
+						TextView val = (TextView) v
+								.findViewById(R.id.settingVal);
 						if (!box.isChecked()) {
 							com.setTextColor(Color.GRAY);
 							val.setTextColor(Color.GRAY);
@@ -91,6 +94,11 @@ public class SettingsActivity extends Activity {
 					}
 					NumberFragment.index = position;
 					NumberFragment fragment = new NumberFragment();
+					fragment.show(getFragmentManager(), "BLA");
+				}
+				if (config.get(position).getValueType().equals("String")) {
+					StringFragment.index = position;
+					StringFragment fragment = new StringFragment();
 					fragment.show(getFragmentManager(), "BLA");
 				}
 			}
@@ -157,6 +165,47 @@ public class SettingsActivity extends Activity {
 	public void cancel(View view) {
 		Log.d(TAG, "cancel()");
 		finish();
+	}
+
+	public static class StringFragment extends DialogFragment {
+		private static int index;
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			final View v = inflater
+					.inflate(R.layout.string_edit_layout, null);
+			TextView layTV = (TextView) v.findViewById(R.id.editLayTV);
+			EditText edit = (EditText) v.findViewById(R.id.editLayET);
+			View vi = settingList.getChildAt(index);
+			TextView tv1 = (TextView) vi.findViewById(R.id.settingVal);
+			TextView tv2 = (TextView) vi.findViewById(R.id.settingName);
+			edit.setHint(tv1.getText());
+			layTV.setText(tv2.getText());
+			
+			builder.setView(v).setPositiveButton("OK", 
+					new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							EditText edit = (EditText) v.findViewById(R.id.editLayET);
+							String name = edit.getText().toString();
+							View vi = settingList.getChildAt(index);
+							TextView tv = (TextView) vi.findViewById(R.id.settingVal);
+							tv.setText(name);
+						}
+					}).setNegativeButton("Cancel", 
+							new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// NOTHING
+							
+						}
+					});
+			return builder.create();
+		}
 	}
 
 	public static class NumberFragment extends DialogFragment {

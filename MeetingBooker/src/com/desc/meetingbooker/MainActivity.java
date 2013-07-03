@@ -65,6 +65,7 @@ public class MainActivity extends Activity {
 	public static int startExtend;
 	public static boolean canEnd;
 	public static boolean endDelete;
+	public static String roomName;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +101,7 @@ public class MainActivity extends Activity {
 		listView 			= (ListView) findViewById(R.id.listView1);
 		
 		// Set the name of the Calendar
-		calendarName.setText(StatMeth.getCalendarName(context));
+		calendarName.setText(roomName);
 		
 		// ArrayAdapter for the ListView of events
 		adapter = new CalEventAdapter(this,  R.id.list_content, eventlist);
@@ -150,6 +151,7 @@ public class MainActivity extends Activity {
 		Log.d(TAG, "onResume()");
 		super.onResume();
 		MainActivity.sync();
+		calendarName.setText(roomName);
 	}
 	
 	@Override
