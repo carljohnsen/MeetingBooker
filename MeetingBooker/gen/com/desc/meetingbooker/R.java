@@ -154,6 +154,7 @@ public final class R {
         public static final int text_new_password=0x7f050015;
         public static final int text_newmeeting=0x7f05000a;
         public static final int text_nextmeeting=0x7f05000b;
+        public static final int text_no_description=0x7f050021;
         public static final int text_old_password=0x7f050014;
         public static final int text_organizer=0x7f05001e;
         public static final int text_password=0x7f050013;

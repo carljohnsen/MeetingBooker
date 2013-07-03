@@ -34,5 +34,6 @@
     <string name="text_organizer">Organizer</string>
     <string name="text_start_end">Start | End</string>
     <string name="text_available_time">Available times:</string>
+    <string name="text_no_description">(no description)</string>
 
 </resources>

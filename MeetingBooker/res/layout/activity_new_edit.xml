@@ -99,7 +99,7 @@
         android:layout_below="@+id/editTitle"
         android:layout_toRightOf="@+id/descTVWrap"
         android:ems="15"
-        android:hint="@string/text_description"
+        android:hint="@string/text_no_description"
         android:inputType="text"
         android:textSize="20sp" />
 

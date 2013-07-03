@@ -131,6 +131,9 @@ public class NewEditActivity extends Activity {
 	 */
 	public void setNew() {
 		delete.setVisibility(Button.GONE);
+		String temp = titleText.getText().toString();
+		titleText.setText("");
+		titleText.setHint(temp);
 		setTimePickers(windowList.get(0));
 		add.setVisibility(Button.VISIBLE);
 		update.setVisibility(Button.GONE);
@@ -153,6 +156,9 @@ public class NewEditActivity extends Activity {
 
 		// Read the fields
 		String title = titleText.getText().toString();
+		if (title.equals("")) {
+			title = titleText.getHint().toString();
+		}
 		String desc = descText.getText().toString();
 		int startHour = timeStart.getCurrentHour();
 		int startMin = timeStart.getCurrentMinute();
