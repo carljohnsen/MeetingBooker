@@ -77,6 +77,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="5sp"
+                android:textStyle="bold"
                 android:textSize="24sp" />
 
             <TextView
@@ -103,6 +104,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/currentUpcom"
                 android:layout_marginRight="5sp"
+                android:textStyle="bold"
                 android:text="@string/text_organizer"
                 android:textSize="24sp" />
 
@@ -131,6 +133,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/currentOrganizer"
                 android:layout_marginRight="5sp"
+                android:textStyle="bold"
                 android:text="@string/text_description"
                 android:textSize="24sp" />
 
@@ -159,6 +162,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/currentDesc"
                 android:layout_marginRight="5sp"
+                android:textStyle="bold"
                 android:text="@string/text_start_end"
                 android:textSize="24sp" />
 
@@ -237,11 +241,12 @@
         <Button
             android:id="@+id/newMeetingButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80sp"
             android:layout_alignParentBottom="true"
             android:onClick="startNewMeeting"
             android:text="@string/text_newmeeting"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -34,7 +34,7 @@ public final class R {
     }
     public static final class id {
         public static final int addButton=0x7f08002f;
-        public static final int addUpCancel=0x7f08002b;
+        public static final int addUpCancel=0x7f08002e;
         public static final int blank=0x7f080043;
         public static final int blankCenter=0x7f080030;
         public static final int buttonLay=0x7f080008;
@@ -76,9 +76,9 @@ public final class R {
         public static final int evcol2=0x7f08003c;
         public static final int evcol3=0x7f080039;
         public static final int evcol4=0x7f080041;
-        public static final int intervalText=0x7f08002a;
-        public static final int intervalTextLay=0x7f080028;
-        public static final int intervalView=0x7f080029;
+        public static final int intervalText=0x7f08002d;
+        public static final int intervalTextLay=0x7f08002b;
+        public static final int intervalView=0x7f08002c;
         public static final int line1=0x7f080006;
         public static final int line2=0x7f080019;
         public static final int listView1=0x7f08001a;
@@ -104,10 +104,10 @@ public final class R {
         public static final int settingVal=0x7f08004d;
         public static final int settingsButton=0x7f080001;
         public static final int startEndLay=0x7f080014;
-        public static final int textEnd=0x7f08002d;
+        public static final int textEnd=0x7f080029;
         public static final int textStart=0x7f080026;
-        public static final int timeEnd=0x7f08002c;
-        public static final int timePickerEnd=0x7f08002e;
+        public static final int timeEnd=0x7f080028;
+        public static final int timePickerEnd=0x7f08002a;
         public static final int timePickerStart=0x7f080027;
         public static final int timeStart=0x7f080025;
         public static final int titleTVWrap=0x7f08001c;

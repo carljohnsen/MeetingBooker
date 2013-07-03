@@ -24,7 +24,8 @@
             android:layout_centerVertical="true"
             android:text="@string/text_title"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/newEditColon1"
@@ -113,7 +114,7 @@
             android:id="@+id/textStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:text="@string/text_start"
             android:textColor="@color/black"
             android:textSize="20sp" />
@@ -122,37 +123,8 @@
             android:id="@+id/timePickerStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textStart" />
+            android:layout_toRightOf="@+id/textStart" />
     </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/intervalTextLay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/intervalView"
-        android:layout_alignRight="@+id/intervalView"
-        android:layout_below="@+id/descTVWrap" >
-
-        <TextView
-            android:id="@+id/intervalText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/text_available_time"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-    </RelativeLayout>
-
-    <ListView
-        android:id="@+id/intervalView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/addUpCancel"
-        android:layout_below="@+id/intervalTextLay"
-        android:layout_centerInParent="true"
-        android:layout_toLeftOf="@+id/timeEnd"
-        android:layout_toRightOf="@+id/timeStart" />
 
     <RelativeLayout
         android:id="@+id/timeEnd"
@@ -166,17 +138,46 @@
             android:id="@+id/textEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:text="@string/text_end"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
         <TimePicker
             android:id="@+id/timePickerEnd"
+            android:layout_toRightOf="@+id/textEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/intervalTextLay"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/intervalView"
+        android:layout_alignBottom="@+id/intervalView"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/descTVWrap" >
+
+        <TextView
+            android:id="@+id/intervalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textEnd" />
+            android:layout_centerInParent="true"
+            android:text="@string/text_available_time"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
     </RelativeLayout>
+    
+    <ListView
+        android:id="@+id/intervalView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/intervalTextLay"
+        android:layout_above="@+id/addUpCancel"
+        android:layout_below="@+id/timeEnd"
+        android:layout_centerInParent="true" />
 
     <RelativeLayout
         android:id="@+id/addUpCancel"
