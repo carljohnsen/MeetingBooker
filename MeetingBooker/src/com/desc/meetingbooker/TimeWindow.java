@@ -40,6 +40,10 @@ public class TimeWindow {
 		return this.start;
 	}
 	
+	public String getStartString() {
+		return DateFormat.format("kk:mm", new Date(this.start)).toString();
+	}
+	
 	/**
 	 * End time getter
 	 * 
@@ -47,6 +51,10 @@ public class TimeWindow {
 	 */
 	public long getEnd() {
 		return this.end;
+	}
+	
+	public String getEndString() {
+		return DateFormat.format("kk:mm", new Date(this.end)).toString();
 	}
 	
 	/**

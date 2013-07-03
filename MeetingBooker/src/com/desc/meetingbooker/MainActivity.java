@@ -104,7 +104,7 @@ public class MainActivity extends Activity {
 		calendarName.setText(roomName);
 		
 		// ArrayAdapter for the ListView of events
-		adapter = new CalEventAdapter(this,  R.id.list_content, eventlist);
+		adapter = new CalEventAdapter(this,  R.layout.calevent_item, eventlist);
 		
 		// Setting the ListView
 		listView.setAdapter(adapter);

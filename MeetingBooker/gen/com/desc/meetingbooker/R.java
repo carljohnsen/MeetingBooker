@@ -62,8 +62,8 @@ public final class R {
         public static final int descTVWrap=0x7f080022;
         public static final int descTextView=0x7f080023;
         public static final int editDesc=0x7f080020;
-        public static final int editLayET=0x7f080050;
-        public static final int editLayTV=0x7f08004f;
+        public static final int editLayET=0x7f08004f;
+        public static final int editLayTV=0x7f08004e;
         public static final int editTitle=0x7f08001d;
         public static final int endMeetingButton=0x7f080018;
         public static final int evDes=0x7f08003e;
@@ -84,7 +84,6 @@ public final class R {
         public static final int line1=0x7f080006;
         public static final int line2=0x7f080019;
         public static final int listView1=0x7f08001a;
-        public static final int list_content=0x7f080048;
         public static final int mainLay=0x7f080000;
         public static final int margain=0x7f080002;
         public static final int menu_settings=0x7f080051;
@@ -92,18 +91,18 @@ public final class R {
         public static final int newEditColon2=0x7f080024;
         public static final int newMeetingButton=0x7f08001b;
         public static final int nextMeetingButton=0x7f080017;
-        public static final int numberPicker=0x7f080049;
-        public static final int pwEdit=0x7f08004b;
+        public static final int numberPicker=0x7f080048;
+        public static final int pwEdit=0x7f08004a;
         public static final int pwNew1=0x7f080046;
         public static final int pwNew2=0x7f080047;
         public static final int pwOld=0x7f080045;
-        public static final int pwPrompt=0x7f08004a;
+        public static final int pwPrompt=0x7f080049;
         public static final int settingCancel=0x7f080036;
-        public static final int settingCheck=0x7f08004e;
+        public static final int settingCheck=0x7f08004d;
         public static final int settingList=0x7f080033;
-        public static final int settingName=0x7f08004c;
+        public static final int settingName=0x7f08004b;
         public static final int settingSave=0x7f080035;
-        public static final int settingVal=0x7f08004d;
+        public static final int settingVal=0x7f08004c;
         public static final int settingsButton=0x7f080001;
         public static final int startEndLay=0x7f080014;
         public static final int textEnd=0x7f080029;
@@ -115,6 +114,7 @@ public final class R {
         public static final int titleTVWrap=0x7f08001c;
         public static final int titleTextView=0x7f08001e;
         public static final int updateButton=0x7f080031;
+        public static final int windowItem=0x7f080050;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -122,11 +122,11 @@ public final class R {
         public static final int activity_settings=0x7f030002;
         public static final int calevent_item=0x7f030003;
         public static final int change_password_layout=0x7f030004;
-        public static final int list_black_text=0x7f030005;
-        public static final int number_picker_layout=0x7f030006;
-        public static final int password_prompt_layout=0x7f030007;
-        public static final int setting_item=0x7f030008;
-        public static final int string_edit_layout=0x7f030009;
+        public static final int number_picker_layout=0x7f030005;
+        public static final int password_prompt_layout=0x7f030006;
+        public static final int setting_item=0x7f030007;
+        public static final int string_edit_layout=0x7f030008;
+        public static final int timewindow_item=0x7f030009;
     }
     public static final class menu {
         public static final int activity_edit=0x7f070000;

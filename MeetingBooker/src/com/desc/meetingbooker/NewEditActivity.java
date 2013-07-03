@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,7 +42,7 @@ public class NewEditActivity extends Activity {
 	private Calendar cal = Calendar.getInstance();
 	private ArrayList<CalEvent> eventlist;
 	private ArrayList<TimeWindow> windowList;
-	private ArrayAdapter<TimeWindow> adapter;
+	private TimeWindowAdapter adapter;
 	private int index;
 	private EditText titleText;
 	private EditText descText;
@@ -84,8 +83,7 @@ public class NewEditActivity extends Activity {
 		intervalPicker = (ListView) findViewById(R.id.intervalView);
 		windowList = findTimeWindow();
 
-		adapter = new ArrayAdapter<TimeWindow>(getApplicationContext(),
-				R.layout.list_black_text, R.id.list_content, windowList);
+		adapter = new TimeWindowAdapter(this, R.layout.timewindow_item, windowList);
 
 		// Setting the ListView
 		intervalPicker.setAdapter(adapter);

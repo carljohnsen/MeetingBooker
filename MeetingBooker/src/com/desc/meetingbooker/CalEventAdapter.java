@@ -48,7 +48,6 @@ public class CalEventAdapter extends ArrayAdapter<CalEvent> {
 		}
 		final CalEvent event = entries.get(position);
 		if (event != null) {
-			// TODO put text in views
 			holder.item1.setText(event.getTitle());
 			holder.item2.setText(event.getOrganizer());
 			holder.item3.setText(event.getDescription());
