@@ -319,7 +319,7 @@ public class MainActivity extends Activity {
 		if (current != null && current.isUnderway()) {
 			mainView.setBackgroundColor(Color.RED);
 			currentAvail.setText("Unavailable");
-			currentUpcom.setText("Current Meeting");
+			currentUpcom.setText("Current\nMeeting");
 			nextMeeting.setVisibility(Button.GONE);
 			if (canEnd) {
 				endMeeting.setVisibility(Button.VISIBLE);
@@ -332,7 +332,7 @@ public class MainActivity extends Activity {
 		} else {
 			mainView.setBackgroundColor(Color.GREEN);
 			currentAvail.setText("Available");
-			currentUpcom.setText("Upcoming Meeting");
+			currentUpcom.setText("Upcoming\nMeeting");
 			isOverTime = false;
 			if (current != null) {
 				nextMeeting.setVisibility(Button.VISIBLE);

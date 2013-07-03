@@ -51,7 +51,7 @@
             android:textSize="100sp" />
 
         <RelativeLayout
-            android:id="@+id/line"
+            android:id="@+id/line1"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_below="@+id/currentAvail"
@@ -62,9 +62,10 @@
             android:id="@+id/curnextLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/line"
+            android:layout_below="@+id/line1"
             android:layout_marginTop="10sp"
             android:layout_marginBottom="10sp"
+            android:layout_toLeftOf="@+id/buttonLay"
             android:background="@drawable/imageview_selector"
             android:clickable="true"
             android:onClick="editCurrent" >
@@ -83,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/currentUpcom"
-                android:layout_toRightOf="@+id/currentUpcom"
+                android:layout_alignRight="@+id/colon3"
                 android:text="@string/colon"
                 android:textSize="24sp" />
 
@@ -100,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/currentTitle"
+                android:layout_below="@+id/currentUpcom"
                 android:layout_marginRight="5sp"
                 android:text="@string/text_organizer"
                 android:textSize="24sp" />
@@ -109,7 +110,7 @@
                 android:id="@+id/colon2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/colon1"
+                android:layout_alignRight="@+id/colon3"
                 android:layout_alignTop="@+id/currentOrg"
                 android:text="@string/colon"
                 android:textSize="24sp" />
@@ -137,7 +138,7 @@
                 android:id="@+id/colon3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/colon2"
+                android:layout_toRightOf="@+id/currentDescription"
                 android:layout_alignTop="@+id/currentDescription"
                 android:text="@string/colon"
                 android:textSize="24sp" />
@@ -197,31 +198,41 @@
             android:id="@+id/buttonLay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/curnextLay" >
+            android:layout_alignTop="@+id/curnextLay"
+            android:layout_alignBottom="@+id/curnextLay"
+            android:layout_alignParentRight="true" >
 
             <Button
                 android:id="@+id/nextMeetingButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:onClick="startNextMeeting"
                 android:text="@string/text_nextmeeting"
                 android:textColor="@android:color/black" />
 
             <Button
                 android:id="@+id/endMeetingButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:onClick="endMeeting"
                 android:text="@string/text_endmeeting"
                 android:textColor="@android:color/black" />
         </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/curnextLay"
+            android:layout_marginTop="5dp"
+            android:background="#55555555" />
 
         <ListView
             android:id="@+id/listView1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/newMeetingButton"
-            android:layout_below="@+id/buttonLay" />
+            android:layout_below="@+id/line2" />
 
         <Button
             android:id="@+id/newMeetingButton"
