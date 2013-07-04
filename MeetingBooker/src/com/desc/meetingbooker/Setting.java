@@ -7,12 +7,12 @@ package com.desc.meetingbooker;
  * @since 28-06-2013
  * @version 0.1
  */
-public class Setting {
+public final class Setting {
 	
-	private String desc;
-	private String name;
-	private String value;
-	private String valueType;
+	protected final String desc;
+	protected final String name;
+	protected String value;
+	protected final String valueType;
 	
 	/**
 	 * Constructs a new Setting object
@@ -29,51 +29,6 @@ public class Setting {
 		this.name = name;
 		this.value = value;
 		this.valueType = valueType;
-	}
-	
-	/**
-	 * Setting description getter
-	 * 
-	 * @return The description of the setting
-	 */
-	public String getDesc() {
-		return desc;
-	}
-
-	/**
-	 * Setting name getter
-	 * 
-	 * @return The name of the Setting
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * Setting value getter
-	 * 
-	 * @return The value of the Setting
-	 */
-	public String getValue() {
-		return value;
-	}
-
-	/**
-	 * Setting valueType getter
-	 * 
-	 * @return The type of the Setting's value
-	 */
-	public String getValueType() {
-		return valueType;
-	}
-	
-	/**
-	 * Setting value setter
-	 * 
-	 * @param val The value that will be set
-	 */
-	public void setValue(final String val) {
-		this.value = val;
 	}
 
 }

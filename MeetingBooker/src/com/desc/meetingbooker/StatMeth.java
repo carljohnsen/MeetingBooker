@@ -253,7 +253,7 @@ public class StatMeth {
 			OutputStreamWriter outputStream = new OutputStreamWriter(out);
 
 			for (Setting set : sett) {
-				String setting = set.getName() + " " + set.getValue() + "\n";
+				String setting = set.name + " " + set.value + "\n";
 				outputStream.write(setting, 0, setting.length());
 			}
 

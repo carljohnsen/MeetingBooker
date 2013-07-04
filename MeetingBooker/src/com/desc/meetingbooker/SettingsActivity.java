@@ -63,7 +63,7 @@ public class SettingsActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
 				Log.d(TAG, "List was clicked!");
-				if (config.get(position).getValueType().equals("boolean")) {
+				if (config.get(position).valueType.equals("boolean")) {
 					CheckBox box = (CheckBox) arg1
 							.findViewById(R.id.settingCheck);
 					box.setChecked(!box.isChecked());
@@ -82,7 +82,7 @@ public class SettingsActivity extends Activity {
 						}
 					}
 				}
-				if (config.get(position).getValueType().equals("int")) {
+				if (config.get(position).valueType.equals("int")) {
 					if (position == 1 || position == 3) {
 						View v = settingList.getChildAt(position - 1);
 						CheckBox box = (CheckBox) v
@@ -95,7 +95,7 @@ public class SettingsActivity extends Activity {
 					NumberFragment fragment = new NumberFragment();
 					fragment.show(getFragmentManager(), "BLA");
 				}
-				if (config.get(position).getValueType().equals("String")) {
+				if (config.get(position).valueType.equals("String")) {
 					StringFragment.index = position;
 					StringFragment fragment = new StringFragment();
 					fragment.show(getFragmentManager(), "BLA");
@@ -141,7 +141,7 @@ public class SettingsActivity extends Activity {
 			View v = settingList.getChildAt(i);
 			Setting set = config.get(i);
 			String value;
-			if (set.getValueType().equals("boolean")) {
+			if (set.valueType.equals("boolean")) {
 				CheckBox box = (CheckBox) v.findViewById(R.id.settingCheck);
 				value = "" + box.isChecked();
 			} else {
@@ -149,7 +149,7 @@ public class SettingsActivity extends Activity {
 				value = "" + tv.getText();
 			}
 			Log.d("SettingsActivity", "Field value : " + value);
-			set.setValue(value);
+			set.value = value;
 			temp.add(set);
 		}
 		return temp;

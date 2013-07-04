@@ -54,13 +54,13 @@ public class SettingsAdapter extends ArrayAdapter<Setting> {
 		}
 		final Setting setting = entries.get(position);
 		if (setting != null) {
-			holder.item1.setText(setting.getDesc());
-			if (setting.getValueType().equals("boolean")) {
+			holder.item1.setText(setting.desc);
+			if (setting.valueType.equals("boolean")) {
 				holder.item2.setVisibility(TextView.GONE);
 				holder.item3
-						.setChecked(Boolean.parseBoolean(setting.getValue()));
+						.setChecked(Boolean.parseBoolean(setting.value));
 			} else {
-				holder.item2.setText(setting.getValue());
+				holder.item2.setText(setting.value);
 				holder.item3.setVisibility(CheckBox.GONE);
 			}
 		}

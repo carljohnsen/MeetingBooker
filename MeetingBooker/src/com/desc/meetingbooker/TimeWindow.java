@@ -11,10 +11,10 @@ import android.text.format.DateFormat;
  * @author Carl Johnsen, Daniel Pedersen, Emil Pedersen and Sune Bartels
  * @since 14-05-2013
  */
-public class TimeWindow {
+public final class TimeWindow {
 	
-	private long start;
-	private long end;
+	protected final long start;
+	protected final long end;
 	
 	/**
 	 * Creates a new TimeWindow
@@ -25,35 +25,13 @@ public class TimeWindow {
 	public TimeWindow(final long start, final long end) {
 		this.start = start;
 		this.end = end;
-		long interval = this.end - this.start;
-		if (interval > (60 * 60000)) {
-			this.end = this.start + (60 * 60000);
-		}
 	}
 	
-	/**
-	 * Start time getter
-	 * 
-	 * @return The start time of the window
-	 */
-	public long getStart() {
-		return this.start;
-	}
-	
-	public String getStartString() {
+	public final String getStartString() {
 		return DateFormat.format("kk:mm", new Date(this.start)).toString();
 	}
 	
-	/**
-	 * End time getter
-	 * 
-	 * @return The end time of the window
-	 */
-	public long getEnd() {
-		return this.end;
-	}
-	
-	public String getEndString() {
+	public final String getEndString() {
 		return DateFormat.format("kk:mm", new Date(this.end)).toString();
 	}
 	
@@ -62,10 +40,11 @@ public class TimeWindow {
 	 * 
 	 * @return A String representation of the TimeWindow
 	 */
-	public String toString() {
-		String st = DateFormat.format("kk:mm", new Date(this.start)).toString();
-		String en = DateFormat.format("kk:mm", new Date(this.end)).toString();
-		return "Start " + st + " :  End " + en;
+	public final String toString() {
+		return "Start " + 
+				DateFormat.format("kk:mm", new Date(this.start)).toString() + 
+				" :  End " + 
+				DateFormat.format("kk:mm", new Date(this.end)).toString();
 	}
 
 }

@@ -353,17 +353,17 @@ public final class NewEditActivity extends Activity {
 		timeEnd.setIs24HourView(true);
 
 		int hour = Integer.parseInt(new SimpleDateFormat("HH").format(new Date(
-				window.getStart())));
+				window.start)));
 		int minute = Integer.parseInt(new SimpleDateFormat("mm")
-				.format(new Date(window.getStart())));
+				.format(new Date(window.start)));
 
 		timeStart.setCurrentHour(hour);
 		timeStart.setCurrentMinute(minute);
 
 		hour = Integer.parseInt(new SimpleDateFormat("HH").format(new Date(
-				window.getEnd())));
+				window.end)));
 		minute = Integer.parseInt(new SimpleDateFormat("mm").format(new Date(
-				window.getEnd())));
+				window.end)));
 
 		timeEnd.setCurrentHour(hour);
 		timeEnd.setCurrentMinute(minute);
