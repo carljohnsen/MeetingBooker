@@ -31,7 +31,7 @@ import android.widget.TextView;
  * @version 0.9
  * @since 27-05-2013
  */
-public class SettingsActivity extends Activity {
+public final class SettingsActivity extends Activity {
 
 	private final String TAG = SettingsActivity.class.getSimpleName();
 	private ArrayList<Setting> config;
@@ -40,7 +40,7 @@ public class SettingsActivity extends Activity {
 	private static Context context;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		// Hide system UI
@@ -60,18 +60,18 @@ public class SettingsActivity extends Activity {
 
 		settingList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public final void onItemClick(final AdapterView<?> arg0,
+					final View arg1, final int position, final long arg3) {
 				Log.d(TAG, "List was clicked!");
 				if (config.get(position).valueType.equals("boolean")) {
-					CheckBox box = (CheckBox) arg1
+					final CheckBox box = (CheckBox) arg1
 							.findViewById(R.id.settingCheck);
 					box.setChecked(!box.isChecked());
 					if (position == 0 || position == 2) {
-						View v = settingList.getChildAt(position + 1);
-						TextView com = (TextView) v
+						final View v = settingList.getChildAt(position + 1);
+						final TextView com = (TextView) v
 								.findViewById(R.id.settingName);
-						TextView val = (TextView) v
+						final TextView val = (TextView) v
 								.findViewById(R.id.settingVal);
 						if (!box.isChecked()) {
 							com.setTextColor(Color.GRAY);
@@ -81,24 +81,27 @@ public class SettingsActivity extends Activity {
 							val.setTextColor(Color.BLACK);
 						}
 					}
+					return;
 				}
 				if (config.get(position).valueType.equals("int")) {
 					if (position == 1 || position == 3) {
-						View v = settingList.getChildAt(position - 1);
-						CheckBox box = (CheckBox) v
+						final View v = settingList.getChildAt(position - 1);
+						final CheckBox box = (CheckBox) v
 								.findViewById(R.id.settingCheck);
 						if (!box.isChecked()) {
 							return;
 						}
 					}
 					NumberFragment.index = position;
-					NumberFragment fragment = new NumberFragment();
+					final NumberFragment fragment = new NumberFragment();
 					fragment.show(getFragmentManager(), "BLA");
+					return;
 				}
 				if (config.get(position).valueType.equals("String")) {
 					StringFragment.index = position;
-					StringFragment fragment = new StringFragment();
+					final StringFragment fragment = new StringFragment();
 					fragment.show(getFragmentManager(), "BLA");
+					return;
 				}
 			}
 		});
@@ -112,9 +115,8 @@ public class SettingsActivity extends Activity {
 	 * @param view
 	 *            The View of the button
 	 */
-	public void newPassword(View view) {
-		PasswordFragment fragment = new PasswordFragment();
-		fragment.show(getFragmentManager(), "BLA");
+	public final void newPassword(final View view) {
+		new PasswordFragment().show(getFragmentManager(), "BLA");
 	}
 
 	/**
@@ -123,7 +125,7 @@ public class SettingsActivity extends Activity {
 	 * @param view
 	 *            The View from the button
 	 */
-	public void save(View view) {
+	public final void save(final View view) {
 		config = readList();
 		StatMeth.write(config, getApplicationContext());
 		Log.d(TAG, "Save the new configuration");
@@ -135,12 +137,12 @@ public class SettingsActivity extends Activity {
 	 * 
 	 * @return The new list of settings
 	 */
-	public ArrayList<Setting> readList() {
-		ArrayList<Setting> temp = new ArrayList<Setting>();
+	public final ArrayList<Setting> readList() {
+		final ArrayList<Setting> temp = new ArrayList<Setting>();
 		for (int i = 0; i < config.size(); i++) {
-			View v = settingList.getChildAt(i);
-			Setting set = config.get(i);
-			String value;
+			final View v = settingList.getChildAt(i);
+			final Setting set = config.get(i);
+			final String value;
 			if (set.valueType.equals("boolean")) {
 				CheckBox box = (CheckBox) v.findViewById(R.id.settingCheck);
 				value = "" + box.isChecked();
@@ -161,65 +163,77 @@ public class SettingsActivity extends Activity {
 	 * @param view
 	 *            The View of the button
 	 */
-	public void cancel(View view) {
+	public final void cancel(final View view) {
 		Log.d(TAG, "cancel()");
 		finish();
 	}
 
-	public static class StringFragment extends DialogFragment {
+	public final static class StringFragment extends DialogFragment {
 		private static int index;
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			LayoutInflater inflater = getActivity().getLayoutInflater();
-			final View v = inflater
-					.inflate(R.layout.string_edit_layout, null);
-			TextView layTV = (TextView) v.findViewById(R.id.editLayTV);
-			EditText edit = (EditText) v.findViewById(R.id.editLayET);
-			View vi = settingList.getChildAt(index);
-			TextView tv1 = (TextView) vi.findViewById(R.id.settingVal);
-			TextView tv2 = (TextView) vi.findViewById(R.id.settingName);
+			final AlertDialog.Builder builder = new AlertDialog.Builder(
+					getActivity());
+			final LayoutInflater inflater = getActivity().getLayoutInflater();
+			final View v = inflater.inflate(R.layout.string_edit_layout, null);
+			final TextView layTV = (TextView) v.findViewById(R.id.editLayTV);
+			final EditText edit = (EditText) v.findViewById(R.id.editLayET);
+			final View vi = settingList.getChildAt(index);
+			final TextView tv1 = (TextView) vi.findViewById(R.id.settingVal);
+			final TextView tv2 = (TextView) vi.findViewById(R.id.settingName);
 			edit.setHint(tv1.getText());
 			layTV.setText(tv2.getText());
-			
-			builder.setView(v).setPositiveButton("OK", 
-					new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							EditText edit = (EditText) v.findViewById(R.id.editLayET);
-							String name = edit.getText().toString();
-							View vi = settingList.getChildAt(index);
-							TextView tv = (TextView) vi.findViewById(R.id.settingVal);
-							tv.setText(name);
-						}
-					}).setNegativeButton("Cancel", 
+
+			builder.setView(v)
+					.setPositiveButton("OK",
 							new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// NOTHING
-							
-						}
-					});
+
+								@Override
+								public final void onClick(
+										final DialogInterface dialog,
+										final int which) {
+									final EditText edit = (EditText) v
+											.findViewById(R.id.editLayET);
+									final String name = edit.getText()
+											.toString();
+									final View vi = settingList
+											.getChildAt(index);
+									final TextView tv = (TextView) vi
+											.findViewById(R.id.settingVal);
+									tv.setText(name);
+								}
+							})
+					.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public final void onClick(
+										final DialogInterface dialog,
+										final int which) {
+									// NOTHING
+
+								}
+							});
 			return builder.create();
 		}
 	}
 
-	public static class NumberFragment extends DialogFragment {
+	public final static class NumberFragment extends DialogFragment {
 
 		private static int index;
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			LayoutInflater inflater = getActivity().getLayoutInflater();
+			final AlertDialog.Builder builder = new AlertDialog.Builder(
+					getActivity());
+			final LayoutInflater inflater = getActivity().getLayoutInflater();
 			final View v = inflater
 					.inflate(R.layout.number_picker_layout, null);
-			NumberPicker n = (NumberPicker) v.findViewById(R.id.numberPicker);
-			View vi = settingList.getChildAt(index);
-			TextView tv = (TextView) vi.findViewById(R.id.settingName);
+			final NumberPicker n = (NumberPicker) v
+					.findViewById(R.id.numberPicker);
+			final View vi = settingList.getChildAt(index);
+			final TextView tv = (TextView) vi.findViewById(R.id.settingName);
 			if ((tv.getText() + "").startsWith("Length")) {
 				n.setMinValue(15);
 				n.setMaxValue(60);
@@ -233,12 +247,13 @@ public class SettingsActivity extends Activity {
 					new DialogInterface.OnClickListener() {
 
 						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-							NumberPicker picker = (NumberPicker) v
+						public void onClick(final DialogInterface arg0,
+								final int arg1) {
+							final NumberPicker picker = (NumberPicker) v
 									.findViewById(R.id.numberPicker);
-							int number = picker.getValue();
-							View vi = settingList.getChildAt(index);
-							TextView tv = (TextView) vi
+							final int number = picker.getValue();
+							final View vi = settingList.getChildAt(index);
+							final TextView tv = (TextView) vi
 									.findViewById(R.id.settingVal);
 							tv.setText("" + number);
 						}
@@ -249,17 +264,19 @@ public class SettingsActivity extends Activity {
 
 	}
 
-	public static class PasswordFragment extends DialogFragment {
+	public final static class PasswordFragment extends DialogFragment {
 
 		private static int error = 0;
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			LayoutInflater inflater = getActivity().getLayoutInflater();
+			final AlertDialog.Builder builder = new AlertDialog.Builder(
+					getActivity());
+			final LayoutInflater inflater = getActivity().getLayoutInflater();
 			final View v = inflater.inflate(R.layout.change_password_layout,
 					null);
-			TextView prompt = (TextView) v.findViewById(R.id.changePrompt);
+			final TextView prompt = (TextView) v
+					.findViewById(R.id.changePrompt);
 			switch (error) {
 			case 0:
 				prompt.setVisibility(TextView.GONE);
@@ -278,19 +295,22 @@ public class SettingsActivity extends Activity {
 							new DialogInterface.OnClickListener() {
 
 								@Override
-								public void onClick(DialogInterface arg0,
-										int arg1) {
-									EditText oldText = (EditText) v
+								public void onClick(final DialogInterface arg0,
+										final int arg1) {
+									final EditText oldText = (EditText) v
 											.findViewById(R.id.pwOld);
-									EditText newText = (EditText) v
+									final EditText newText = (EditText) v
 											.findViewById(R.id.pwNew1);
-									EditText confText = (EditText) v
+									final EditText confText = (EditText) v
 											.findViewById(R.id.pwNew2);
 
-									String old = oldText.getText().toString();
-									String new1 = newText.getText().toString();
-									String new2 = confText.getText().toString();
-									String storedpw = StatMeth
+									final String old = oldText.getText()
+											.toString();
+									final String new1 = newText.getText()
+											.toString();
+									final String new2 = confText.getText()
+											.toString();
+									final String storedpw = StatMeth
 											.getPassword(context);
 
 									if (new1.equals(new2)
@@ -301,14 +321,14 @@ public class SettingsActivity extends Activity {
 									}
 									if (!new1.equals(new2)) {
 										error = 1;
-										PasswordFragment fragment = new PasswordFragment();
+										final PasswordFragment fragment = new PasswordFragment();
 										fragment.show(getFragmentManager(),
 												"BLA");
 										return;
 									}
 									if (!old.equals(storedpw)) {
 										error = 2;
-										PasswordFragment fragment = new PasswordFragment();
+										final PasswordFragment fragment = new PasswordFragment();
 										fragment.show(getFragmentManager(),
 												"BLA");
 										return;
@@ -320,8 +340,9 @@ public class SettingsActivity extends Activity {
 							new DialogInterface.OnClickListener() {
 
 								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
+								public final void onClick(
+										final DialogInterface dialog,
+										final int which) {
 									error = 0;
 								}
 

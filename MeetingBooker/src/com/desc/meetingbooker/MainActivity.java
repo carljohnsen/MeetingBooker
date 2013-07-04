@@ -395,7 +395,8 @@ public final class MainActivity extends Activity {
 										return;
 									} else {
 										wasWrong = true;
-										final DialogFragment fragment = new SettingsFragment();
+										final DialogFragment fragment = 
+												new SettingsFragment();
 										fragment.show(getFragmentManager(),
 												"BLA");
 									}
