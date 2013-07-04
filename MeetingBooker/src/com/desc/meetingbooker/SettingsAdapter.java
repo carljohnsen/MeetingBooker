@@ -18,30 +18,31 @@ import android.widget.CheckBox;
  * @since 28-06-2013
  * @version 0.1
  */
-public class SettingsAdapter extends ArrayAdapter<Setting> {
+public final class SettingsAdapter extends ArrayAdapter<Setting> {
 
-	private ArrayList<Setting> entries;
-	private Activity activity;
+	private final ArrayList<Setting> entries;
+	private final Activity activity;
 
-	public SettingsAdapter(Activity a, int textViewResourceId,
-			ArrayList<Setting> entries) {
+	public SettingsAdapter(final Activity a, final int textViewResourceId,
+			final ArrayList<Setting> entries) {
 		super(a, textViewResourceId, entries);
 		this.entries = entries;
 		this.activity = a;
 	}
 
-	public static class ViewHolder {
+	public final static class ViewHolder {
 		public TextView item1;
 		public TextView item2;
 		public CheckBox item3;
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public final View getView(final int position, final View convertView,
+			final ViewGroup parent) {
 		View v = convertView;
-		ViewHolder holder;
+		final ViewHolder holder;
 		if (v == null) {
-			LayoutInflater vi = (LayoutInflater) activity
+			final LayoutInflater vi = (LayoutInflater) activity
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.setting_item, null);
 			holder = new ViewHolder();
@@ -57,8 +58,7 @@ public class SettingsAdapter extends ArrayAdapter<Setting> {
 			holder.item1.setText(setting.desc);
 			if (setting.valueType.equals("boolean")) {
 				holder.item2.setVisibility(TextView.GONE);
-				holder.item3
-						.setChecked(Boolean.parseBoolean(setting.value));
+				holder.item3.setChecked(Boolean.parseBoolean(setting.value));
 			} else {
 				holder.item2.setText(setting.value);
 				holder.item3.setVisibility(CheckBox.GONE);

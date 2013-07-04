@@ -10,28 +10,29 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class TimeWindowAdapter extends ArrayAdapter<TimeWindow> {
+public final class TimeWindowAdapter extends ArrayAdapter<TimeWindow> {
 
-	private ArrayList<TimeWindow> entries;
-	private Activity activity;
+	private final ArrayList<TimeWindow> entries;
+	private final Activity activity;
 
-	public TimeWindowAdapter(Activity a, int textViewResourceId,
-			ArrayList<TimeWindow> entries) {
+	public TimeWindowAdapter(final Activity a, final int textViewResourceId,
+			final ArrayList<TimeWindow> entries) {
 		super(a, textViewResourceId, entries);
 		this.entries = entries;
 		this.activity = a;
 	}
 
-	public static class ViewHold {
+	public final static class ViewHold {
 		public TextView item1;
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public final View getView(final int position, final View convertView,
+			final ViewGroup parent) {
 		View v = convertView;
-		ViewHold holder;
+		final ViewHold holder;
 		if (v == null) {
-			LayoutInflater vi = (LayoutInflater) activity
+			final LayoutInflater vi = (LayoutInflater) activity
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.timewindow_item, null);
 			holder = new ViewHold();
@@ -42,7 +43,8 @@ public class TimeWindowAdapter extends ArrayAdapter<TimeWindow> {
 		}
 		final TimeWindow window = entries.get(position);
 		if (window != null) {
-			String time = window.getStartString() + " | " + window.getEndString();
+			String time = window.getStartString() + " | "
+					+ window.getEndString();
 			holder.item1.setText(time);
 		}
 		return v;

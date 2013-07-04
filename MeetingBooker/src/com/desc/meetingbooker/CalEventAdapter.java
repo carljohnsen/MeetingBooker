@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class CalEventAdapter extends ArrayAdapter<CalEvent> {
+public final class CalEventAdapter extends ArrayAdapter<CalEvent> {
 
-	private ArrayList<CalEvent> entries;
-	private Activity activity;
+	private final ArrayList<CalEvent> entries;
+	private final Activity activity;
 
 	public CalEventAdapter(Activity a, int textViewResourceId,
 			ArrayList<CalEvent> entries) {
@@ -22,7 +22,7 @@ public class CalEventAdapter extends ArrayAdapter<CalEvent> {
 		this.activity = a;
 	}
 
-	public static class ViewHold {
+	public final static class ViewHold {
 		public TextView item1;
 		public TextView item2;
 		public TextView item3;
@@ -30,11 +30,12 @@ public class CalEventAdapter extends ArrayAdapter<CalEvent> {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public final View getView(final int position, final View convertView,
+			final ViewGroup parent) {
 		View v = convertView;
-		ViewHold holder;
+		final ViewHold holder;
 		if (v == null) {
-			LayoutInflater vi = (LayoutInflater) activity
+			final LayoutInflater vi = (LayoutInflater) activity
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.calevent_item, null);
 			holder = new ViewHold();
@@ -51,7 +52,8 @@ public class CalEventAdapter extends ArrayAdapter<CalEvent> {
 			holder.item1.setText(event.title);
 			holder.item2.setText(event.organizer);
 			holder.item3.setText(event.description);
-			holder.item4.setText(event.getStartTime() + " | " + event.getEndTime());
+			holder.item4.setText(event.getStartTime() + " | "
+					+ event.getEndTime());
 		}
 		return v;
 	}
