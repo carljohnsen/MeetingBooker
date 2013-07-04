@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.text.format.DateFormat;
+import android.text.format.Time;
 import android.util.Log;
 
 /**
@@ -347,45 +348,47 @@ public final class StatMeth {
 	 *         future
 	 */
 	public final static ArrayList<CalEvent> readCalendar(final Context context) {
+		
 		// The ArrayList to hold the events
 		final ArrayList<CalEvent> eventlist = new ArrayList<CalEvent>();
 
 		final ContentResolver contentResolver = context.getContentResolver();
 
 		// Calling the query
+		String query = "CALENDAR_ID = 1 AND DTSTART <= ? AND DTEND > ?";
+		Time t = new Time();
+		t.setToNow();
+		String dtEnd = "" + t.toMillis(false);
+		t.set(59, 59, 23, t.monthDay, t.month, t.year);
+		String dtStart = "" + t.toMillis(false);
+		String[] selectionArgs = { dtStart, dtEnd };
 		cursor = contentResolver.query(CalendarContract.Events.CONTENT_URI,
-				COLS, "CALENDAR_ID = 1", null, null);
+				COLS, query, selectionArgs, null);
 		cursor.moveToFirst();
 
 		// Getting the used DateFormat from the Android device
-		final Format df = DateFormat.getDateFormat(context);
 		final Format tf = DateFormat.getTimeFormat(context);
 
 		Long start = 0L;
 
-		// Getting the current Date and Time
-		final Date dat = new Date();
-		final String today = df.format(dat.getTime());
-
 		// Writing all the events to the eventlist
 		while (!cursor.isAfterLast()) {
 			start = cursor.getLong(0);
-			String st = df.format(start);
 			boolean isUnderway = false;
 			if (start < new Date().getTime()) {
+				Log.d("TAG", "Check event fra read");
 				isUnderway = true;
 			}
-			if (today.equals(st) && !(cursor.getLong(1) < new Date().getTime())) {
-				eventlist.add(new CalEvent(cursor.getLong(0), // Start time
-						cursor.getLong(1), // End Time
-						cursor.getString(2), // Title
-						cursor.getString(3), // Description
-						tf, // TimeFormat
-						isUnderway, // Is underway
-						cursor.getLong(4), // Event ID
-						cursor.getString(5) // Organizer
-						));
-			}
+			eventlist.add(new CalEvent(cursor.getLong(0), // Start time
+					cursor.getLong(1), // End Time
+					cursor.getString(2), // Title
+					cursor.getString(3), // Description
+					tf, // TimeFormat
+					isUnderway, // Is underway
+					cursor.getLong(4), // Event ID
+					cursor.getString(5) // Organizer
+					));
+
 			cursor.moveToNext();
 
 		}

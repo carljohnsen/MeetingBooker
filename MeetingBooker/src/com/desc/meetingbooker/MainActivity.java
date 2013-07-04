@@ -295,7 +295,7 @@ public final class MainActivity extends Activity {
 
 		// Reads all events from the calendar on the present day into an
 		// ArrayList
-		eventlist = StatMeth.readCalendar(MainActivity.context);
+		eventlist = StatMeth.readCalendar(context);
 
 		// Checks if any of the event in the ArrayList is underway,
 		// and sets it as current event and removes it from the list
