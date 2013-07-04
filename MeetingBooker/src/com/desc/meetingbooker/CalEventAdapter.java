@@ -48,9 +48,9 @@ public class CalEventAdapter extends ArrayAdapter<CalEvent> {
 		}
 		final CalEvent event = entries.get(position);
 		if (event != null) {
-			holder.item1.setText(event.getTitle());
-			holder.item2.setText(event.getOrganizer());
-			holder.item3.setText(event.getDescription());
+			holder.item1.setText(event.title);
+			holder.item2.setText(event.organizer);
+			holder.item3.setText(event.description);
 			holder.item4.setText(event.getStartTime() + " | " + event.getEndTime());
 		}
 		return v;

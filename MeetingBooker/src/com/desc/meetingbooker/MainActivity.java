@@ -29,7 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * An Activity that displays todays agenda, current/next meeting and all the 
+ * An Activity that displays todays agenda, current/next meeting and all the
  * links to the other activities
  * 
  * @author Carl Johnsen, Daniel Pedersen, Emil Pedersen and Sune Bartels
@@ -37,7 +37,7 @@ import android.widget.TextView;
  * @since 04-04-2013
  */
 public class MainActivity extends Activity {
-	
+
 	private static ListView listView;
 	private static TextView calendarName;
 	private static TextView currentAvail;
@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
 	private static Button endMeeting;
 	private static boolean isDelayed = false;
 	private static boolean isOverTime = false;
-	
+
 	public static boolean extendEnd;
 	public static int endExtend;
 	public static boolean extendStart;
@@ -66,62 +66,62 @@ public class MainActivity extends Activity {
 	public static boolean canEnd;
 	public static boolean endDelete;
 	public static String roomName;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate() called");
-		
+
 		// Hide Status bar and App title bar (before setContentView())
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, 
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		
+
 		setContentView(R.layout.activity_main);
-		
+
 		// Get the context
 		context = getApplicationContext();
 		StatMeth.readConfig(context);
-		
+
 		// Casting all the Views
-		calendarName 		= (TextView) findViewById(R.id.calendarName);
-		currentAvail 		= (TextView) findViewById(R.id.currentAvail);
-		curNextLay			= (View) findViewById(R.id.curnextLay);
-		currentUpcom 		= (TextView) findViewById(R.id.currentUpcom);
-		currentTitle 		= (TextView) findViewById(R.id.currentTitle);
-		currentOrganizer 	= (TextView) findViewById(R.id.currentOrganizer);
-		currentDesc 		= (TextView) findViewById(R.id.currentDesc);
-		currentStart 		= (TextView) findViewById(R.id.currentStart);
-		currentEnd 			= (TextView) findViewById(R.id.currentEnd);
-		mainView 			= (View) findViewById(R.id.mainLay);
-		nextMeeting 		= (Button) findViewById(R.id.nextMeetingButton);
-		endMeeting 			= (Button) findViewById(R.id.endMeetingButton);
-		listView 			= (ListView) findViewById(R.id.listView1);
-		
+		calendarName = (TextView) findViewById(R.id.calendarName);
+		currentAvail = (TextView) findViewById(R.id.currentAvail);
+		curNextLay = (View) findViewById(R.id.curnextLay);
+		currentUpcom = (TextView) findViewById(R.id.currentUpcom);
+		currentTitle = (TextView) findViewById(R.id.currentTitle);
+		currentOrganizer = (TextView) findViewById(R.id.currentOrganizer);
+		currentDesc = (TextView) findViewById(R.id.currentDesc);
+		currentStart = (TextView) findViewById(R.id.currentStart);
+		currentEnd = (TextView) findViewById(R.id.currentEnd);
+		mainView = (View) findViewById(R.id.mainLay);
+		nextMeeting = (Button) findViewById(R.id.nextMeetingButton);
+		endMeeting = (Button) findViewById(R.id.endMeetingButton);
+		listView = (ListView) findViewById(R.id.listView1);
+
 		// Set the name of the Calendar
 		calendarName.setText(roomName);
-		
+
 		// ArrayAdapter for the ListView of events
-		adapter = new CalEventAdapter(this,  R.layout.calevent_item, eventlist);
-		
+		adapter = new CalEventAdapter(this, R.layout.calevent_item, eventlist);
+
 		// Setting the ListView
 		listView.setAdapter(adapter);
-		
+
 		// Setting a custom ItemClickListener
-		listView.setOnItemClickListener(new OnItemClickListener(){
+		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, 
+			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
-				Intent intent = new Intent(MainActivity.this, 
+				Intent intent = new Intent(MainActivity.this,
 						NewEditActivity.class);
 				intent.putExtra("event", position);
 				intent.putExtra("type", 1);
 				startActivityForResult(intent, 1);
 			}
 		});
-		
+
 		// Timer for continuous update of calendar
 		Timer timer = new Timer();
 		Log.d(TAG, "Timer started");
@@ -145,7 +145,7 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
-	
+
 	@Override
 	public void onResume() {
 		Log.d(TAG, "onResume()");
@@ -153,61 +153,63 @@ public class MainActivity extends Activity {
 		MainActivity.sync();
 		calendarName.setText(roomName);
 	}
-	
+
 	@Override
 	public void onStop() {
 		super.onStop();
 	}
-	
+
 	@Override
-	protected void onActivityResult(int requestcode, int resultcode, 
-			Intent data) {
-		//startActivity(new Intent(this,MainActivity.class));
+	protected void onActivityResult(int requestcode, int resultcode, Intent data) {
+		// startActivity(new Intent(this,MainActivity.class));
 	}
-	
+
 	public void editCurrent(View view) {
 		Intent intent = new Intent(this, NewEditActivity.class);
 		intent.putExtra("event", -1);
 		intent.putExtra("type", 1);
 		startActivityForResult(intent, 1);
 	}
-	
+
 	/**
-	 * The method called by the "StartNextMeeting button". 
-	 * Changes the start time of the next event, to the current time.
+	 * The method called by the "StartNextMeeting button". Changes the start
+	 * time of the next event, to the current time.
 	 * 
-	 * @param view The View from the button
+	 * @param view
+	 *            The View from the button
 	 */
 	public void startNextMeeting(View view) {
 		StatMeth.updateStart(current, context);
 	}
-	
+
 	/**
-	 * The method called by the "EndMeeting" button. Changes the end time of 
-	 * the current event, to the current time
+	 * The method called by the "EndMeeting" button. Changes the end time of the
+	 * current event, to the current time
 	 * 
-	 * @param view The View from the button
+	 * @param view
+	 *            The View from the button
 	 */
 	public void endMeeting(View view) {
 		if (endDelete) {
 			StatMeth.updateEnd(current, context);
 		} else {
-			current.setDescription(current.getDescription() + " ended");
+			current.description = current.description + " ended";
 			StatMeth.update(current, context);
 			sync();
 		}
 	}
-	
+
 	public void settings(View view) {
 		DialogFragment fragment = new SettingsFragment();
 		fragment.show(getFragmentManager(), "BLA");
 	}
-	
+
 	/**
-	 * The method called by the "NewMeeting" button. Starts the 
+	 * The method called by the "NewMeeting" button. Starts the
 	 * NewMeetingActivity
 	 * 
-	 * @param view The View from the button
+	 * @param view
+	 *            The View from the button
 	 */
 	public void startNewMeeting(View view) {
 		Log.d(TAG, "New Meeting button pressed");
@@ -216,20 +218,21 @@ public class MainActivity extends Activity {
 		intent.putExtra("type", 0);
 		startActivityForResult(intent, 1);
 	}
-	
+
 	/**
 	 * Changes the current event, to the given event
 	 * 
-	 * @param event The event which should be set as current
+	 * @param event
+	 *            The event which should be set as current
 	 */
 	public static void setCurrent(CalEvent event) {
-		currentTitle.setText(event.getTitle());
-		currentOrganizer.setText(event.getOrganizer());
-		currentDesc.setText(event.getDescription());
+		currentTitle.setText(event.title);
+		currentOrganizer.setText(event.organizer);
+		currentDesc.setText(event.description);
 		currentStart.setText("" + event.getStartTime() + " | ");
 		currentEnd.setText("" + event.getEndTime());
 	}
-	
+
 	// Shows and hides the TextViews for current event
 	private static void curShow(boolean val) {
 		if (val) {
@@ -242,40 +245,39 @@ public class MainActivity extends Activity {
 			endMeeting.setVisibility(Button.GONE);
 		}
 	}
-	
+
 	private static void deleteCurrent() {
 		StatMeth.updateStart(current, context);
 		StatMeth.updateEnd(current, context);
 	}
-	
-	// Pushes the current event forward by, up to 15 minutes if nobody pressed 
+
+	// Pushes the current event forward by, up to 15 minutes if nobody pressed
 	// End Meeting
 	private static void currentOvertime() {
-		if (current != null && current.getDescription().endsWith("ended")) {
+		if (current != null && current.description.endsWith("ended")) {
 			return;
 		}
 		Long currentTime = new Date().getTime() + 60000;
-		if (current != null && !isOverTime && current.getEnd() <= currentTime) {
+		if (current != null && !isOverTime && current.endTime <= currentTime) {
 			isOverTime = true;
 			StatMeth.updateEnd(current, context, findExtendedTimeWindow());
 		}
 	}
-	
+
 	private static void currentDelayed() {
 		Long currentTime = new Date().getTime() + 10000;
-		if (current != null && !current.isUnderway() && !isDelayed && current
-				.getStart() <= currentTime) {
+		if (current != null && !current.isUnderway && !isDelayed
+				&& current.startTime <= currentTime) {
 			isDelayed = true;
-			if ((current.getEnd() - current.getStart()) > (startExtend * 60000) ) {
-				StatMeth.updateStart(current, context, current.getStart() + 
-						(startExtend * 60000));
+			if ((current.endTime - current.startTime) > (startExtend * 60000)) {
+				StatMeth.updateStart(current, context, current.startTime
+						+ (startExtend * 60000));
 			} else {
-				StatMeth.updateStart(current, context, current.getEnd() - 
-						60000);
+				StatMeth.updateStart(current, context, current.endTime - 60000);
 			}
 		}
-		if (current != null && !current.isUnderway() && isDelayed && 
-				current.getStart() <= currentTime) {
+		if (current != null && !current.isUnderway && isDelayed
+				&& current.startTime <= currentTime) {
 			deleteCurrent();
 		}
 	}
@@ -283,42 +285,42 @@ public class MainActivity extends Activity {
 	// Gives up to 15 minutes to extend current event
 	private static long findExtendedTimeWindow() {
 		if (!eventlist.isEmpty()) {
-			long interval = eventlist.get(0).getStart() - current.getEnd();
+			long interval = eventlist.get(0).startTime - current.endTime;
 			if (interval < (60000 * endExtend)) {
-				return eventlist.get(0).getStart();
+				return eventlist.get(0).startTime;
 			}
 		}
-		return current.getEnd() + (60000 * endExtend);
+		return current.endTime + (60000 * endExtend);
 	}
-	
+
 	/**
-	 * The method called by the Timer every 5 seconds. It reads the calendar, 
+	 * The method called by the Timer every 5 seconds. It reads the calendar,
 	 * and updates the UI if changes have been made
 	 */
-	protected static void sync() {		
+	protected static void sync() {
 		// The event that is currently underway
 		current = null;
-		
-		// Reads all events from the calendar on the present day into an 
+
+		// Reads all events from the calendar on the present day into an
 		// ArrayList
 		eventlist = StatMeth.readCalendar(MainActivity.context);
-		
+
 		// Checks if any of the event in the ArrayList is underway,
 		// and sets it as current event and removes it from the list
 		if (!eventlist.isEmpty()) {
 			current = eventlist.get(0);
 			eventlist.remove(0);
 		}
-		
+
 		if (extendEnd) {
 			currentOvertime();
 		}
 		if (extendStart) {
 			currentDelayed();
 		}
-		
+
 		// Sets the background color(Red if any event is underway, green if not)
-		if (current != null && current.isUnderway()) {
+		if (current != null && current.isUnderway) {
 			mainView.setBackgroundColor(Color.RED);
 			currentAvail.setText("Unavailable");
 			currentUpcom.setText("Current\nMeeting");
@@ -345,70 +347,78 @@ public class MainActivity extends Activity {
 				curShow(false);
 			}
 		}
-		
+
 		// Check if the end meeting has been checked
-		if (!endDelete && current != null && current.getDescription().endsWith("ended")) {
+		if (!endDelete && current != null
+				&& current.description.endsWith("ended")) {
 			mainView.setBackgroundColor(Color.YELLOW);
 			currentAvail.setText("Available");
 			currentUpcom.setText("Last Meeting:");
 			endMeeting.setVisibility(Button.GONE);
 		}
-		
+
 		// Creates the listView
 		adapter.clear();
 		adapter.addAll(eventlist);
-		
+
 	}
-	
+
 	public static class SettingsFragment extends DialogFragment {
-		
+
 		private static boolean wasWrong = false;
-		
+
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			AlertDialog.Builder builder = 
-					new AlertDialog.Builder(getActivity());
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			LayoutInflater inflater = getActivity().getLayoutInflater();
-			final View v = inflater.inflate(R.layout.password_prompt_layout, null);
+			final View v = inflater.inflate(R.layout.password_prompt_layout,
+					null);
 			if (wasWrong) {
 				v.findViewById(R.id.pwPrompt).setVisibility(TextView.VISIBLE);
 			} else {
 				v.findViewById(R.id.pwPrompt).setVisibility(TextView.GONE);
 			}
 			builder.setView(v)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						EditText pwtext = (EditText) v
-								.findViewById(R.id.pwEdit);
-						String typedpw = pwtext.getText().toString();
-						String storedpw = StatMeth.getPassword(context);
-						if (typedpw.equals(storedpw)) {
-							wasWrong = false;
-							Intent intent = new Intent(MainActivity.context, 
-									SettingsActivity.class);
-							startActivityForResult(intent,1);
-							return;
-						} else {
-							wasWrong = true;
-							DialogFragment fragment = new SettingsFragment();
-							fragment.show(getFragmentManager(), "BLA");
-						}
-						
-					}
-				})
-				.setNegativeButton("Cancel", 
-						new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						wasWrong = false;
-					}
-				});
+					.setPositiveButton("OK",
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+									EditText pwtext = (EditText) v
+											.findViewById(R.id.pwEdit);
+									String typedpw = pwtext.getText()
+											.toString();
+									String storedpw = StatMeth
+											.getPassword(context);
+									if (typedpw.equals(storedpw)) {
+										wasWrong = false;
+										Intent intent = new Intent(
+												MainActivity.context,
+												SettingsActivity.class);
+										startActivityForResult(intent, 1);
+										return;
+									} else {
+										wasWrong = true;
+										DialogFragment fragment = new SettingsFragment();
+										fragment.show(getFragmentManager(),
+												"BLA");
+									}
+
+								}
+							})
+					.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									wasWrong = false;
+								}
+							});
 			return builder.create();
 		}
-		
+
 	}
 
 }

@@ -117,8 +117,8 @@ public final class NewEditActivity extends Activity {
 			delete.setVisibility(ImageView.GONE);
 		}
 
-		titleText.setText(event.getTitle());
-		descText.setText(event.getDescription());
+		titleText.setText(event.title);
+		descText.setText(event.description);
 		setTimePickers(event.getTimeWindow());
 		add.setVisibility(Button.GONE);
 		update.setVisibility(Button.VISIBLE);
@@ -294,7 +294,7 @@ public final class NewEditActivity extends Activity {
 
 		// Create a new CalEvent
 		final CalEvent newEvent = new CalEvent(start, end, title, desc,
-				event.getId());
+				event.id);
 		if (StatMeth.isBefore(newEvent)) {
 			final AlertDialog dialog = new AlertDialog.Builder(this).create();
 			dialog.setTitle("Error");
@@ -411,31 +411,31 @@ public final class NewEditActivity extends Activity {
 			returnList = findHelp(returnList, time, midnight);
 			return returnList;
 		}
-		if (!MainActivity.current.isUnderway()) {
+		if (!MainActivity.current.isUnderway) {
 			// Find windows from now until current starts
 			returnList = findHelp(returnList, time,
-					MainActivity.current.getStart());
+					MainActivity.current.startTime);
 		}
 		if (MainActivity.eventlist.isEmpty()) {
 			// Find windows from the end of current and the rest of the day
-			returnList = findHelp(returnList, MainActivity.current.getEnd(),
+			returnList = findHelp(returnList, MainActivity.current.endTime,
 					midnight);
 		} else {
 			// Find windows between current and first event
-			returnList = findHelp(returnList, MainActivity.current.getEnd(),
-					MainActivity.eventlist.get(0).getStart());
+			returnList = findHelp(returnList, MainActivity.current.endTime,
+					MainActivity.eventlist.get(0).startTime);
 			final int size = MainActivity.eventlist.size() - 1;
 			for (int i = 0; i < size; i++) {
 				// Find windows between individual events
 				final CalEvent first = MainActivity.eventlist.get(i);
 				final CalEvent second = MainActivity.eventlist.get(i + 1);
-				returnList = findHelp(returnList, first.getEnd(),
-						second.getStart());
+				returnList = findHelp(returnList, first.endTime,
+						second.startTime);
 			}
 			// Find windows from the last event until midnight
 			final CalEvent last = MainActivity.eventlist
 					.get(MainActivity.eventlist.size() - 1);
-			returnList = findHelp(returnList, last.getEnd(), midnight);
+			returnList = findHelp(returnList, last.endTime, midnight);
 		}
 		return returnList;
 	}

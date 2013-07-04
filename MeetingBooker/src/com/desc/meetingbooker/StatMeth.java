@@ -49,14 +49,14 @@ public class StatMeth {
 			// Check against all other events today
 			for (CalEvent ev : eventlist) {
 				if ((// If new event is between start & end time
-						event.getStart() >= ev.getStart() && 
-						event.getEnd() <= ev.getEnd()) ||
+						event.startTime >= ev.startTime && 
+						event.endTime <= ev.endTime) ||
 						// If new event overlaps the start time
-						(event.getStart() <= ev.getStart() &&
-						ev.getStart() < event.getEnd()) ||
+						(event.startTime <= ev.startTime &&
+						ev.startTime < event.endTime) ||
 						// If new event overlaps the end time
-						(event.getStart() < ev.getEnd() &&
-						event.getEnd() >= ev.getEnd())) {
+						(event.startTime < ev.endTime &&
+						event.endTime >= ev.endTime)) {
 					return false;
 				}
 			}
@@ -88,14 +88,14 @@ public class StatMeth {
 		// Check against all events today
 		for (CalEvent ev : eventlist) {
 			if ((// If new event is between start & end time
-					event.getStart() >= ev.getStart() && 
-					event.getEnd() <= ev.getEnd()) ||
+					event.startTime >= ev.startTime && 
+					event.endTime <= ev.endTime) ||
 					// If new event overlaps the start time
-					(event.getStart() <= ev.getStart() &&
-					ev.getStart() < event.getEnd()) ||
+					(event.startTime <= ev.startTime &&
+					ev.startTime < event.endTime) ||
 					// If new event overlaps the end time
-					(event.getStart() < ev.getEnd() &&
-					event.getEnd() >= ev.getEnd())) {
+					(event.startTime < ev.endTime &&
+					event.endTime >= ev.endTime)) {
 				return false;
 			}
 		}
@@ -109,7 +109,7 @@ public class StatMeth {
 	 * @return true, if the end is before the start
 	 */
 	public static boolean isBefore(CalEvent event) {
-		return event.getEnd() < event.getStart();
+		return event.endTime < event.startTime;
 	}
 
 	private static ArrayList<Setting> settings;
@@ -280,11 +280,11 @@ public class StatMeth {
 
 		ContentValues values = new ContentValues();
 		values.put("calendar_id", 1);
-		values.put("title", event.getTitle());
+		values.put("title", event.title);
 		values.put("allDay", 0);
-		values.put("dtstart", event.getStart());
-		values.put("dtend", event.getEnd());
-		values.put("description", event.getDescription());
+		values.put("dtstart", event.startTime);
+		values.put("dtend", event.endTime);
+		values.put("description", event.description);
 		values.put("availability", 0);
 		values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().toString());
 		cr.insert(EVENTS_URI, values);
@@ -390,7 +390,7 @@ public class StatMeth {
 		ContentValues cv = new ContentValues();
 		Uri uri = null;
 		cv.put(Events.DTSTART, new Date().getTime());
-		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.getId());
+		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
 		cr.update(uri, cv, null, null);
 		MainActivity.sync();
 	}
@@ -408,7 +408,7 @@ public class StatMeth {
 		ContentValues cv = new ContentValues();
 		Uri uri = null;
 		cv.put(Events.DTSTART, time);
-		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.getId());
+		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
 		cr.update(uri, cv, null, null);
 		MainActivity.sync();
 	}
@@ -426,7 +426,7 @@ public class StatMeth {
 		ContentValues cv = new ContentValues();
 		Uri uri = null;
 		cv.put(Events.DTEND, new Date().getTime());
-		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.getId());
+		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
 		cr.update(uri, cv, null, null);
 		MainActivity.sync();
 	}
@@ -445,7 +445,7 @@ public class StatMeth {
 		ContentValues cv = new ContentValues();
 		Uri uri = null;
 		cv.put(Events.DTEND, time);
-		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.getId());
+		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
 		cr.update(uri, cv, null, null);
 	}
 
@@ -460,11 +460,11 @@ public class StatMeth {
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
 		Uri uri = null;
-		cv.put(Events.DTSTART, event.getStart());
-		cv.put(Events.DTEND, event.getEnd());
-		cv.put(Events.TITLE, event.getTitle());
-		cv.put(Events.DESCRIPTION, event.getDescription());
-		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.getId());
+		cv.put(Events.DTSTART, event.startTime);
+		cv.put(Events.DTEND, event.endTime);
+		cv.put(Events.TITLE, event.title);
+		cv.put(Events.DESCRIPTION, event.description);
+		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
 		cr.update(uri, cv, null, null);
 	}
 	
