@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -36,7 +35,7 @@ import android.widget.TextView;
  * @version 0.9
  * @since 04-04-2013
  */
-public class MainActivity extends Activity {
+public final class MainActivity extends Activity {
 
 	private static ListView listView;
 	private static TextView calendarName;
@@ -59,16 +58,16 @@ public class MainActivity extends Activity {
 	private static boolean isDelayed = false;
 	private static boolean isOverTime = false;
 
-	public static boolean extendEnd;
-	public static int endExtend;
-	public static boolean extendStart;
-	public static int startExtend;
-	public static boolean canEnd;
-	public static boolean endDelete;
-	public static String roomName;
+	protected static boolean extendEnd;
+	protected static int endExtend;
+	protected static boolean extendStart;
+	protected static int startExtend;
+	protected static boolean canEnd;
+	protected static boolean endDelete;
+	protected static String roomName;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate() called");
 
@@ -112,9 +111,9 @@ public class MainActivity extends Activity {
 		// Setting a custom ItemClickListener
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
-				Intent intent = new Intent(MainActivity.this,
+			public final void onItemClick(final AdapterView<?> arg0,
+					final View arg1, final int position, final long arg3) {
+				final Intent intent = new Intent(MainActivity.this,
 						NewEditActivity.class);
 				intent.putExtra("event", position);
 				intent.putExtra("type", 1);
@@ -123,14 +122,14 @@ public class MainActivity extends Activity {
 		});
 
 		// Timer for continuous update of calendar
-		Timer timer = new Timer();
+		final Timer timer = new Timer();
 		Log.d(TAG, "Timer started");
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
-			public void run() {
+			public final void run() {
 				runOnUiThread(new Runnable() {
 					@Override
-					public void run() {
+					public final void run() {
 						MainActivity.sync();
 					}
 				});
@@ -140,14 +139,7 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
-
-	@Override
-	public void onResume() {
+	protected final void onResume() {
 		Log.d(TAG, "onResume()");
 		super.onResume();
 		MainActivity.sync();
@@ -155,17 +147,18 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
-	public void onStop() {
+	protected final void onStop() {
 		super.onStop();
 	}
 
 	@Override
-	protected void onActivityResult(int requestcode, int resultcode, Intent data) {
+	protected final void onActivityResult(final int requestcode,
+			final int resultcode, final Intent data) {
 		// startActivity(new Intent(this,MainActivity.class));
 	}
 
-	public void editCurrent(View view) {
-		Intent intent = new Intent(this, NewEditActivity.class);
+	public final void editCurrent(View view) {
+		final Intent intent = new Intent(this, NewEditActivity.class);
 		intent.putExtra("event", -1);
 		intent.putExtra("type", 1);
 		startActivityForResult(intent, 1);
@@ -178,7 +171,7 @@ public class MainActivity extends Activity {
 	 * @param view
 	 *            The View from the button
 	 */
-	public void startNextMeeting(View view) {
+	public final void startNextMeeting(final View view) {
 		StatMeth.updateStart(current, context);
 	}
 
@@ -189,7 +182,7 @@ public class MainActivity extends Activity {
 	 * @param view
 	 *            The View from the button
 	 */
-	public void endMeeting(View view) {
+	public final void endMeeting(final View view) {
 		if (endDelete) {
 			StatMeth.updateEnd(current, context);
 		} else {
@@ -199,8 +192,8 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	public void settings(View view) {
-		DialogFragment fragment = new SettingsFragment();
+	public final void settings(final View view) {
+		final DialogFragment fragment = new SettingsFragment();
 		fragment.show(getFragmentManager(), "BLA");
 	}
 
@@ -211,10 +204,10 @@ public class MainActivity extends Activity {
 	 * @param view
 	 *            The View from the button
 	 */
-	public void startNewMeeting(View view) {
+	public final void startNewMeeting(final View view) {
 		Log.d(TAG, "New Meeting button pressed");
 		// Creates NewMeetingActivity, for user input in booking a new meeting
-		Intent intent = new Intent(this, NewEditActivity.class);
+		final Intent intent = new Intent(this, NewEditActivity.class);
 		intent.putExtra("type", 0);
 		startActivityForResult(intent, 1);
 	}
@@ -225,7 +218,7 @@ public class MainActivity extends Activity {
 	 * @param event
 	 *            The event which should be set as current
 	 */
-	public static void setCurrent(CalEvent event) {
+	private final static void setCurrent(final CalEvent event) {
 		currentTitle.setText(event.title);
 		currentOrganizer.setText(event.organizer);
 		currentDesc.setText(event.description);
@@ -234,7 +227,7 @@ public class MainActivity extends Activity {
 	}
 
 	// Shows and hides the TextViews for current event
-	private static void curShow(boolean val) {
+	private final static void curShow(final boolean val) {
 		if (val) {
 			curNextLay.setClickable(true);
 			curNextLay.setVisibility(TextView.VISIBLE);
@@ -246,26 +239,25 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	private static void deleteCurrent() {
-		StatMeth.updateStart(current, context);
-		StatMeth.updateEnd(current, context);
+	private final static void deleteCurrent() {
+		StatMeth.delete(current, context);
 	}
 
 	// Pushes the current event forward by, up to 15 minutes if nobody pressed
 	// End Meeting
-	private static void currentOvertime() {
+	private final static void currentOvertime() {
 		if (current != null && current.description.endsWith("ended")) {
 			return;
 		}
-		Long currentTime = new Date().getTime() + 60000;
+		final Long currentTime = new Date().getTime() + 60000;
 		if (current != null && !isOverTime && current.endTime <= currentTime) {
 			isOverTime = true;
 			StatMeth.updateEnd(current, context, findExtendedTimeWindow());
 		}
 	}
 
-	private static void currentDelayed() {
-		Long currentTime = new Date().getTime() + 10000;
+	private final static void currentDelayed() {
+		final Long currentTime = new Date().getTime() + 10000;
 		if (current != null && !current.isUnderway && !isDelayed
 				&& current.startTime <= currentTime) {
 			isDelayed = true;
@@ -283,9 +275,9 @@ public class MainActivity extends Activity {
 	}
 
 	// Gives up to 15 minutes to extend current event
-	private static long findExtendedTimeWindow() {
+	private final static long findExtendedTimeWindow() {
 		if (!eventlist.isEmpty()) {
-			long interval = eventlist.get(0).startTime - current.endTime;
+			final long interval = eventlist.get(0).startTime - current.endTime;
 			if (interval < (60000 * endExtend)) {
 				return eventlist.get(0).startTime;
 			}
@@ -297,7 +289,7 @@ public class MainActivity extends Activity {
 	 * The method called by the Timer every 5 seconds. It reads the calendar,
 	 * and updates the UI if changes have been made
 	 */
-	protected static void sync() {
+	protected final static void sync() {
 		// The event that is currently underway
 		current = null;
 
@@ -349,6 +341,7 @@ public class MainActivity extends Activity {
 		}
 
 		// Check if the end meeting has been checked
+		// if it is, and it has ended, it changes background to yellow
 		if (!endDelete && current != null
 				&& current.description.endsWith("ended")) {
 			mainView.setBackgroundColor(Color.YELLOW);
@@ -363,14 +356,15 @@ public class MainActivity extends Activity {
 
 	}
 
-	public static class SettingsFragment extends DialogFragment {
+	public final static class SettingsFragment extends DialogFragment {
 
 		private static boolean wasWrong = false;
 
 		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			LayoutInflater inflater = getActivity().getLayoutInflater();
+		public final Dialog onCreateDialog(final Bundle savedInstanceState) {
+			final AlertDialog.Builder builder = new AlertDialog.Builder(
+					getActivity());
+			final LayoutInflater inflater = getActivity().getLayoutInflater();
 			final View v = inflater.inflate(R.layout.password_prompt_layout,
 					null);
 			if (wasWrong) {
@@ -383,24 +377,25 @@ public class MainActivity extends Activity {
 							new DialogInterface.OnClickListener() {
 
 								@Override
-								public void onClick(DialogInterface arg0,
-										int arg1) {
-									EditText pwtext = (EditText) v
+								public final void onClick(
+										final DialogInterface arg0,
+										final int arg1) {
+									final EditText pwtext = (EditText) v
 											.findViewById(R.id.pwEdit);
-									String typedpw = pwtext.getText()
+									final String typedpw = pwtext.getText()
 											.toString();
-									String storedpw = StatMeth
+									final String storedpw = StatMeth
 											.getPassword(context);
 									if (typedpw.equals(storedpw)) {
 										wasWrong = false;
-										Intent intent = new Intent(
+										final Intent intent = new Intent(
 												MainActivity.context,
 												SettingsActivity.class);
 										startActivityForResult(intent, 1);
 										return;
 									} else {
 										wasWrong = true;
-										DialogFragment fragment = new SettingsFragment();
+										final DialogFragment fragment = new SettingsFragment();
 										fragment.show(getFragmentManager(),
 												"BLA");
 									}
@@ -411,8 +406,9 @@ public class MainActivity extends Activity {
 							new DialogInterface.OnClickListener() {
 
 								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
+								public final void onClick(
+										final DialogInterface dialog,
+										final int which) {
 									wasWrong = false;
 								}
 							});

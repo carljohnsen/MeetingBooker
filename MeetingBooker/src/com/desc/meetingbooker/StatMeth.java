@@ -36,7 +36,8 @@ public class StatMeth {
 	/**
 	 * Checks whether or not the selected time will overlap with existing events
 	 * 
-	 * @param event The selected time
+	 * @param event
+	 *            The selected time
 	 * @return true, if it does not overlap
 	 */
 	public static boolean isFree(CalEvent event) {
@@ -49,14 +50,13 @@ public class StatMeth {
 			// Check against all other events today
 			for (CalEvent ev : eventlist) {
 				if ((// If new event is between start & end time
-						event.startTime >= ev.startTime && 
-						event.endTime <= ev.endTime) ||
+				event.startTime >= ev.startTime && event.endTime <= ev.endTime)
+						||
 						// If new event overlaps the start time
-						(event.startTime <= ev.startTime &&
-						ev.startTime < event.endTime) ||
+						(event.startTime <= ev.startTime && ev.startTime < event.endTime)
+						||
 						// If new event overlaps the end time
-						(event.startTime < ev.endTime &&
-						event.endTime >= ev.endTime)) {
+						(event.startTime < ev.endTime && event.endTime >= ev.endTime)) {
 					return false;
 				}
 			}
@@ -68,9 +68,11 @@ public class StatMeth {
 	 * Checks whether or not there is free time to extend the end time of a
 	 * selected event
 	 * 
-	 * @param event The selected event
-	 * @param index The index of the selected event, so that it wont check with
-	 * 		  its own time
+	 * @param event
+	 *            The selected event
+	 * @param index
+	 *            The index of the selected event, so that it wont check with
+	 *            its own time
 	 * @return true, if there is free time to extend
 	 */
 	public static boolean isUpdatable(CalEvent event, int index) {
@@ -88,14 +90,13 @@ public class StatMeth {
 		// Check against all events today
 		for (CalEvent ev : eventlist) {
 			if ((// If new event is between start & end time
-					event.startTime >= ev.startTime && 
-					event.endTime <= ev.endTime) ||
+			event.startTime >= ev.startTime && event.endTime <= ev.endTime)
+					||
 					// If new event overlaps the start time
-					(event.startTime <= ev.startTime &&
-					ev.startTime < event.endTime) ||
+					(event.startTime <= ev.startTime && ev.startTime < event.endTime)
+					||
 					// If new event overlaps the end time
-					(event.startTime < ev.endTime &&
-					event.endTime >= ev.endTime)) {
+					(event.startTime < ev.endTime && event.endTime >= ev.endTime)) {
 				return false;
 			}
 		}
@@ -105,7 +106,8 @@ public class StatMeth {
 	/**
 	 * Checks the end time of the given event is before the start time
 	 * 
-	 * @param event The given event
+	 * @param event
+	 *            The given event
 	 * @return true, if the end is before the start
 	 */
 	public static boolean isBefore(CalEvent event) {
@@ -117,7 +119,8 @@ public class StatMeth {
 	/**
 	 * Reads the config file, and then it interprets it
 	 * 
-	 * @param context The context of the application
+	 * @param context
+	 *            The context of the application
 	 * @return A HashMap of (command, value) pairs
 	 */
 	public static ArrayList<Setting> readConfig(Context context) {
@@ -171,22 +174,26 @@ public class StatMeth {
 		}
 		if (command.equals("extendstarttime")) {
 			MainActivity.extendStart = Boolean.parseBoolean(value);
-			setting = new Setting(command, value, "boolean", "Extend start time");
+			setting = new Setting(command, value, "boolean",
+					"Extend start time");
 			settings.add(setting);
 		}
 		if (command.equals("starttime")) {
 			MainActivity.startExtend = Integer.parseInt(value);
-			setting = new Setting(command, value, "int", "Minutes to extend with");
+			setting = new Setting(command, value, "int",
+					"Minutes to extend with");
 			settings.add(setting);
 		}
 		if (command.equals("candelete")) {
 			NewEditActivity.candelete = Boolean.parseBoolean(value);
-			setting = new Setting(command, value, "boolean", "Show the delete button");
+			setting = new Setting(command, value, "boolean",
+					"Show the delete button");
 			settings.add(setting);
 		}
 		if (command.equals("canend")) {
 			MainActivity.canEnd = Boolean.parseBoolean(value);
-			setting = new Setting(command, value, "boolean", "Show the End Meeting button");
+			setting = new Setting(command, value, "boolean",
+					"Show the End Meeting button");
 			settings.add(setting);
 		}
 		if (command.equals("enddelete")) {
@@ -196,7 +203,8 @@ public class StatMeth {
 		}
 		if (command.equals("windowsize")) {
 			NewEditActivity.windowSize = Integer.parseInt(value);
-			setting = new Setting(command, value, "int", "Length of TimeWindows");
+			setting = new Setting(command, value, "int",
+					"Length of TimeWindows");
 			settings.add(setting);
 		}
 		if (command.equals("calendarname")) {
@@ -243,8 +251,10 @@ public class StatMeth {
 	/**
 	 * Writes the given HashMap to the config file
 	 * 
-	 * @param map The given HashMap
-	 * @param context The context of the application
+	 * @param map
+	 *            The given HashMap
+	 * @param context
+	 *            The context of the application
 	 */
 	public static void write(ArrayList<Setting> sett, Context context) {
 		try {
@@ -268,9 +278,11 @@ public class StatMeth {
 	/**
 	 * The method for inserting into the calendar
 	 * 
-	 * @param event The event that should be inserted
-	 * @param context The context of this application, used to extract the
-	 * 				  CONTENT_URI and the ContentResolver
+	 * @param event
+	 *            The event that should be inserted
+	 * @param context
+	 *            The context of this application, used to extract the
+	 *            CONTENT_URI and the ContentResolver
 	 */
 	public static void setNewEvent(CalEvent event, Context context) {
 
@@ -302,10 +314,11 @@ public class StatMeth {
 	/**
 	 * The method that reads the calendar
 	 * 
-	 * @param context The context of the app. Used to extract the CONTENT_URI 
-	 * 		  and the ContentResolver
+	 * @param context
+	 *            The context of the app. Used to extract the CONTENT_URI and
+	 *            the ContentResolver
 	 * @return An ArrayList of CalEvents, that either is started, or is in the
-	 * 		   future
+	 *         future
 	 */
 	public static ArrayList<CalEvent> readCalendar(Context context) {
 		// The ArrayList to hold the events
@@ -336,8 +349,7 @@ public class StatMeth {
 			if (start < new Date().getTime()) {
 				isUnderway = true;
 			}
-			if (today.equals(st) && !(
-					cursor.getLong(1) < new Date().getTime())) {
+			if (today.equals(st) && !(cursor.getLong(1) < new Date().getTime())) {
 				eventlist.add(new CalEvent(cursor.getLong(0), // Start time
 						cursor.getLong(1), // End Time
 						cursor.getString(2), // Title
@@ -362,8 +374,9 @@ public class StatMeth {
 	/**
 	 * The method to get the name of the calendar
 	 * 
-	 * @param context The context of the app, used to extract the CONTENT_URI 
-	 * 				  and the ContentResolver
+	 * @param context
+	 *            The context of the app, used to extract the CONTENT_URI and
+	 *            the ContentResolver
 	 * @return The name of the calendar
 	 */
 	public static String getCalendarName(Context context) {
@@ -380,9 +393,11 @@ public class StatMeth {
 	/**
 	 * Changes the start time of the given event, to the current time
 	 * 
-	 * @param event The event that should be updated
-	 * @param context The context of the app, used to extract the CONTENT_URI 
-	 * 				  and the ContentResolver
+	 * @param event
+	 *            The event that should be updated
+	 * @param context
+	 *            The context of the app, used to extract the CONTENT_URI and
+	 *            the ContentResolver
 	 */
 	public static void updateStart(CalEvent event, Context context) {
 		// Update events start time
@@ -398,9 +413,12 @@ public class StatMeth {
 	/**
 	 * Changes the start time of the given event, to the given time
 	 * 
-	 * @param event The event that should be updated
-	 * @param context The context of the application
-	 * @param time The time that the start should be set to
+	 * @param event
+	 *            The event that should be updated
+	 * @param context
+	 *            The context of the application
+	 * @param time
+	 *            The time that the start should be set to
 	 */
 	public static void updateStart(CalEvent event, Context context, long time) {
 		// Update events start time
@@ -416,9 +434,11 @@ public class StatMeth {
 	/**
 	 * Changes the end time of the given event, to the current time
 	 * 
-	 * @param event The event that should be updated
-	 * @param context The context of the app, used to extract the CONTENT_URI 
-	 * 				  and the ContentResolver
+	 * @param event
+	 *            The event that should be updated
+	 * @param context
+	 *            The context of the app, used to extract the CONTENT_URI and
+	 *            the ContentResolver
 	 */
 	public static void updateEnd(CalEvent event, Context context) {
 		// Update events end time
@@ -434,10 +454,13 @@ public class StatMeth {
 	/**
 	 * Changes the end time of the given event, to the given time
 	 * 
-	 * @param event The event that should be updated
-	 * @param context The context of the app, used to extract the CONTENT_URI 
-	 * 				  and the ContentResolver
-	 * @param time The time the event should now end on
+	 * @param event
+	 *            The event that should be updated
+	 * @param context
+	 *            The context of the app, used to extract the CONTENT_URI and
+	 *            the ContentResolver
+	 * @param time
+	 *            The time the event should now end on
 	 */
 	public static void updateEnd(CalEvent event, Context context, long time) {
 		// Update events end time
@@ -453,8 +476,10 @@ public class StatMeth {
 	 * Used when the application has updated an event, and needs to edit the
 	 * event in the calendar
 	 * 
-	 * @param event The event that has been updated
-	 * @param context The context of the application
+	 * @param event
+	 *            The event that has been updated
+	 * @param context
+	 *            The context of the application
 	 */
 	public static void update(CalEvent event, Context context) {
 		ContentResolver cr = context.getContentResolver();
@@ -467,27 +492,31 @@ public class StatMeth {
 		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
 		cr.update(uri, cv, null, null);
 	}
-	
+
 	/**
 	 * Used for changing the password for the settings menu
 	 * 
-	 * @param password The new password
-	 * @param context The context of the application
+	 * @param password
+	 *            The new password
+	 * @param context
+	 *            The context of the application
 	 */
 	public static void savePassword(String password, Context context) {
 		String filename = "pwd";
 		try {
-			FileOutputStream out = context.openFileOutput(filename, 
+			FileOutputStream out = context.openFileOutput(filename,
 					Context.MODE_PRIVATE);
 			out.write(password.getBytes());
 			out.close();
-		} catch (IOException e) {}
+		} catch (IOException e) {
+		}
 	}
-	
+
 	/**
 	 * Used for retrieving the password from private file pwd
 	 * 
-	 * @param context The context of the application
+	 * @param context
+	 *            The context of the application
 	 * @return The password needed to unlock the settings menu
 	 */
 	public static String getPassword(Context context) {
@@ -506,18 +535,19 @@ public class StatMeth {
 			return "ERROR";
 		}
 	}
-	
+
 	/**
 	 * Used to generate a new default password
 	 * 
-	 * @param context The context of the application
+	 * @param context
+	 *            The context of the application
 	 * @return The default password, if everything went well
 	 */
 	public static String newPassword(Context context) {
 		String filename = "pwd";
 		String stdPwd = "a";
 		try {
-			FileOutputStream out = context.openFileOutput(filename, 
+			FileOutputStream out = context.openFileOutput(filename,
 					Context.MODE_PRIVATE);
 			out.write(stdPwd.getBytes());
 			out.close();
@@ -525,6 +555,18 @@ public class StatMeth {
 		} catch (IOException e) {
 			return "ERROR";
 		}
+	}
+
+	public final static void delete(final CalEvent event, final Context context) {
+		ContentResolver cr = context.getContentResolver();
+		ContentValues cv = new ContentValues();
+		Uri uri = null;
+		final long time = new Date().getTime();
+		cv.put(Events.DTSTART, time);
+		cv.put(Events.DTEND, time+1);
+		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
+		cr.update(uri, cv, null, null);
+		MainActivity.sync();
 	}
 
 }

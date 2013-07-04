@@ -234,8 +234,7 @@ public final class NewEditActivity extends Activity {
 					@Override
 					public void onClick(final DialogInterface dialog,
 							final int which) {
-						StatMeth.updateStart(event, context);
-						StatMeth.updateEnd(event, context);
+						StatMeth.delete(event, context);
 						finish();
 					}
 
