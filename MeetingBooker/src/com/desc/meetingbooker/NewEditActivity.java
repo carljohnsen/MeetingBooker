@@ -32,32 +32,31 @@ import android.widget.AdapterView.OnItemClickListener;
  * @version 0.9
  * @since 14-05-2013
  */
-public class NewEditActivity extends Activity {
+public final class NewEditActivity extends Activity {
 
 	private static final String TAG = NewEditActivity.class.getSimpleName();
-	private TimePicker timeStart;
-	private TimePicker timeEnd;
-	private ListView intervalPicker;
-	private Date date = new Date();
-	private Calendar cal = Calendar.getInstance();
-	private ArrayList<CalEvent> eventlist;
-	private ArrayList<TimeWindow> windowList;
-	private TimeWindowAdapter adapter;
-	private int index;
-	private EditText titleText;
-	private EditText descText;
-	private CalEvent event;
-	private Context context;
+	private static TimePicker timeStart;
+	private static TimePicker timeEnd;
+	private static ListView intervalPicker;
+	private static Date date = new Date();
+	private static final Calendar cal = Calendar.getInstance();
+	private static ArrayList<TimeWindow> windowList;
+	private static TimeWindowAdapter adapter;
+	private static int index;
+	private static EditText titleText;
+	private static EditText descText;
+	private static CalEvent event;
+	private static Context context;
 
-	private Button add;
-	private Button update;
-	private ImageView delete;
-	
-	public static boolean candelete;
-	public static int windowSize;
+	private static Button add;
+	private static Button update;
+	private static ImageView delete;
+
+	protected static boolean candelete;
+	protected static int windowSize;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected final void onCreate(final Bundle savedInstanceState) {
 		Log.d(TAG, "called onCreate()");
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -67,8 +66,6 @@ public class NewEditActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_new_edit);
 
-		int type = this.getIntent().getIntExtra("type", 0);
-		eventlist = MainActivity.eventlist;
 		titleText = (EditText) findViewById(R.id.editTitle);
 		descText = (EditText) findViewById(R.id.editDesc);
 		add = (Button) findViewById(R.id.addButton);
@@ -83,7 +80,8 @@ public class NewEditActivity extends Activity {
 		intervalPicker = (ListView) findViewById(R.id.intervalView);
 		windowList = findTimeWindow();
 
-		adapter = new TimeWindowAdapter(this, R.layout.timewindow_item, windowList);
+		adapter = new TimeWindowAdapter(this, R.layout.timewindow_item,
+				windowList);
 
 		// Setting the ListView
 		intervalPicker.setAdapter(adapter);
@@ -96,7 +94,7 @@ public class NewEditActivity extends Activity {
 			}
 		});
 
-		if (type == 0) {
+		if (this.getIntent().getIntExtra("type", 0) == 0) {
 			setNew();
 		} else {
 			setEdit();
@@ -106,12 +104,12 @@ public class NewEditActivity extends Activity {
 	/**
 	 * Called by onCreate(). Used when it should show Edit formula
 	 */
-	public void setEdit() {
+	private final void setEdit() {
 		index = this.getIntent().getIntExtra("event", -2);
 		if (index == -1) {
 			event = MainActivity.current;
 		} else {
-			event = eventlist.get(index);
+			event = MainActivity.eventlist.get(index);
 		}
 		if (candelete) {
 			delete.setVisibility(ImageView.VISIBLE);
@@ -129,11 +127,10 @@ public class NewEditActivity extends Activity {
 	/**
 	 * Called by onCreate. Used when it should show new meeting formula
 	 */
-	public void setNew() {
+	private final void setNew() {
 		delete.setVisibility(Button.GONE);
-		String temp = titleText.getText().toString();
+		titleText.setHint(titleText.getText().toString());
 		titleText.setText("");
-		titleText.setHint(temp);
 		setTimePickers(windowList.get(0));
 		add.setVisibility(Button.VISIBLE);
 		update.setVisibility(Button.GONE);
@@ -146,40 +143,36 @@ public class NewEditActivity extends Activity {
 	 * @param view
 	 *            The View of the button
 	 */
-	public void add(View view) {
+	public final void add(final View view) {
 		add.setClickable(false);
 
 		Log.d(TAG, "Adding event to calendar");
-		// Get the different UI fields
-		EditText titleText = (EditText) findViewById(R.id.editTitle);
-		EditText descText = (EditText) findViewById(R.id.editDesc);
 
 		// Read the fields
 		String title = titleText.getText().toString();
 		if (title.equals("")) {
 			title = titleText.getHint().toString();
 		}
-		String desc = descText.getText().toString();
-		int startHour = timeStart.getCurrentHour();
-		int startMin = timeStart.getCurrentMinute();
-		int endHour = timeEnd.getCurrentHour();
-		Log.d(TAG, "END " + endHour);
-		int endMin = timeEnd.getCurrentMinute();
+		final String desc = descText.getText().toString();
+		final int startHour = timeStart.getCurrentHour();
+		final int startMin = timeStart.getCurrentMinute();
+		final int endHour = timeEnd.getCurrentHour();
+		final int endMin = timeEnd.getCurrentMinute();
 
 		// Convert timePicker readings to long
-		String startTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
+		final String startTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
 				+ (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR)
 				+ " " + startHour + ":" + startMin;
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm",
-				Locale.getDefault());
+		final SimpleDateFormat formatter = new SimpleDateFormat(
+				"dd-MM-yyyy HH:mm", Locale.getDefault());
 		try {
 			date = formatter.parse(startTime);
 			Log.d(TAG, startTime);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
-		long start = date.getTime();
-		String endTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
+		final long start = date.getTime();
+		final String endTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
 				+ (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR)
 				+ " " + endHour + ":" + endMin;
 		try {
@@ -187,20 +180,20 @@ public class NewEditActivity extends Activity {
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
-		long end = date.getTime();
+		final long end = date.getTime();
 
 		// Create a new CalEvent
-		CalEvent event = new CalEvent(start, end, title, desc);
-		Context context = getApplicationContext();
+		final CalEvent event = new CalEvent(start, end, title, desc);
 		if (StatMeth.isBefore(event)) {
-			AlertDialog dialog = new AlertDialog.Builder(this).create();
+			final AlertDialog dialog = new AlertDialog.Builder(this).create();
 			dialog.setTitle("Error");
 			dialog.setMessage("End time is before start time");
 			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
 					new DialogInterface.OnClickListener() {
 
 						@Override
-						public void onClick(DialogInterface dialog, int which) {
+						public void onClick(final DialogInterface dialog,
+								final int which) {
 						}
 
 					});
@@ -214,35 +207,33 @@ public class NewEditActivity extends Activity {
 			Log.d(TAG, "event inserted");
 			finish();
 		} else {
-			AlertDialog dialog = new AlertDialog.Builder(this).create();
+			final AlertDialog dialog = new AlertDialog.Builder(this).create();
 			dialog.setTitle("Error");
 			dialog.setMessage("Meeting is overlapping");
 			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
 					new DialogInterface.OnClickListener() {
 
 						@Override
-						public void onClick(DialogInterface dialog, int which) {
+						public void onClick(final DialogInterface dialog,
+								final int which) {
 						}
 
 					});
 			dialog.show();
 			add.setClickable(true);
 		}
-		Button add = (Button) findViewById(R.id.addButton);
-		add.setVisibility(Button.VISIBLE);
-		Button update = (Button) findViewById(R.id.updateButton);
-		update.setVisibility(Button.GONE);
 	}
 
-	public void delete(View view) {
-		AlertDialog dialog = new AlertDialog.Builder(this).create();
+	public final void delete(final View view) {
+		final AlertDialog dialog = new AlertDialog.Builder(this).create();
 		dialog.setTitle("Delete");
 		dialog.setMessage("Are you sure you want to delete this event?");
 		dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
 				new DialogInterface.OnClickListener() {
 
 					@Override
-					public void onClick(DialogInterface dialog, int which) {
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 						StatMeth.updateStart(event, context);
 						StatMeth.updateEnd(event, context);
 						finish();
@@ -253,7 +244,8 @@ public class NewEditActivity extends Activity {
 				new DialogInterface.OnClickListener() {
 
 					@Override
-					public void onClick(DialogInterface dialog, int which) {
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 					}
 				});
 		dialog.show();
@@ -266,32 +258,31 @@ public class NewEditActivity extends Activity {
 	 * @param view
 	 *            The View of the button
 	 */
-	public void update(View view) {
+	public final void update(final View view) {
 		Log.d(TAG, "Adding event to calendar");
 
 		// Read the fields
-		String title = titleText.getText().toString();
-		String desc = descText.getText().toString();
-		int startHour = timeStart.getCurrentHour();
-		int startMin = timeStart.getCurrentMinute();
-		int endHour = timeEnd.getCurrentHour();
-		Log.d(TAG, "END " + endHour);
-		int endMin = timeEnd.getCurrentMinute();
+		final String title = titleText.getText().toString();
+		final String desc = descText.getText().toString();
+		final int startHour = timeStart.getCurrentHour();
+		final int startMin = timeStart.getCurrentMinute();
+		final int endHour = timeEnd.getCurrentHour();
+		final int endMin = timeEnd.getCurrentMinute();
 
 		// Convert timePicker readings to long
-		String startTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
+		final String startTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
 				+ (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR)
 				+ " " + startHour + ":" + startMin;
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm",
-				Locale.getDefault());
+		final SimpleDateFormat formatter = new SimpleDateFormat(
+				"dd-MM-yyyy HH:mm", Locale.getDefault());
 		try {
 			date = formatter.parse(startTime);
 			Log.d(TAG, startTime);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
-		long start = date.getTime();
-		String endTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
+		final long start = date.getTime();
+		final String endTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
 				+ (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR)
 				+ " " + endHour + ":" + endMin;
 		try {
@@ -299,20 +290,21 @@ public class NewEditActivity extends Activity {
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
-		long end = date.getTime();
+		final long end = date.getTime();
 
 		// Create a new CalEvent
-		CalEvent newEvent = new CalEvent(start, end, title, desc, event.getId());
-		Context context = getApplicationContext();
+		final CalEvent newEvent = new CalEvent(start, end, title, desc,
+				event.getId());
 		if (StatMeth.isBefore(newEvent)) {
-			AlertDialog dialog = new AlertDialog.Builder(this).create();
+			final AlertDialog dialog = new AlertDialog.Builder(this).create();
 			dialog.setTitle("Error");
 			dialog.setMessage("End time is before start time");
 			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
 					new DialogInterface.OnClickListener() {
 
 						@Override
-						public void onClick(DialogInterface dialog, int which) {
+						public void onClick(final DialogInterface dialog,
+								final int which) {
 						}
 
 					});
@@ -324,23 +316,20 @@ public class NewEditActivity extends Activity {
 			Log.d(TAG, "event inserted");
 			finish();
 		} else {
-			AlertDialog dialog = new AlertDialog.Builder(this).create();
+			final AlertDialog dialog = new AlertDialog.Builder(this).create();
 			dialog.setTitle("Error");
 			dialog.setMessage("Meeting is overlapping");
 			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
 					new DialogInterface.OnClickListener() {
 
 						@Override
-						public void onClick(DialogInterface dialog, int which) {
+						public void onClick(final DialogInterface dialog,
+								final int which) {
 						}
 
 					});
 			dialog.show();
 		}
-		Button add = (Button) findViewById(R.id.addButton);
-		add.setVisibility(Button.GONE);
-		Button update = (Button) findViewById(R.id.updateButton);
-		update.setVisibility(Button.VISIBLE);
 	}
 
 	/**
@@ -350,14 +339,14 @@ public class NewEditActivity extends Activity {
 	 * @param view
 	 *            The View of the button
 	 */
-	public void cancel(View view) {
+	public final void cancel(final View view) {
 		Log.d(TAG, "Cancel button pressed");
 		finish();
 	}
 
 	// Sets time pickers to a possible interval
 	@SuppressLint("SimpleDateFormat")
-	private void setTimePickers(TimeWindow window) {
+	private final void setTimePickers(final TimeWindow window) {
 
 		// Sets the TimePickers to use 24 hour
 		timeStart.setIs24HourView(true);
@@ -382,15 +371,14 @@ public class NewEditActivity extends Activity {
 	}
 
 	// Help method for findTimeWindow
-	// Finds all TimeWindows between the given start and end time, that is 
+	// Finds all TimeWindows between the given start and end time, that is
 	// > 5 min and < 1 hour
-	private ArrayList<TimeWindow> findHelp(ArrayList<TimeWindow> list,
-			long start, long end) {
-		long fiveMin = 60000 * 5;
-		long size = 60000 * windowSize;
+	private static final ArrayList<TimeWindow> findHelp(
+			final ArrayList<TimeWindow> list, long start, final long end) {
+		final long size = 60000 * windowSize;
 		long interval = end - start;
 		while (interval > 0) {
-			if (interval < fiveMin) {
+			if (interval < 60000 * 5) {
 				return list;
 			}
 			if (interval > size) {
@@ -406,43 +394,47 @@ public class NewEditActivity extends Activity {
 	}
 
 	// Finds the window to set TimePickers to
-	private ArrayList<TimeWindow> findTimeWindow() {
+	private static final ArrayList<TimeWindow> findTimeWindow() {
 		ArrayList<TimeWindow> returnList = new ArrayList<TimeWindow>();
-		CalEvent current = MainActivity.current;
-		long time = new Date().getTime();
+		final long time = new Date().getTime();
+
 		// Find next midnight
-		Calendar cal = new GregorianCalendar();
-		cal.set(Calendar.HOUR_OF_DAY, 23);
-		cal.set(Calendar.MINUTE, 59);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		long midnight = cal.getTimeInMillis();
-		
-		if (current == null) {
+		final Calendar calendar = new GregorianCalendar();
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		final long midnight = calendar.getTimeInMillis();
+
+		if (MainActivity.current == null) {
 			// Find windows from now and the rest of the day
 			returnList = findHelp(returnList, time, midnight);
 			return returnList;
 		}
-		if (!current.isUnderway()) {
+		if (!MainActivity.current.isUnderway()) {
 			// Find windows from now until current starts
-			returnList = findHelp(returnList, time, current.getStart());
+			returnList = findHelp(returnList, time,
+					MainActivity.current.getStart());
 		}
-		if (eventlist.isEmpty()) {
+		if (MainActivity.eventlist.isEmpty()) {
 			// Find windows from the end of current and the rest of the day
-			returnList = findHelp(returnList, current.getEnd(), midnight);
+			returnList = findHelp(returnList, MainActivity.current.getEnd(),
+					midnight);
 		} else {
 			// Find windows between current and first event
-			returnList = findHelp(returnList, current.getEnd(), eventlist
-					.get(0).getStart());
-			for (int i = 0; i < eventlist.size() - 1; i++) {
+			returnList = findHelp(returnList, MainActivity.current.getEnd(),
+					MainActivity.eventlist.get(0).getStart());
+			final int size = MainActivity.eventlist.size() - 1;
+			for (int i = 0; i < size; i++) {
 				// Find windows between individual events
-				CalEvent first = eventlist.get(i);
-				CalEvent second = eventlist.get(i + 1);
+				final CalEvent first = MainActivity.eventlist.get(i);
+				final CalEvent second = MainActivity.eventlist.get(i + 1);
 				returnList = findHelp(returnList, first.getEnd(),
 						second.getStart());
 			}
 			// Find windows from the last event until midnight
-			CalEvent last = eventlist.get(eventlist.size() - 1);
+			final CalEvent last = MainActivity.eventlist
+					.get(MainActivity.eventlist.size() - 1);
 			returnList = findHelp(returnList, last.getEnd(), midnight);
 		}
 		return returnList;
