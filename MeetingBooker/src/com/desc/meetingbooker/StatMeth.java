@@ -31,7 +31,7 @@ import android.util.Log;
  * @version 0.9
  * @since 24-06-2013
  */
-public class StatMeth {
+public final class StatMeth {
 
 	/**
 	 * Checks whether or not the selected time will overlap with existing events
@@ -40,15 +40,16 @@ public class StatMeth {
 	 *            The selected time
 	 * @return true, if it does not overlap
 	 */
-	public static boolean isFree(CalEvent event) {
-		ArrayList<CalEvent> eventlist = MainActivity.eventlist;
+	public final static boolean isFree(final CalEvent event) {
 		// Ensure that current is also checked
 		if (MainActivity.current != null) {
-			eventlist.add(MainActivity.current);
+			MainActivity.eventlist.add(MainActivity.current);
 		}
-		if (!eventlist.isEmpty()) {
+		if (!MainActivity.eventlist.isEmpty()) {
 			// Check against all other events today
-			for (CalEvent ev : eventlist) {
+			final int len = MainActivity.eventlist.size();
+			for (int i = 0; i < len; i++) {
+				final CalEvent ev = MainActivity.eventlist.get(i);
 				if ((// If new event is between start & end time
 				event.startTime >= ev.startTime && event.endTime <= ev.endTime)
 						||
@@ -75,20 +76,22 @@ public class StatMeth {
 	 *            its own time
 	 * @return true, if there is free time to extend
 	 */
-	public static boolean isUpdatable(CalEvent event, int index) {
-		ArrayList<CalEvent> eventlist = MainActivity.eventlist;
+	public final static boolean isUpdatable(final CalEvent event,
+			final int index) {
 		// Ensure that current is checked, and the event that is being updated,
 		// is removed from the list
 		if (!(index == -1)) {
-			eventlist.add(MainActivity.current);
-			eventlist.remove(index);
+			MainActivity.eventlist.add(MainActivity.current);
+			MainActivity.eventlist.remove(index);
 		}
 		// Return true, if the only event, is the one that is being updated
-		if (eventlist.isEmpty()) {
+		if (MainActivity.eventlist.isEmpty()) {
 			return true;
 		}
 		// Check against all events today
-		for (CalEvent ev : eventlist) {
+		final int len = MainActivity.eventlist.size();
+		for (int i = 0; i < len; i++) {
+			final CalEvent ev = MainActivity.eventlist.get(i);
 			if ((// If new event is between start & end time
 			event.startTime >= ev.startTime && event.endTime <= ev.endTime)
 					||
@@ -110,7 +113,7 @@ public class StatMeth {
 	 *            The given event
 	 * @return true, if the end is before the start
 	 */
-	public static boolean isBefore(CalEvent event) {
+	public final static boolean isBefore(final CalEvent event) {
 		return event.endTime < event.startTime;
 	}
 
@@ -123,19 +126,20 @@ public class StatMeth {
 	 *            The context of the application
 	 * @return A HashMap of (command, value) pairs
 	 */
-	public static ArrayList<Setting> readConfig(Context context) {
-		ArrayList<String> config = new ArrayList<String>();
+	public final static ArrayList<Setting> readConfig(final Context context) {
+		settings = new ArrayList<Setting>();
 
 		boolean hasRead = false;
 		while (!hasRead) {
 			try {
-				FileInputStream in = context.openFileInput("config.cfg");
-				InputStreamReader inputStreamReader = new InputStreamReader(in);
-				BufferedReader bufferedReader = new BufferedReader(
+				final FileInputStream in = context.openFileInput("config.cfg");
+				final InputStreamReader inputStreamReader = new InputStreamReader(
+						in);
+				final BufferedReader bufferedReader = new BufferedReader(
 						inputStreamReader);
 				String line;
 				while ((line = bufferedReader.readLine()) != null) {
-					config.add(line);
+					interpret(line);
 				}
 				inputStreamReader.close();
 				in.close();
@@ -145,104 +149,122 @@ public class StatMeth {
 			} catch (IOException e) {
 			}
 		}
-
-		settings = new ArrayList<Setting>();
-
-		for (String st : config) {
-			interpret(st);
-		}
-
 		return settings;
 	}
 
-	private static void interpret(String str) {
-		int index = str.indexOf(' ');
-		String command = str.substring(0, index);
-		String value = str.substring(index + 1, str.length());
+	private final static void interpret(final String str) {
+		final int index = str.indexOf(' ');
+		final String command = str.substring(0, index);
+		final String value = str.substring(index + 1, str.length());
 		Log.d("TAG", command);
 		Log.d("TAG", value);
-		Setting setting;
+		final Setting setting;
 		if (command.equals("extendendtime")) {
 			MainActivity.extendEnd = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean", "Extend end time");
 			settings.add(setting);
+			return;
 		}
 		if (command.equals("endtime")) {
 			MainActivity.endExtend = Integer.parseInt(value);
 			setting = new Setting(command, value, "int", "Minutes to extend by");
 			settings.add(setting);
+			return;
 		}
 		if (command.equals("extendstarttime")) {
 			MainActivity.extendStart = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean",
 					"Extend start time");
 			settings.add(setting);
+			return;
 		}
 		if (command.equals("starttime")) {
 			MainActivity.startExtend = Integer.parseInt(value);
 			setting = new Setting(command, value, "int",
 					"Minutes to extend with");
 			settings.add(setting);
+			return;
 		}
 		if (command.equals("candelete")) {
 			NewEditActivity.candelete = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean",
 					"Show the delete button");
 			settings.add(setting);
+			return;
 		}
 		if (command.equals("canend")) {
 			MainActivity.canEnd = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean",
 					"Show the End Meeting button");
 			settings.add(setting);
+			return;
 		}
 		if (command.equals("enddelete")) {
 			MainActivity.endDelete = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean", "End delete");
 			settings.add(setting);
+			return;
 		}
 		if (command.equals("windowsize")) {
 			NewEditActivity.windowSize = Integer.parseInt(value);
 			setting = new Setting(command, value, "int",
 					"Length of TimeWindows");
 			settings.add(setting);
+			return;
 		}
 		if (command.equals("calendarname")) {
 			MainActivity.roomName = value;
 			setting = new Setting(command, value, "String", "Calendar name");
 			settings.add(setting);
+			return;
 		}
 	}
 
-	private static void configMake(Context context) {
+	private final static void configMake(final Context context) {
 		Log.d("Config", "configMake()!");
 		try {
-			FileOutputStream out = context.openFileOutput("config.cfg",
+			final FileOutputStream out = context.openFileOutput("config.cfg",
 					Context.MODE_PRIVATE);
-			OutputStreamWriter outputStream = new OutputStreamWriter(out);
+			final OutputStreamWriter outputStream = new OutputStreamWriter(out);
 			String line;
-			line = "extendstarttime true\n";
+			line = "extendstarttime true";
+			interpret(line);
+			line += "\n";
 			outputStream.write(line, 0, line.length());
-			line = "starttime 15\n";
+			line = "starttime 15";
+			interpret(line);
+			line += "\n";
 			outputStream.write(line, 0, line.length());
-			line = "extendendtime true\n";
+			line = "extendendtime true";
+			interpret(line);
+			line += "\n";
 			outputStream.write(line, 0, line.length());
-			line = "endtime 15\n";
+			line = "endtime 15";
+			interpret(line);
+			line += "\n";
 			outputStream.write(line, 0, line.length());
-			line = "candelete true\n";
+			line = "candelete true";
+			interpret(line);
+			line += "\n";
 			outputStream.write(line, 0, line.length());
-			line = "canend true\n";
+			line = "canend true";
+			interpret(line);
+			line += "\n";
 			outputStream.write(line, 0, line.length());
-			line = "enddelete true\n";
+			line = "enddelete true";
+			interpret(line);
+			line += "\n";
 			outputStream.write(line, 0, line.length());
-			line = "windowsize 60\n";
+			line = "windowsize 60";
+			interpret(line);
+			line += "\n";
 			outputStream.write(line, 0, line.length());
-			line = "calendarname " + getCalendarName(context) + "\n";
+			line = "calendarname " + getCalendarName(context);
+			interpret(line);
+			line += "\n";
 			outputStream.write(line, 0, line.length());
 			outputStream.close();
 			out.close();
-			MainActivity.extendEnd = true;
-			MainActivity.extendStart = true;
 		} catch (IOException e) {
 			Log.d("ConfigReader", e.getMessage());
 		}
@@ -256,14 +278,17 @@ public class StatMeth {
 	 * @param context
 	 *            The context of the application
 	 */
-	public static void write(ArrayList<Setting> sett, Context context) {
+	public final static void write(final ArrayList<Setting> sett,
+			final Context context) {
 		try {
-			FileOutputStream out = context.openFileOutput("config.cfg",
+			final FileOutputStream out = context.openFileOutput("config.cfg",
 					Context.MODE_PRIVATE);
-			OutputStreamWriter outputStream = new OutputStreamWriter(out);
+			final OutputStreamWriter outputStream = new OutputStreamWriter(out);
 
-			for (Setting set : sett) {
-				String setting = set.name + " " + set.value + "\n";
+			final int len = sett.size();
+			for (int i = 0; i < len; i++) {
+				String setting = sett.get(i).name + " " + sett.get(i).value
+						+ "\n";
 				outputStream.write(setting, 0, setting.length());
 			}
 
@@ -284,13 +309,14 @@ public class StatMeth {
 	 *            The context of this application, used to extract the
 	 *            CONTENT_URI and the ContentResolver
 	 */
-	public static void setNewEvent(CalEvent event, Context context) {
+	public final static void setNewEvent(final CalEvent event,
+			final Context context) {
 
-		Uri EVENTS_URI = Uri.parse(CalendarContract.Events.CONTENT_URI
+		final Uri EVENTS_URI = Uri.parse(CalendarContract.Events.CONTENT_URI
 				.toString());
-		ContentResolver cr = context.getContentResolver();
+		final ContentResolver cr = context.getContentResolver();
 
-		ContentValues values = new ContentValues();
+		final ContentValues values = new ContentValues();
 		values.put("calendar_id", 1);
 		values.put("title", event.title);
 		values.put("allDay", 0);
@@ -320,11 +346,11 @@ public class StatMeth {
 	 * @return An ArrayList of CalEvents, that either is started, or is in the
 	 *         future
 	 */
-	public static ArrayList<CalEvent> readCalendar(Context context) {
+	public final static ArrayList<CalEvent> readCalendar(final Context context) {
 		// The ArrayList to hold the events
-		ArrayList<CalEvent> eventlist = new ArrayList<CalEvent>();
+		final ArrayList<CalEvent> eventlist = new ArrayList<CalEvent>();
 
-		ContentResolver contentResolver = context.getContentResolver();
+		final ContentResolver contentResolver = context.getContentResolver();
 
 		// Calling the query
 		cursor = contentResolver.query(CalendarContract.Events.CONTENT_URI,
@@ -332,14 +358,14 @@ public class StatMeth {
 		cursor.moveToFirst();
 
 		// Getting the used DateFormat from the Android device
-		Format df = DateFormat.getDateFormat(context);
-		Format tf = DateFormat.getTimeFormat(context);
+		final Format df = DateFormat.getDateFormat(context);
+		final Format tf = DateFormat.getTimeFormat(context);
 
 		Long start = 0L;
 
 		// Getting the current Date and Time
-		Date dat = new Date();
-		String today = df.format(dat.getTime());
+		final Date dat = new Date();
+		final String today = df.format(dat.getTime());
 
 		// Writing all the events to the eventlist
 		while (!cursor.isAfterLast()) {
@@ -379,13 +405,13 @@ public class StatMeth {
 	 *            the ContentResolver
 	 * @return The name of the calendar
 	 */
-	public static String getCalendarName(Context context) {
-		String[] que = { CalendarContract.Calendars.CALENDAR_DISPLAY_NAME };
-		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = cr.query(CalendarContract.Calendars.CONTENT_URI, que,
-				null, null, null);
+	public final static String getCalendarName(final Context context) {
+		final String[] que = { CalendarContract.Calendars.CALENDAR_DISPLAY_NAME };
+		final ContentResolver cr = context.getContentResolver();
+		final Cursor cursor = cr.query(CalendarContract.Calendars.CONTENT_URI,
+				que, null, null, null);
 		cursor.moveToFirst();
-		String result = cursor.getString(0);
+		final String result = cursor.getString(0);
 		cursor.close();
 		return result;
 	}
@@ -399,10 +425,11 @@ public class StatMeth {
 	 *            The context of the app, used to extract the CONTENT_URI and
 	 *            the ContentResolver
 	 */
-	public static void updateStart(CalEvent event, Context context) {
+	public final static void updateStart(final CalEvent event,
+			final Context context) {
 		// Update events start time
-		ContentResolver cr = context.getContentResolver();
-		ContentValues cv = new ContentValues();
+		final ContentResolver cr = context.getContentResolver();
+		final ContentValues cv = new ContentValues();
 		Uri uri = null;
 		cv.put(Events.DTSTART, new Date().getTime());
 		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
@@ -420,10 +447,11 @@ public class StatMeth {
 	 * @param time
 	 *            The time that the start should be set to
 	 */
-	public static void updateStart(CalEvent event, Context context, long time) {
+	public final static void updateStart(final CalEvent event,
+			final Context context, final long time) {
 		// Update events start time
-		ContentResolver cr = context.getContentResolver();
-		ContentValues cv = new ContentValues();
+		final ContentResolver cr = context.getContentResolver();
+		final ContentValues cv = new ContentValues();
 		Uri uri = null;
 		cv.put(Events.DTSTART, time);
 		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
@@ -440,10 +468,11 @@ public class StatMeth {
 	 *            The context of the app, used to extract the CONTENT_URI and
 	 *            the ContentResolver
 	 */
-	public static void updateEnd(CalEvent event, Context context) {
+	public final static void updateEnd(final CalEvent event,
+			final Context context) {
 		// Update events end time
-		ContentResolver cr = context.getContentResolver();
-		ContentValues cv = new ContentValues();
+		final ContentResolver cr = context.getContentResolver();
+		final ContentValues cv = new ContentValues();
 		Uri uri = null;
 		cv.put(Events.DTEND, new Date().getTime());
 		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
@@ -462,10 +491,11 @@ public class StatMeth {
 	 * @param time
 	 *            The time the event should now end on
 	 */
-	public static void updateEnd(CalEvent event, Context context, long time) {
+	public final static void updateEnd(final CalEvent event,
+			final Context context, final long time) {
 		// Update events end time
-		ContentResolver cr = context.getContentResolver();
-		ContentValues cv = new ContentValues();
+		final ContentResolver cr = context.getContentResolver();
+		final ContentValues cv = new ContentValues();
 		Uri uri = null;
 		cv.put(Events.DTEND, time);
 		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
@@ -481,9 +511,9 @@ public class StatMeth {
 	 * @param context
 	 *            The context of the application
 	 */
-	public static void update(CalEvent event, Context context) {
-		ContentResolver cr = context.getContentResolver();
-		ContentValues cv = new ContentValues();
+	public final static void update(final CalEvent event, final Context context) {
+		final ContentResolver cr = context.getContentResolver();
+		final ContentValues cv = new ContentValues();
 		Uri uri = null;
 		cv.put(Events.DTSTART, event.startTime);
 		cv.put(Events.DTEND, event.endTime);
@@ -501,10 +531,10 @@ public class StatMeth {
 	 * @param context
 	 *            The context of the application
 	 */
-	public static void savePassword(String password, Context context) {
-		String filename = "pwd";
+	public final static void savePassword(final String password,
+			final Context context) {
 		try {
-			FileOutputStream out = context.openFileOutput(filename,
+			final FileOutputStream out = context.openFileOutput("pwd",
 					Context.MODE_PRIVATE);
 			out.write(password.getBytes());
 			out.close();
@@ -519,13 +549,12 @@ public class StatMeth {
 	 *            The context of the application
 	 * @return The password needed to unlock the settings menu
 	 */
-	public static String getPassword(Context context) {
-		String filename = "pwd";
+	public final static String getPassword(final Context context) {
 		try {
-			FileInputStream in = context.openFileInput(filename);
-			InputStreamReader reader = new InputStreamReader(in);
-			BufferedReader bufferedReader = new BufferedReader(reader);
-			String password = bufferedReader.readLine();
+			final FileInputStream in = context.openFileInput("pwd");
+			final InputStreamReader reader = new InputStreamReader(in);
+			final BufferedReader bufferedReader = new BufferedReader(reader);
+			final String password = bufferedReader.readLine();
 			reader.close();
 			in.close();
 			return password;
@@ -543,11 +572,10 @@ public class StatMeth {
 	 *            The context of the application
 	 * @return The default password, if everything went well
 	 */
-	public static String newPassword(Context context) {
-		String filename = "pwd";
-		String stdPwd = "a";
+	public final static String newPassword(final Context context) {
+		final String stdPwd = "a";
 		try {
-			FileOutputStream out = context.openFileOutput(filename,
+			final FileOutputStream out = context.openFileOutput("pwd",
 					Context.MODE_PRIVATE);
 			out.write(stdPwd.getBytes());
 			out.close();
@@ -558,12 +586,12 @@ public class StatMeth {
 	}
 
 	public final static void delete(final CalEvent event, final Context context) {
-		ContentResolver cr = context.getContentResolver();
-		ContentValues cv = new ContentValues();
+		final ContentResolver cr = context.getContentResolver();
+		final ContentValues cv = new ContentValues();
 		Uri uri = null;
 		final long time = new Date().getTime();
 		cv.put(Events.DTSTART, time);
-		cv.put(Events.DTEND, time+1);
+		cv.put(Events.DTEND, time + 1);
 		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
 		cr.update(uri, cv, null, null);
 		MainActivity.sync();
