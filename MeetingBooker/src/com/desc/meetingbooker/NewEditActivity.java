@@ -28,72 +28,85 @@ import android.widget.AdapterView.OnItemClickListener;
 /**
  * The Activity used when an event is being edited
  * 
- * @author Carl Johnsen, Daniel Pedersen, Emil Pedersen and Sune Bartels
- * @version 0.9
+ * @author Carl Johnsen
+ * @version 1.0
  * @since 14-05-2013
  */
 public final class NewEditActivity extends Activity {
-
-	private static final String TAG = NewEditActivity.class.getSimpleName();
-	private static TimePicker timeStart;
+	
+	// All of the Views
+	private static Button 	  add;
+	private static ImageView  delete;
+	private static EditText   descText;
+	private static ListView   intervalPicker;
 	private static TimePicker timeEnd;
-	private static ListView intervalPicker;
-	private static Date date = new Date();
-	private static final Calendar cal = Calendar.getInstance();
-	private static ArrayList<TimeWindow> windowList;
-	private static TimeWindowAdapter adapter;
-	private static int index;
-	private static EditText titleText;
-	private static EditText descText;
-	private static CalEvent event;
-	private static Context context;
+	private static TimePicker timeStart;
+	private static EditText   titleText;
+	private static Button 	  update;
 
-	private static Button add;
-	private static Button update;
-	private static ImageView delete;
+	// All of the data fields
+	private static 		 TimeWindowAdapter 	   adapter;
+	private static final Calendar 			   cal = Calendar.getInstance();
+	private static 		 Context 			   context;
+	private static 		 Date 				   date = new Date();
+	private static 		 CalEvent 			   event;
+	private static 		 int 				   index;
+	private static final String 			   TAG = NewEditActivity
+														 .class.getSimpleName();
+	private static 		 ArrayList<TimeWindow> windowList;
 
+	// All of the config fields
 	protected static boolean candelete;
-	protected static int windowSize;
+	protected static int 	 windowSize;
 
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
 		Log.d(TAG, "called onCreate()");
 		super.onCreate(savedInstanceState);
+		
+		// Hide Status bar and App title bar (before setContentView())
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		
+		// Set the content view
 		setContentView(R.layout.activity_new_edit);
-
-		titleText = (EditText) findViewById(R.id.editTitle);
-		descText = (EditText) findViewById(R.id.editDesc);
-		add = (Button) findViewById(R.id.addButton);
-		update = (Button) findViewById(R.id.updateButton);
-		delete = (ImageView) findViewById(R.id.deleteButton);
+		
 		context = getApplicationContext();
 
-		// Finds the TimePickers
-		timeStart = (TimePicker) findViewById(R.id.timePickerStart);
-		timeEnd = (TimePicker) findViewById(R.id.timePickerEnd);
-
-		intervalPicker = (ListView) findViewById(R.id.intervalView);
+		// Cast all the views
+		titleText = 	 (EditText)   findViewById(R.id.editTitle);
+		descText = 		 (EditText)   findViewById(R.id.editDesc);
+		add = 			 (Button) 	  findViewById(R.id.addButton);
+		update = 		 (Button) 	  findViewById(R.id.updateButton);
+		delete = 		 (ImageView)  findViewById(R.id.deleteButton);
+		timeStart = 	 (TimePicker) findViewById(R.id.timePickerStart);
+		timeEnd = 		 (TimePicker) findViewById(R.id.timePickerEnd);
+		intervalPicker = (ListView)   findViewById(R.id.intervalView);
+		
+		// Find TimeWindows, make a new adapter and add it to the ListView
 		windowList = findTimeWindow();
-
 		adapter = new TimeWindowAdapter(this, R.layout.timewindow_item,
 				windowList);
-
-		// Setting the ListView
 		intervalPicker.setAdapter(adapter);
 
+		// Set the OnItemClickListener
 		intervalPicker.setOnItemClickListener(new OnItemClickListener() {
+			
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemClick(AdapterView<?> arg0, 
+					View arg1,
+					int position, 
+					long arg3) {
+				// Set the TimePickers to the selected TimeWindow
 				setTimePickers(windowList.get(position));
 			}
+			
 		});
 
+		// Checks which formula it should show
 		if (this.getIntent().getIntExtra("type", 0) == 0) {
 			setNew();
 		} else {
@@ -102,48 +115,13 @@ public final class NewEditActivity extends Activity {
 	}
 
 	/**
-	 * Called by onCreate(). Used when it should show Edit formula
-	 */
-	private final void setEdit() {
-		index = this.getIntent().getIntExtra("event", -2);
-		if (index == -1) {
-			event = MainActivity.current;
-		} else {
-			event = MainActivity.eventlist.get(index);
-		}
-		if (candelete) {
-			delete.setVisibility(ImageView.VISIBLE);
-		} else {
-			delete.setVisibility(ImageView.GONE);
-		}
-
-		titleText.setText(event.title);
-		descText.setText(event.description);
-		setTimePickers(event.getTimeWindow());
-		add.setVisibility(Button.GONE);
-		update.setVisibility(Button.VISIBLE);
-	}
-
-	/**
-	 * Called by onCreate. Used when it should show new meeting formula
-	 */
-	private final void setNew() {
-		delete.setVisibility(Button.GONE);
-		titleText.setHint(titleText.getText().toString());
-		titleText.setText("");
-		setTimePickers(windowList.get(0));
-		add.setVisibility(Button.VISIBLE);
-		update.setVisibility(Button.GONE);
-	}
-
-	/**
 	 * The method called by the "Add" button. Reads all of the fields in the UI,
 	 * inserts them into a new CalEvent and then sends it to EventCreate
 	 * 
-	 * @param view
-	 *            The View of the button
+	 * @param view The View of the button
 	 */
 	public final void add(final View view) {
+		// Set the add button to not clickable, to ensure no double bookings
 		add.setClickable(false);
 
 		Log.d(TAG, "Adding event to calendar");
@@ -160,9 +138,11 @@ public final class NewEditActivity extends Activity {
 		final int endMin = timeEnd.getCurrentMinute();
 
 		// Convert timePicker readings to long
-		final String startTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
-				+ (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR)
-				+ " " + startHour + ":" + startMin;
+		final String startTime = cal.get(Calendar.DAY_OF_MONTH) + "-" + 
+				(cal.get(Calendar.MONTH) + 1) + "-" + 
+				cal.get(Calendar.YEAR) + " " + 
+				startHour + ":" + 
+				startMin;
 		final SimpleDateFormat formatter = new SimpleDateFormat(
 				"dd-MM-yyyy HH:mm", Locale.getDefault());
 		try {
@@ -172,9 +152,11 @@ public final class NewEditActivity extends Activity {
 			Log.e(TAG, e.getMessage());
 		}
 		final long start = date.getTime();
-		final String endTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
-				+ (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR)
-				+ " " + endHour + ":" + endMin;
+		final String endTime = cal.get(Calendar.DAY_OF_MONTH) + "-" + 
+				(cal.get(Calendar.MONTH) + 1) + "-" + 
+				cal.get(Calendar.YEAR) + " " + 
+				endHour + ":" + 
+				endMin;
 		try {
 			date = formatter.parse(endTime);
 		} catch (Exception e) {
@@ -184,6 +166,8 @@ public final class NewEditActivity extends Activity {
 
 		// Create a new CalEvent
 		final CalEvent event = new CalEvent(start, end, title, desc);
+		
+		// If the events end time is before start time, notify the user
 		if (StatMeth.isBefore(event)) {
 			final AlertDialog dialog = new AlertDialog.Builder(this).create();
 			dialog.setTitle("Error");
@@ -194,6 +178,7 @@ public final class NewEditActivity extends Activity {
 						@Override
 						public void onClick(final DialogInterface dialog,
 								final int which) {
+							// DO NOTHING
 						}
 
 					});
@@ -201,7 +186,9 @@ public final class NewEditActivity extends Activity {
 			add.setClickable(true);
 			return;
 		}
-		Log.d(TAG, "" + StatMeth.isFree(event));
+		
+		// If the selected time is available, insert the event
+		// If not, notify the user
 		if (StatMeth.isFree(event)) {
 			StatMeth.setNewEvent(event, context);
 			Log.d(TAG, "event inserted");
@@ -216,6 +203,7 @@ public final class NewEditActivity extends Activity {
 						@Override
 						public void onClick(final DialogInterface dialog,
 								final int which) {
+							// DO NOTHING
 						}
 
 					});
@@ -224,6 +212,23 @@ public final class NewEditActivity extends Activity {
 		}
 	}
 
+	/**
+	 * The method called by the "Cancel" button. Returns the user to the
+	 * MainActivity
+	 * 
+	 * @param view The View of the button
+	 */
+	public final void cancel(final View view) {
+		Log.d(TAG, "Cancel button pressed");
+		finish();
+	}
+
+	/**
+	 * The method called by the delete button. Inflates a "are you sure you
+	 * want to delete" dialog
+	 * 
+	 * @param view The View of the button
+	 */
 	public final void delete(final View view) {
 		final AlertDialog dialog = new AlertDialog.Builder(this).create();
 		dialog.setTitle("Delete");
@@ -251,129 +256,18 @@ public final class NewEditActivity extends Activity {
 	}
 
 	/**
-	 * The method called by the "Add" button. Reads all of the fields in the UI,
-	 * inserts them into a new CalEvent and then sends it to EventCreate
+	 * Help method for findTimeWindow. Finds all TimeWindows between start and 
+	 * end. The size of the windows depends on the windowSize config 
 	 * 
-	 * @param view
-	 *            The View of the button
+	 * @param list The ArrayList that the windows will be added to
+	 * @param start The start time it should find windows from
+	 * @param end The end time it should find windows to
+	 * @return an ArrayList of available TimeWindows between start and end
 	 */
-	public final void update(final View view) {
-		Log.d(TAG, "Adding event to calendar");
-
-		// Read the fields
-		final String title = titleText.getText().toString();
-		final String desc = descText.getText().toString();
-		final int startHour = timeStart.getCurrentHour();
-		final int startMin = timeStart.getCurrentMinute();
-		final int endHour = timeEnd.getCurrentHour();
-		final int endMin = timeEnd.getCurrentMinute();
-
-		// Convert timePicker readings to long
-		final String startTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
-				+ (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR)
-				+ " " + startHour + ":" + startMin;
-		final SimpleDateFormat formatter = new SimpleDateFormat(
-				"dd-MM-yyyy HH:mm", Locale.getDefault());
-		try {
-			date = formatter.parse(startTime);
-			Log.d(TAG, startTime);
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
-		}
-		final long start = date.getTime();
-		final String endTime = cal.get(Calendar.DAY_OF_MONTH) + "-"
-				+ (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR)
-				+ " " + endHour + ":" + endMin;
-		try {
-			date = formatter.parse(endTime);
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
-		}
-		final long end = date.getTime();
-
-		// Create a new CalEvent
-		final CalEvent newEvent = new CalEvent(start, end, title, desc,
-				event.id);
-		if (StatMeth.isBefore(newEvent)) {
-			final AlertDialog dialog = new AlertDialog.Builder(this).create();
-			dialog.setTitle("Error");
-			dialog.setMessage("End time is before start time");
-			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-					new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(final DialogInterface dialog,
-								final int which) {
-						}
-
-					});
-			dialog.show();
-			return;
-		}
-		if (StatMeth.isUpdatable(newEvent, index)) {
-			StatMeth.update(newEvent, context);
-			Log.d(TAG, "event inserted");
-			finish();
-		} else {
-			final AlertDialog dialog = new AlertDialog.Builder(this).create();
-			dialog.setTitle("Error");
-			dialog.setMessage("Meeting is overlapping");
-			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-					new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(final DialogInterface dialog,
-								final int which) {
-						}
-
-					});
-			dialog.show();
-		}
-	}
-
-	/**
-	 * The method called by the "Cancel" button. Returns the user to the
-	 * MainActivity
-	 * 
-	 * @param view
-	 *            The View of the button
-	 */
-	public final void cancel(final View view) {
-		Log.d(TAG, "Cancel button pressed");
-		finish();
-	}
-
-	// Sets time pickers to a possible interval
-	@SuppressLint("SimpleDateFormat")
-	private final void setTimePickers(final TimeWindow window) {
-
-		// Sets the TimePickers to use 24 hour
-		timeStart.setIs24HourView(true);
-		timeEnd.setIs24HourView(true);
-
-		int hour = Integer.parseInt(new SimpleDateFormat("HH").format(new Date(
-				window.start)));
-		int minute = Integer.parseInt(new SimpleDateFormat("mm")
-				.format(new Date(window.start)));
-
-		timeStart.setCurrentHour(hour);
-		timeStart.setCurrentMinute(minute);
-
-		hour = Integer.parseInt(new SimpleDateFormat("HH").format(new Date(
-				window.end)));
-		minute = Integer.parseInt(new SimpleDateFormat("mm").format(new Date(
-				window.end)));
-
-		timeEnd.setCurrentHour(hour);
-		timeEnd.setCurrentMinute(minute);
-
-	}
-
-	// Help method for findTimeWindow
-	// Finds all TimeWindows between the given start and end time, that is
-	// > 5 min and < 1 hour
 	private static final ArrayList<TimeWindow> findHelp(
-			final ArrayList<TimeWindow> list, long start, final long end) {
+			final ArrayList<TimeWindow> list, 
+			long start, 
+			final long end) {
 		final long size = 60000 * windowSize;
 		long interval = end - start;
 		while (interval > 0) {
@@ -392,8 +286,13 @@ public final class NewEditActivity extends Activity {
 		return list;
 	}
 
-	// Finds the window to set TimePickers to
+	/**
+	 * Finds all available TimeWindows from now and until 23:59
+	 * 
+	 * @return An ArrayList of available TimeWindows
+	 */
 	private static final ArrayList<TimeWindow> findTimeWindow() {
+		// Make a new ArrayList and find current time
 		ArrayList<TimeWindow> returnList = new ArrayList<TimeWindow>();
 		final long time = new Date().getTime();
 
@@ -437,6 +336,174 @@ public final class NewEditActivity extends Activity {
 			returnList = findHelp(returnList, last.endTime, midnight);
 		}
 		return returnList;
+	}
+
+	/**
+	 * Called by onCreate(). Used when it should show Edit formula
+	 */
+	private final void setEdit() {
+		
+		// Gets the index of the selected event
+		index = this.getIntent().getIntExtra("event", -2);
+		if (index == -1) {
+			event = MainActivity.current;
+		} else {
+			event = MainActivity.eventlist.get(index);
+		}
+		
+		// If the config allows it, show the delete button
+		if (candelete) {
+			delete.setVisibility(ImageView.VISIBLE);
+		} else {
+			delete.setVisibility(ImageView.GONE);
+		}
+
+		// Set the views to information from the event
+		titleText.setText(event.title);
+		descText.setText(event.description);
+		setTimePickers(event.getTimeWindow());
+		
+		// Hide add button and show update button
+		add.setVisibility(Button.GONE);
+		update.setVisibility(Button.VISIBLE);
+		
+	}
+
+	/**
+	 * Called by onCreate. Used when it should show new meeting formula
+	 */
+	private final void setNew() {
+		// Hide the delete button
+		delete.setVisibility(Button.GONE);
+		
+		// Set the titleTexts hint to the default value 
+		titleText.setHint(titleText.getText().toString());
+		titleText.setText("");
+		
+		// Set the TimePickers to the first found TimeWindow
+		setTimePickers(windowList.get(0));
+		
+		// Show the add button and hide the update button
+		add.setVisibility(Button.VISIBLE);
+		update.setVisibility(Button.GONE);
+	}
+
+	// Sets time pickers to a possible interval
+	@SuppressLint("SimpleDateFormat")
+	private final void setTimePickers(final TimeWindow window) {
+
+		// Sets the TimePickers to use 24 hour
+		timeStart.setIs24HourView(true);
+		timeEnd.setIs24HourView(true);
+
+		// Set the start TimePicker to the windows start time
+		int hour = Integer.parseInt(new SimpleDateFormat("HH")
+				.format(new Date(window.start)));
+		int minute = Integer.parseInt(new SimpleDateFormat("mm")
+				.format(new Date(window.start)));
+		timeStart.setCurrentHour(hour);
+		timeStart.setCurrentMinute(minute);
+
+		// Set the end TimePicker to the windows end time
+		hour = Integer.parseInt(new SimpleDateFormat("HH").format(new Date(
+				window.end)));
+		minute = Integer.parseInt(new SimpleDateFormat("mm").format(new Date(
+				window.end)));
+		timeEnd.setCurrentHour(hour);
+		timeEnd.setCurrentMinute(minute);
+
+	}
+
+	/**
+	 * The method called by the "Add" button. Reads all of the fields in the UI,
+	 * inserts them into a new CalEvent and then sends it to EventCreate
+	 * 
+	 * @param view
+	 *            The View of the button
+	 */
+	public final void update(final View view) {
+		Log.d(TAG, "Adding event to calendar");
+
+		// Read the fields
+		final String title = titleText.getText().toString();
+		final String desc = descText.getText().toString();
+		final int startHour = timeStart.getCurrentHour();
+		final int startMin = timeStart.getCurrentMinute();
+		final int endHour = timeEnd.getCurrentHour();
+		final int endMin = timeEnd.getCurrentMinute();
+
+		// Convert timePicker readings to long
+		final String startTime = cal.get(Calendar.DAY_OF_MONTH) + "-" + 
+				(cal.get(Calendar.MONTH) + 1) + "-" + 
+				cal.get(Calendar.YEAR) + " " + 
+				startHour + ":" + 
+				startMin;
+		final SimpleDateFormat formatter = new SimpleDateFormat(
+				"dd-MM-yyyy HH:mm", Locale.getDefault());
+		try {
+			date = formatter.parse(startTime);
+			Log.d(TAG, startTime);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+		final long start = date.getTime();
+		final String endTime = cal.get(Calendar.DAY_OF_MONTH) + "-" + 
+				(cal.get(Calendar.MONTH) + 1) + "-" + 
+				cal.get(Calendar.YEAR) + " " + 
+				endHour + ":" + 
+				endMin;
+		try {
+			date = formatter.parse(endTime);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+		final long end = date.getTime();
+
+		// Create a new CalEvent
+		final CalEvent newEvent = new CalEvent(start, end, title, desc,
+				event.id);
+		
+		// If the end time is before the start time, notify the user
+		if (StatMeth.isBefore(newEvent)) {
+			final AlertDialog dialog = new AlertDialog.Builder(this).create();
+			dialog.setTitle("Error");
+			dialog.setMessage("End time is before start time");
+			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(final DialogInterface dialog,
+								final int which) {
+							// DO NOTHING
+						}
+
+					});
+			dialog.show();
+			return;
+		}
+		
+		// If the selected time is available, update the event
+		// If not, notify the user
+		if (StatMeth.isUpdatable(newEvent, index)) {
+			StatMeth.update(newEvent, context);
+			Log.d(TAG, "event inserted");
+			finish();
+		} else {
+			final AlertDialog dialog = new AlertDialog.Builder(this).create();
+			dialog.setTitle("Error");
+			dialog.setMessage("Meeting is overlapping");
+			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(final DialogInterface dialog,
+								final int which) {
+							// DO NOTHING
+						}
+
+					});
+			dialog.show();
+		}
 	}
 
 }

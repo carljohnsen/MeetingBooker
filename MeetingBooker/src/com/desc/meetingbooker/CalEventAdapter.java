@@ -10,34 +10,66 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+/**
+ * An custom ArrayAdapter for the ListView in MainActivity
+ * 
+ * @author Carl Johnsen
+ * @version 1.0
+ * @since 02-06-2013
+ */
 public final class CalEventAdapter extends ArrayAdapter<CalEvent> {
 
 	private final ArrayList<CalEvent> entries;
 	private final Activity activity;
 
-	public CalEventAdapter(Activity a, int textViewResourceId,
+	/**
+	 * The constructor for an CalEventAdapter
+	 * 
+	 * @param a 				 The activity it is used
+	 * @param textViewResourceId The layout it uses
+	 * @param entries 			 The ArrayList that will be set up in the list
+	 */
+	public CalEventAdapter(Activity a, 
+			int textViewResourceId,
 			ArrayList<CalEvent> entries) {
 		super(a, textViewResourceId, entries);
 		this.entries = entries;
 		this.activity = a;
 	}
 
+	/**
+	 * The ViewHolder for an item in the list
+	 * 
+	 * @author Carl Johnsen
+	 * @version 1.0
+	 * @since 02-06-2013
+	 */
 	public final static class ViewHold {
+		/** R.id.evTitle */
 		public TextView item1;
+		/** R.id.evOrganizer */
 		public TextView item2;
+		/** R.id.evDescription */
 		public TextView item3;
+		/** R.id.evStEn */
 		public TextView item4;
 	}
 
 	@Override
-	public final View getView(final int position, final View convertView,
+	public final View getView(final int position, 
+			final View convertView,
 			final ViewGroup parent) {
+		
 		View v = convertView;
 		final ViewHold holder;
+		
 		if (v == null) {
+			// Inflate the View
 			final LayoutInflater vi = (LayoutInflater) activity
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.calevent_item, null);
+			
+			// Make a new ViewHold, and find the Views
 			holder = new ViewHold();
 			holder.item1 = (TextView) v.findViewById(R.id.evTitle);
 			holder.item2 = (TextView) v.findViewById(R.id.evOrganizer);
@@ -47,6 +79,8 @@ public final class CalEventAdapter extends ArrayAdapter<CalEvent> {
 		} else {
 			holder = (ViewHold) v.getTag();
 		}
+		
+		// Take the event, and fill its information into the Views
 		final CalEvent event = entries.get(position);
 		if (event != null) {
 			holder.item1.setText(event.title);
@@ -55,6 +89,7 @@ public final class CalEventAdapter extends ArrayAdapter<CalEvent> {
 			holder.item4.setText(event.getStartTime() + " | "
 					+ event.getEndTime());
 		}
+		
 		return v;
 	}
 

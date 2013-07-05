@@ -3,9 +3,9 @@ package com.desc.meetingbooker;
 /**
  * A class that represents a setting in the settingsactivity
  * 
- * @author carljohnsen
+ * @author Carl Johnsen
  * @since 28-06-2013
- * @version 0.1
+ * @version 1.0
  */
 public final class Setting {
 	

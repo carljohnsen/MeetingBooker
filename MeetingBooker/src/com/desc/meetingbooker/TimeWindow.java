@@ -7,8 +7,8 @@ import android.text.format.DateFormat;
  * A class which is used to represent a time window, i.e. A window of time
  * where there the calendar is not booked
  * 
- * @version 0.9
- * @author Carl Johnsen, Daniel Pedersen, Emil Pedersen and Sune Bartels
+ * @version 1.0
+ * @author Carl Johnsen
  * @since 14-05-2013
  */
 public final class TimeWindow {
@@ -27,10 +27,20 @@ public final class TimeWindow {
 		this.end = end;
 	}
 	
+	/**
+	 * Get a String representation of the TimeWindows start time
+	 * 
+	 * @return A String representation of the TimeWindows start time
+	 */
 	public final String getStartString() {
 		return DateFormat.format("kk:mm", new Date(this.start)).toString();
 	}
 	
+	/**
+	 * Get a String representation of the TimeWindows end time
+	 * 
+	 * @return A String representation of the TimeWindows end time
+	 */
 	public final String getEndString() {
 		return DateFormat.format("kk:mm", new Date(this.end)).toString();
 	}

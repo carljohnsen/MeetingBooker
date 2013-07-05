@@ -243,7 +243,7 @@
             android:layout_width="match_parent"
             android:layout_height="80sp"
             android:layout_alignParentBottom="true"
-            android:onClick="startNewMeeting"
+            android:onClick="newMeeting"
             android:text="@string/text_newmeeting"
             android:textColor="@android:color/black"
             android:textSize="20sp" />

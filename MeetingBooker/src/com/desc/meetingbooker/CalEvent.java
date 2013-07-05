@@ -5,109 +5,96 @@ import java.text.Format;
 /**
  * A Class that resembles an event in the calendar
  * 
- * @author Carl Johnsen, Daniel Pedersen, Emil Pedersen and Sune Bartels
- * @version 0.9
+ * @author Carl Johnsen
+ * @version 1.0
  * @since 04-04-2013
  */
 public final class CalEvent {
 
-	protected final Long startTime;
-	protected final Long endTime;
-	protected final String title;
-	public String description;
-	protected String organizer;
-	protected Format datF;
-	protected boolean isUnderway;
-	protected long id;
-
+	protected 		boolean isUnderway;
+	protected 		Format 	datF;
+	protected 		long 	id;
+	protected final Long 	endTime;
+	protected final Long 	startTime;
+	protected		String 	description;
+	protected 		String 	organizer;
+	protected final String 	title;
+	
 	/**
 	 * The constructor for making a new CalEvent
 	 * 
-	 * @param sT
-	 *            The start time of the event
-	 * @param eT
-	 *            The end time of the event
-	 * @param tit
-	 *            The title of the event
-	 * @param desc
-	 *            The description of the event
-	 * @param tf
-	 *            The date format of the event
-	 * @param iU
-	 *            boolean value isUnderway
-	 * @param id
-	 *            The id of the event
-	 * @param organizer
-	 *            The organizer of the event
+	 * @param sT 		The start time of the event
+	 * @param eT 		The end time of the event
+	 * @param tit 		The title of the event
+	 * @param desc 		The description of the event
+	 * @param tf 		The date format of the event
+	 * @param iU 		The boolean value isUnderway
+	 * @param id 		The id of the event
+	 * @param organizer The organizer of the event
 	 */
-	public CalEvent(final long sT, final long eT, final String tit,
-			final String desc, final Format tf, final boolean iU,
-			final long id, final String organizer) {
-		startTime = sT;
-		endTime = eT;
-		title = tit;
+	public CalEvent(final long sT, 
+			final long eT, 
+			final String tit,
+			final String desc, 
+			final Format tf, 
+			final boolean iU,
+			final long id, 
+			final String organizer) {
+		
+		// If the description is empty, change it to "(no description)"
 		if (desc != null && !desc.equals("")) {
-			description = desc;
+			this.description = desc;
 		} else {
-			description = "(no description)";
+			this.description = "(no description)";
 		}
-		datF = tf;
-		isUnderway = iU;
+		
+		this.startTime = sT;
+		this.endTime = eT;
+		this.title = tit;
+		this.datF = tf;
+		this.isUnderway = iU;
 		this.id = id;
 		this.organizer = organizer;
 	}
 
 	/**
-	 * The constructor to make a temporary event (used by XX)
+	 * The constructor to make a temporary event (used by NewEditActivity.add())
 	 * 
-	 * @param sT
-	 *            The start time of the event
-	 * @param eT
-	 *            The end time of the event
-	 * @param tit
-	 *            The title of the event
-	 * @param desc
-	 *            The description of the event
+	 * @param sT   The start time of the event
+	 * @param eT   The end time of the event
+	 * @param tit  The title of the event
+	 * @param desc The description of the event
 	 */
-	public CalEvent(final long sT, final long eT, final String tit, final String desc) {
-		startTime = sT;
-		endTime = eT;
-		title = tit;
-		description = desc;
+	public CalEvent(final long sT, 
+			final long eT, 
+			final String tit, 
+			final String desc) {
+		this.startTime = sT;
+		this.endTime = eT;
+		this.title = tit;
+		this.description = desc;
 	}
 
 	/**
-	 * The constructor to make a check event ??
+	 * The constructor to make a temporary event 
+	 * (used by NewEditActivity.update())
 	 * 
-	 * @param sT
-	 *            The start time of the event
-	 * @param eT
-	 *            The end time of the event
-	 * @param tit
-	 *            The title of the event
-	 * @param desc
-	 *            The description of the event
-	 * @param id
-	 *            The id of the event
+	 * @param sT   The start time of the event
+	 * @param eT   The end time of the event
+	 * @param tit  The title of the event
+	 * @param desc The description of the event
+	 * @param id   The id of the event
 	 */
-	public CalEvent(final long sT, final long eT, final String tit, final String desc, final long id) {
-		startTime = sT;
-		endTime = eT;
-		title = tit;
-		description = desc;
+	public CalEvent(final long sT, 
+			final long eT, 
+			final String tit, 
+			final String desc, 
+			final long id) {
+		this.startTime = sT;
+		this.endTime = eT;
+		this.title = tit;
+		this.description = desc;
 		this.id = id;
-	}
-
-	/**
-	 * Method for getting a String representation of the event
-	 * 
-	 * @return A String representation of the event
-	 */
-	public final String toString() {
-		return "Title : " + title + "\n" + "Start : " + datF.format(startTime)
-				+ "\n" + "End : " + datF.format(endTime) + "\n"
-				+ "Description : " + description + "\n" + "isUnderway : "
-				+ isUnderway + "\n" + "Organizer : " + organizer;
 	}
 
 	/**
@@ -120,15 +107,6 @@ public final class CalEvent {
 	}
 
 	/**
-	 * Method for getting a String representation of the events start time
-	 * 
-	 * @return A String representation of the events start time
-	 */
-	public final String getStartTime() {
-		return datF.format(startTime);
-	}
-
-	/**
 	 * Method for getting a String representation of the events end time
 	 * 
 	 * @return A String representation of the events end time
@@ -138,12 +116,35 @@ public final class CalEvent {
 	}
 
 	/**
-	 * Returns a TimeWindow representation of the event
+	 * Method for getting a String representation of the events start time
+	 * 
+	 * @return A String representation of the events start time
+	 */
+	public final String getStartTime() {
+		return datF.format(startTime);
+	}
+
+	/**
+	 * Method for getting a TimeWindow representation of the event
 	 * 
 	 * @return The time window of the event
 	 */
 	public final TimeWindow getTimeWindow() {
 		return new TimeWindow(this.startTime, this.endTime);
+	}
+
+	/**
+	 * Method for getting a String representation of the event
+	 * 
+	 * @return A String representation of the event
+	 */
+	public final String toString() {
+		return "Title : "    + title				  + "\n" + 
+			"Start : "       + datF.format(startTime) + "\n" + 
+			"End : "         + datF.format(endTime)   + "\n" + 
+			"Description : " + description 			  + "\n" + 
+			"isUnderway : "  + isUnderway 			  + "\n" + 
+			"Organizer : "   + organizer;
 	}
 	
 }

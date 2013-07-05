@@ -5,8 +5,8 @@ import java.util.Comparator;
 /**
  * A Class used when sorting the array of events
  * 
- * @author Carl Johnsen, Daniel Pedersen, Emil Pedersen and Sune Bartels
- * @version 0.9
+ * @author Carl Johnsen
+ * @version 1.0
  * @since 04-04-2013
  */
 public final class CustomComparator implements Comparator<CalEvent> {
