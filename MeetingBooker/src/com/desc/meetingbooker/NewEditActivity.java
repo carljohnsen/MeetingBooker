@@ -87,6 +87,10 @@ public final class NewEditActivity extends Activity {
 		timeEnd = 		 (TimePicker) findViewById(R.id.timePickerEnd);
 		intervalPicker = (ListView)   findViewById(R.id.intervalView);
 		
+		// Sets the TimePickers to use 24 hour
+		timeStart.setIs24HourView(true);
+		timeEnd.setIs24HourView(true);
+		
 		// Find TimeWindows, make a new adapter and add it to the ListView
 		windowList = findTimeWindow();
 		adapter = new TimeWindowAdapter(this, R.layout.timewindow_item,
@@ -381,8 +385,25 @@ public final class NewEditActivity extends Activity {
 		titleText.setHint(titleText.getText().toString());
 		titleText.setText("");
 		
-		// Set the TimePickers to the first found TimeWindow
-		setTimePickers(windowList.get(0));
+		// Set the TimePickers to the first found TimeWindow, if there is any
+		if (windowList.isEmpty()) {
+			final AlertDialog dialog = new AlertDialog.Builder(this).create();
+			dialog.setTitle("Error");
+			dialog.setMessage("There are no more available times today");
+			dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(final DialogInterface dialog,
+								final int which) {
+							finish();
+						}
+
+					});
+			dialog.show();
+		} else {
+			setTimePickers(windowList.get(0));
+		}
 		
 		// Show the add button and hide the update button
 		add.setVisibility(Button.VISIBLE);
@@ -392,11 +413,6 @@ public final class NewEditActivity extends Activity {
 	// Sets time pickers to a possible interval
 	@SuppressLint("SimpleDateFormat")
 	private final void setTimePickers(final TimeWindow window) {
-
-		// Sets the TimePickers to use 24 hour
-		timeStart.setIs24HourView(true);
-		timeEnd.setIs24HourView(true);
-
 		// Set the start TimePicker to the windows start time
 		int hour = Integer.parseInt(new SimpleDateFormat("HH")
 				.format(new Date(window.start)));
