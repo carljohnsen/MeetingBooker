@@ -77,7 +77,7 @@ public final class MainActivity extends Activity {
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d(TAG, "onCreate() called");
+		Log.d(TAG, "called onCreate()");
 
 		// Hide Status bar and App title bar (before setContentView())
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -137,7 +137,6 @@ public final class MainActivity extends Activity {
 		// Make a new Timer for continuous update of calendar ie. call sync()
 		// every 5 seconds
 		final Timer timer = new Timer();
-		Log.d(TAG, "Timer started");
 		timer.scheduleAtFixedRate(new TimerTask() {
 			
 			@Override
@@ -158,7 +157,7 @@ public final class MainActivity extends Activity {
 
 	@Override
 	protected final void onResume() {
-		Log.d(TAG, "onResume()");
+		Log.d(TAG, "called onResume()");
 		super.onResume();
 		
 		// Check if there are new events in the calendar, and check if there is
@@ -180,6 +179,7 @@ public final class MainActivity extends Activity {
 			!isDelayed && 
 			current.startTime <= currentTime) {
 			
+			Log.d(TAG, "current is delayed; extend start");
 			isDelayed = true;
 			if ((current.endTime - current.startTime) > (startExtend * 60000)) {
 				StatMeth.updateStart(current, context, current.startTime
@@ -195,7 +195,8 @@ public final class MainActivity extends Activity {
 			!current.isUnderway && 
 			isDelayed && 
 			current.startTime <= currentTime) {
-			deleteCurrent();
+			Log.d(TAG, "current is still delayed; delete current");
+			StatMeth.delete(current, context);
 		}
 	}
 
@@ -212,6 +213,7 @@ public final class MainActivity extends Activity {
 		// been extended, and whether it will go overtime in the next minute
 		final Long currentTime = new Date().getTime() + 60000;
 		if (current != null && !isOverTime && current.endTime <= currentTime) {
+			Log.d(TAG, "current have gone over time; extend end");
 			isOverTime = true;
 			StatMeth.updateEnd(current, context, findExtendedTimeWindow());
 		}
@@ -224,23 +226,18 @@ public final class MainActivity extends Activity {
 	 */
 	private final static void curShow(final boolean val) {
 		if (val) {
+			Log.d(TAG, "show curnextLay");
 			curNextLay.setClickable(true);
 			curNextLay.setVisibility(View.VISIBLE);
 			line2.setVisibility(RelativeLayout.VISIBLE);
 		} else {
+			Log.d(TAG, "hide curnextLay");
 			curNextLay.setClickable(false);
 			curNextLay.setVisibility(View.GONE);
 			nextMeeting.setVisibility(Button.GONE);
 			endMeeting.setVisibility(Button.GONE);
 			line2.setVisibility(RelativeLayout.GONE);
 		}
-	}
-
-	/**
-	 * Deletes the current event
-	 */
-	private final static void deleteCurrent() {
-		StatMeth.delete(current, context);
 	}
 
 	/**
@@ -251,6 +248,7 @@ public final class MainActivity extends Activity {
 	 * @param view The View of the layout
 	 */
 	public final void editCurrent(View view) {
+		Log.d(TAG, "pressed current; edit current");
 		final Intent intent = new Intent(this, NewEditActivity.class);
 		intent.putExtra("event", -1);
 		intent.putExtra("type", 1);
@@ -266,6 +264,7 @@ public final class MainActivity extends Activity {
 	 * @param view The View from the button
 	 */
 	public final void endMeeting(final View view) {
+		Log.d(TAG, "pressed EndMeeting button");
 		if (endDelete) {
 			StatMeth.updateEnd(current, context);
 		} else {
@@ -281,6 +280,7 @@ public final class MainActivity extends Activity {
 	 * @return The largest available time to extend with
 	 */
 	private final static long findExtendedTimeWindow() {
+		Log.d(TAG, "called findExtendedTimeWindow()");
 		// Check if there is a next event
 		if (!eventlist.isEmpty()) {
 			final long interval = eventlist.get(0).startTime - current.endTime;
@@ -299,7 +299,7 @@ public final class MainActivity extends Activity {
 	 * @param view The View from the button
 	 */
 	public final void newMeeting(final View view) {
-		Log.d(TAG, "New Meeting button pressed");
+		Log.d(TAG, "pressed NewMeeting button");
 		final Intent intent = new Intent(this, NewEditActivity.class);
 		intent.putExtra("type", 0);
 		startActivityForResult(intent, 1);
@@ -311,6 +311,7 @@ public final class MainActivity extends Activity {
 	 * @param event The event which will be set as current
 	 */
 	private final static void setCurrent(final CalEvent event) {
+		Log.d(TAG, "called setCurrent()");
 		currentTitle.setText(event.title);
 		currentOrganizer.setText(event.organizer);
 		currentDesc.setText(event.description);
@@ -324,6 +325,7 @@ public final class MainActivity extends Activity {
 	 * @param view The View of the button
 	 */
 	public final void settings(final View view) {
+		Log.d(TAG, "pressed settings button");
 		final DialogFragment fragment = new SettingsFragment();
 		fragment.show(getFragmentManager(), "BLA");
 	}
@@ -335,6 +337,7 @@ public final class MainActivity extends Activity {
 	 * @param view The View from the button
 	 */
 	public final void startNextMeeting(final View view) {
+		Log.d(TAG, "pressed NextMeeting button");
 		StatMeth.updateStart(current, context);
 	}
 
@@ -343,12 +346,14 @@ public final class MainActivity extends Activity {
 	 * and updates the UI if changes have been made
 	 */
 	protected final static void sync() {
+		Log.d(TAG, "called sync()");
 		// The event that is currently underway
 		current = null;
 
 		// Reads all events from the calendar on the present day into an
 		// ArrayList
 		eventlist = StatMeth.readCalendar(context);
+		Log.d(TAG, "found " + eventlist.size() + " events today");
 
 		// Checks if any of the event in the ArrayList is underway,
 		// and sets it as current event and removes it from the list
@@ -415,6 +420,7 @@ public final class MainActivity extends Activity {
 		// Creates the listView
 		adapter.clear();
 		adapter.addAll(eventlist);
+		Log.d(TAG, "sync() is done");
 
 	}
 
@@ -427,11 +433,14 @@ public final class MainActivity extends Activity {
 	 */
 	public final static class SettingsFragment extends DialogFragment {
 
+		private static String TAG = SettingsFragment.class.getSimpleName();
 		private static boolean wasWrong = false;
 
 		@Override
 		public final Dialog onCreateDialog(final Bundle savedInstanceState) {
 
+			Log.d(TAG, "called onCreateDialog()");
+			
 			// Inflate the view
 			final AlertDialog.Builder builder = new AlertDialog.Builder(
 					getActivity());
@@ -456,6 +465,7 @@ public final class MainActivity extends Activity {
 										final DialogInterface arg0,
 										final int arg1) {
 									
+									Log.d(TAG, "pressed OK button");
 									// Find the the typed password, and the
 									// saved password
 									final EditText pwtext = (EditText) 
@@ -494,6 +504,7 @@ public final class MainActivity extends Activity {
 								public final void onClick(
 										final DialogInterface dialog,
 										final int which) {
+									Log.d(TAG, "pressed Cancel button");
 									wasWrong = false;
 								}
 								

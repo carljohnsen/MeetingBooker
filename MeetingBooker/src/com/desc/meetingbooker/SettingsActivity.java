@@ -42,6 +42,7 @@ public final class SettingsActivity extends Activity {
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d(TAG, "called onCreate()");
 
 		// Hide Status bar and App title bar (before setContentView())
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -70,7 +71,7 @@ public final class SettingsActivity extends Activity {
 					final int position, 
 					final long arg3) {
 				
-				Log.d(TAG, "List was clicked!");
+				Log.d(TAG, "List was clicked on position " + position);
 				
 				// Check if it is a boolean, so that it should check/uncheck
 				if (config.get(position).valueType.equals("boolean")) {
@@ -126,7 +127,7 @@ public final class SettingsActivity extends Activity {
 			}
 		});
 
-		Log.d(TAG, "onCreate()");
+		Log.d(TAG, "onCreate() is done");
 	}
 
 	/**
@@ -135,7 +136,7 @@ public final class SettingsActivity extends Activity {
 	 * @param view The View of the button
 	 */
 	public final void cancel(final View view) {
-		Log.d(TAG, "cancel()");
+		Log.d(TAG, "pressed Cancel button");
 		finish();
 	}
 
@@ -146,6 +147,7 @@ public final class SettingsActivity extends Activity {
 	 * @param view The View of the button
 	 */
 	public final void newPassword(final View view) {
+		Log.d(TAG, "pressed NewPassword button");
 		new PasswordFragment().show(getFragmentManager(), "BLA");
 	}
 
@@ -155,6 +157,7 @@ public final class SettingsActivity extends Activity {
 	 * @return The new list of settings
 	 */
 	public final ArrayList<Setting> readList() {
+		Log.d(TAG, "called readList()");
 		// Make a new ArrayList
 		final ArrayList<Setting> temp = new ArrayList<Setting>();
 		
@@ -170,7 +173,6 @@ public final class SettingsActivity extends Activity {
 				TextView tv = (TextView) v.findViewById(R.id.settingVal);
 				value = "" + tv.getText();
 			}
-			Log.d("SettingsActivity", "Field value : " + value);
 			set.value = value;
 			temp.add(set);
 		}
@@ -185,9 +187,9 @@ public final class SettingsActivity extends Activity {
 	 * @param view The View from the button
 	 */
 	public final void save(final View view) {
+		Log.d(TAG, "pressed Save button");
 		config = readList();
 		StatMeth.write(config, getApplicationContext());
-		Log.d(TAG, "Save the new configuration");
 		finish();
 	}
 
@@ -200,10 +202,12 @@ public final class SettingsActivity extends Activity {
 	 */
 	public final static class NumberFragment extends DialogFragment {
 
+		private static String TAG = NumberFragment.class.getSimpleName();
 		private static int index;
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			Log.d(TAG, "called onCreateDialog()");
 			// Inflate the View
 			final AlertDialog.Builder builder = new AlertDialog.Builder(
 					getActivity());
@@ -237,6 +241,7 @@ public final class SettingsActivity extends Activity {
 						@Override
 						public void onClick(final DialogInterface arg0,
 								final int arg1) {
+							Log.d(TAG, "pressed OK button");
 							// Read the NumberPicker and save the information
 							final NumberPicker picker = (NumberPicker) v
 									.findViewById(R.id.numberPicker);
@@ -262,10 +267,12 @@ public final class SettingsActivity extends Activity {
 	 */
 	public final static class PasswordFragment extends DialogFragment {
 
+		private static String TAG = PasswordFragment.class.getSimpleName();
 		private static int error = 0;
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			Log.d(TAG, "called onCreateDialog()");
 			// Inflate the View
 			final AlertDialog.Builder builder = new AlertDialog.Builder(
 					getActivity());
@@ -320,6 +327,7 @@ public final class SettingsActivity extends Activity {
 									// are the same
 									if (new1.equals(new2)
 											&& old.equals(storedpw)) {
+										Log.d(TAG, "new password: all ok");
 										error = 0;
 										StatMeth.savePassword(new1, context);
 										return;
@@ -327,6 +335,8 @@ public final class SettingsActivity extends Activity {
 									
 									// If the two new differ from each other
 									if (!new1.equals(new2)) {
+										Log.d(TAG, "new password: two new dont"+
+										" match");
 										error = 1;
 										final PasswordFragment fragment = 
 												new PasswordFragment();
@@ -338,6 +348,8 @@ public final class SettingsActivity extends Activity {
 									// If the typed old differs from the stored
 									// old
 									if (!old.equals(storedpw)) {
+										Log.d(TAG, "new password: old was" + 
+										" wrong");
 										error = 2;
 										final PasswordFragment fragment = 
 												new PasswordFragment();
@@ -355,6 +367,7 @@ public final class SettingsActivity extends Activity {
 								public final void onClick(
 										final DialogInterface dialog,
 										final int which) {
+									Log.d(TAG, "pressed Cancel button");
 									error = 0;
 								}
 
@@ -373,10 +386,13 @@ public final class SettingsActivity extends Activity {
 	 * @since 03-07-2013
 	 */
 	public final static class StringFragment extends DialogFragment {
+		
+		private static String TAG = StringFragment.class.getSimpleName();
 		private static int index;
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			Log.d(TAG, "called onCreateDialog()");
 			// Inflate the View
 			final AlertDialog.Builder builder = new AlertDialog.Builder(
 					getActivity());
@@ -404,6 +420,7 @@ public final class SettingsActivity extends Activity {
 								public final void onClick(
 										final DialogInterface dialog,
 										final int which) {
+									Log.d(TAG, "pressed OK button");
 									// Read the fragment Views, and save them
 									// in the ListView
 									final EditText edit = (EditText) v
@@ -425,8 +442,8 @@ public final class SettingsActivity extends Activity {
 								public final void onClick(
 										final DialogInterface dialog,
 										final int which) {
+									Log.d(TAG, "pressed Cancel button");
 									// DO NOTHING
-
 								}
 							});
 			return builder.create();

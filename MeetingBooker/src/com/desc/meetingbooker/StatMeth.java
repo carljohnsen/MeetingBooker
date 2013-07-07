@@ -33,6 +33,8 @@ import android.util.Log;
  * @since 24-06-2013
  */
 public final class StatMeth {
+	
+	private static String TAG = StatMeth.class.getSimpleName();
 
 	// The query used to get the events from the Android calendar
 	private static final String[] COLS = new String[] {
@@ -48,7 +50,7 @@ public final class StatMeth {
 	 * @param context The context of the application
 	 */
 	private final static void configMake(final Context context) {
-		Log.d("Config", "configMake()!");
+		Log.d(TAG, "called configMake()");
 		try {
 			// Open the file
 			final FileOutputStream out = context.openFileOutput("config.cfg",
@@ -98,7 +100,7 @@ public final class StatMeth {
 			outputStream.close();
 			out.close();
 		} catch (IOException e) {
-			Log.d("ConfigReader", e.getMessage());
+			Log.e(TAG, e.getMessage());
 		}
 	}
 
@@ -112,6 +114,7 @@ public final class StatMeth {
 	 */
 	public final static void delete(final CalEvent event, 
 			final Context context) {
+		Log.d(TAG, "called delete()");
 		// Get the ContentResolver and the URI
 		final ContentResolver cr = context.getContentResolver();
 		final ContentValues cv = new ContentValues();
@@ -135,6 +138,7 @@ public final class StatMeth {
 	 * @return The name of the calendar
 	 */
 	public final static String getCalendarName(final Context context) {
+		Log.d(TAG, "called getCalendarName()");
 		// The query
 		final String[] que = { 
 			CalendarContract.Calendars.CALENDAR_DISPLAY_NAME 
@@ -159,6 +163,7 @@ public final class StatMeth {
 	 * @return The password needed to unlock the settings menu
 	 */
 	public final static String getPassword(final Context context) {
+		Log.d(TAG, "called getPassword()");
 		try {
 			// Open the file
 			final FileInputStream in = context.openFileInput("pwd");
@@ -263,6 +268,7 @@ public final class StatMeth {
 	 * @return true, if the end is before the start
 	 */
 	public final static boolean isBefore(final CalEvent event) {
+		Log.d(TAG, "called isBefore()");
 		return event.endTime < event.startTime;
 	}
 
@@ -273,6 +279,7 @@ public final class StatMeth {
 	 * @return true, if it does not overlap
 	 */
 	public final static boolean isFree(final CalEvent event) {
+		Log.d(TAG, "called isFree()");
 		// Ensure that current is also checked
 		if (MainActivity.current != null) {
 			MainActivity.eventlist.add(MainActivity.current);
@@ -312,6 +319,7 @@ public final class StatMeth {
 	 */
 	public final static boolean isUpdatable(final CalEvent event,
 			final int index) {
+		Log.d(TAG, "called isUpdatable");
 		// Ensure that current is checked, and the event that is being updated,
 		// is removed from the list
 		if (!(index == -1)) {
@@ -349,6 +357,7 @@ public final class StatMeth {
 	 * @return The default password, if everything went well
 	 */
 	public final static String newPassword(final Context context) {
+		Log.d(TAG, "called newPassword()");
 		final String stdPwd = "a";
 		try {
 			// Open the file
@@ -376,6 +385,7 @@ public final class StatMeth {
 	 */
 	public final static ArrayList<CalEvent> readCalendar(
 			final Context context) {
+		Log.d(TAG, "called readCalendar()");
 		
 		// The ArrayList to hold the events
 		final ArrayList<CalEvent> eventlist = new ArrayList<CalEvent>();
@@ -405,7 +415,6 @@ public final class StatMeth {
 			start = cursor.getLong(0);
 			boolean isUnderway = false;
 			if (start < new Date().getTime()) {
-				Log.d("TAG", "Check event fra read");
 				isUnderway = true;
 			}
 			eventlist.add(new CalEvent(
@@ -427,6 +436,8 @@ public final class StatMeth {
 		// Sorts eventlist by start time
 		Collections.sort(eventlist, new CustomComparator());
 
+		Log.d(TAG, "readCalendar() is done");
+		
 		return eventlist;
 	}
 
@@ -438,6 +449,7 @@ public final class StatMeth {
 	 * @return A HashMap of (command, value) pairs
 	 */
 	public final static ArrayList<Setting> readConfig(final Context context) {
+		Log.d(TAG, "called readConfig()");
 		// Make a new ArrayList
 		settings = new ArrayList<Setting>();
 
@@ -454,6 +466,7 @@ public final class StatMeth {
 			while ((line = bufferedReader.readLine()) != null) {
 				interpret(line);
 			}
+			Log.d(TAG, "called interpret() " + settings.size() + " times");
 			
 			// Close the file
 			inputStreamReader.close();
@@ -461,6 +474,7 @@ public final class StatMeth {
 		} catch (FileNotFoundException e) {
 			configMake(context);
 		} catch (IOException e) {
+			Log.e(TAG, e.getMessage());
 		}
 		return settings;
 	}
@@ -473,6 +487,7 @@ public final class StatMeth {
 	 */
 	public final static void savePassword(final String password,
 			final Context context) {
+		Log.d(TAG, "called savePassword()");
 		try {
 			// Open the file
 			final FileOutputStream out = context.openFileOutput("pwd",
@@ -484,6 +499,7 @@ public final class StatMeth {
 			// Close the file
 			out.close();
 		} catch (IOException e) {
+			Log.e(TAG, e.getMessage());
 		}
 	}
 
@@ -496,6 +512,7 @@ public final class StatMeth {
 	 */
 	public final static void setNewEvent(final CalEvent event,
 			final Context context) {
+		Log.d(TAG, "called setNewEvent()");
 
 		// Get the URI and the ContentResolver
 		final Uri EVENTS_URI = Uri.parse(CalendarContract.Events.CONTENT_URI
@@ -527,6 +544,7 @@ public final class StatMeth {
 	 */
 	public final static void update(final CalEvent event, 
 			final Context context) {
+		Log.d(TAG, "called update()");
 		// Get the ContentResolver and the URI
 		final ContentResolver cr = context.getContentResolver();
 		final ContentValues cv = new ContentValues();
@@ -552,6 +570,7 @@ public final class StatMeth {
 	 */
 	public final static void updateEnd(final CalEvent event,
 			final Context context) {
+		Log.d(TAG, "called updateEnd(CalEvent)");
 		// Get the ContentResolver and the URI
 		final ContentResolver cr = context.getContentResolver();
 		final ContentValues cv = new ContentValues();
@@ -576,6 +595,7 @@ public final class StatMeth {
 	 */
 	public final static void updateEnd(final CalEvent event,
 			final Context context, final long time) {
+		Log.d(TAG, "called updateEnd(CalEvent, long)");
 		// Get the ContentResolver and the URI
 		final ContentResolver cr = context.getContentResolver();
 		final ContentValues cv = new ContentValues();
@@ -599,6 +619,7 @@ public final class StatMeth {
 	 */
 	public final static void updateStart(final CalEvent event,
 			final Context context) {
+		Log.d(TAG, "called updateStart(CalEvent)");
 		// Get the ContentResolver and the uri
 		final ContentResolver cr = context.getContentResolver();
 		final ContentValues cv = new ContentValues();
@@ -622,6 +643,7 @@ public final class StatMeth {
 	 */
 	public final static void updateStart(final CalEvent event,
 			final Context context, final long time) {
+		Log.d(TAG, "called updateStart(CalEvent, long)");
 		// Get the ContentResolver and the URI
 		final ContentResolver cr = context.getContentResolver();
 		final ContentValues cv = new ContentValues();
@@ -644,6 +666,7 @@ public final class StatMeth {
 	 */
 	public final static void write(final ArrayList<Setting> sett,
 			final Context context) {
+		Log.d(TAG, "called write()");
 		try {
 			// Open the file
 			final FileOutputStream out = context.openFileOutput("config.cfg",
@@ -662,7 +685,7 @@ public final class StatMeth {
 			outputStream.close();
 			out.close();
 		} catch (IOException e) {
-			Log.d("ConfigReader", e.getMessage());
+			Log.e(TAG, e.getMessage());
 		}
 		// Read the to make sure that save went OK
 		readConfig(context);

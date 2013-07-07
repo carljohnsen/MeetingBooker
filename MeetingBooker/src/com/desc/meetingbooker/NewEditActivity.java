@@ -96,6 +96,7 @@ public final class NewEditActivity extends Activity {
 		adapter = new TimeWindowAdapter(this, R.layout.timewindow_item,
 				windowList);
 		intervalPicker.setAdapter(adapter);
+		Log.d(TAG, "found " + windowList.size() + " TimeWindows");
 
 		// Set the OnItemClickListener
 		intervalPicker.setOnItemClickListener(new OnItemClickListener() {
@@ -105,6 +106,7 @@ public final class NewEditActivity extends Activity {
 					View arg1,
 					int position, 
 					long arg3) {
+				Log.d(TAG, "pressed " + windowList.get(position).toString());
 				// Set the TimePickers to the selected TimeWindow
 				setTimePickers(windowList.get(position));
 			}
@@ -117,6 +119,7 @@ public final class NewEditActivity extends Activity {
 		} else {
 			setEdit();
 		}
+		Log.d(TAG, "onCreate() is done");
 	}
 
 	/**
@@ -129,7 +132,7 @@ public final class NewEditActivity extends Activity {
 		// Set the add button to not clickable, to ensure no double bookings
 		add.setClickable(false);
 
-		Log.d(TAG, "Adding event to calendar");
+		Log.d(TAG, "pressed Add button");
 
 		// Read the fields
 		String title = titleText.getText().toString();
@@ -152,7 +155,6 @@ public final class NewEditActivity extends Activity {
 				"dd-MM-yyyy HH:mm", Locale.getDefault());
 		try {
 			date = formatter.parse(startTime);
-			Log.d(TAG, startTime);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
@@ -187,6 +189,7 @@ public final class NewEditActivity extends Activity {
 						}
 
 					});
+			Log.d(TAG, "showed isBefore error dialog");
 			dialog.show();
 			add.setClickable(true);
 			return;
@@ -196,7 +199,6 @@ public final class NewEditActivity extends Activity {
 		// If not, notify the user
 		if (StatMeth.isFree(event)) {
 			StatMeth.setNewEvent(event, context);
-			Log.d(TAG, "event inserted");
 			finish();
 		} else {
 			final AlertDialog dialog = new AlertDialog.Builder(this).create();
@@ -212,6 +214,7 @@ public final class NewEditActivity extends Activity {
 						}
 
 					});
+			Log.d(TAG, "showed overlapping dialog");
 			dialog.show();
 			add.setClickable(true);
 		}
@@ -244,6 +247,7 @@ public final class NewEditActivity extends Activity {
 					@Override
 					public void onClick(final DialogInterface dialog,
 							final int which) {
+						Log.d(TAG, "pressed OK button");
 						StatMeth.delete(event, context);
 						finish();
 					}
@@ -255,8 +259,10 @@ public final class NewEditActivity extends Activity {
 					@Override
 					public void onClick(final DialogInterface dialog,
 							final int which) {
+						Log.d(TAG, "pressed Cancel button");
 					}
 				});
+		Log.d(TAG, "showed delete dialog");
 		dialog.show();
 	}
 
@@ -297,6 +303,7 @@ public final class NewEditActivity extends Activity {
 	 * @return An ArrayList of available TimeWindows
 	 */
 	private static final ArrayList<TimeWindow> findTimeWindow() {
+		Log.d(TAG, "called findTimeWindow()");
 		// Make a new ArrayList and find current time
 		ArrayList<TimeWindow> returnList = new ArrayList<TimeWindow>();
 		final long time = new Date().getTime();
@@ -347,6 +354,7 @@ public final class NewEditActivity extends Activity {
 	 * Called by onCreate(). Used when it should show Edit formula
 	 */
 	private final void setEdit() {
+		Log.d(TAG, "called setEdit()");
 		
 		// Gets the index of the selected event
 		index = this.getIntent().getIntExtra("event", -2);
@@ -378,6 +386,7 @@ public final class NewEditActivity extends Activity {
 	 * Called by onCreate. Used when it should show new meeting formula
 	 */
 	private final void setNew() {
+		Log.d(TAG, "called setNew()");
 		// Hide the delete button
 		delete.setVisibility(Button.GONE);
 		
@@ -413,6 +422,7 @@ public final class NewEditActivity extends Activity {
 	// Sets time pickers to a possible interval
 	@SuppressLint("SimpleDateFormat")
 	private final void setTimePickers(final TimeWindow window) {
+		Log.d(TAG, "called setTimePickers()");
 		// Set the start TimePicker to the windows start time
 		int hour = Integer.parseInt(new SimpleDateFormat("HH")
 				.format(new Date(window.start)));
@@ -435,11 +445,10 @@ public final class NewEditActivity extends Activity {
 	 * The method called by the "Add" button. Reads all of the fields in the UI,
 	 * inserts them into a new CalEvent and then sends it to EventCreate
 	 * 
-	 * @param view
-	 *            The View of the button
+	 * @param view The View of the button
 	 */
 	public final void update(final View view) {
-		Log.d(TAG, "Adding event to calendar");
+		Log.d(TAG, "pressed update button");
 
 		// Read the fields
 		final String title = titleText.getText().toString();
@@ -459,7 +468,6 @@ public final class NewEditActivity extends Activity {
 				"dd-MM-yyyy HH:mm", Locale.getDefault());
 		try {
 			date = formatter.parse(startTime);
-			Log.d(TAG, startTime);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
@@ -495,6 +503,7 @@ public final class NewEditActivity extends Activity {
 						}
 
 					});
+			Log.d(TAG, "showed isBefore dialog");
 			dialog.show();
 			return;
 		}
@@ -503,7 +512,6 @@ public final class NewEditActivity extends Activity {
 		// If not, notify the user
 		if (StatMeth.isUpdatable(newEvent, index)) {
 			StatMeth.update(newEvent, context);
-			Log.d(TAG, "event inserted");
 			finish();
 		} else {
 			final AlertDialog dialog = new AlertDialog.Builder(this).create();
@@ -519,6 +527,7 @@ public final class NewEditActivity extends Activity {
 						}
 
 					});
+			Log.d(TAG, "showed overlapping dialog");
 			dialog.show();
 		}
 	}

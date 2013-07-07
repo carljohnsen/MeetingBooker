@@ -53,7 +53,7 @@ public final class TimeWindow {
 	public final String toString() {
 		return "Start " + 
 				DateFormat.format("kk:mm", new Date(this.start)).toString() + 
-				" :  End " + 
+				" |  End " + 
 				DateFormat.format("kk:mm", new Date(this.end)).toString();
 	}
 
