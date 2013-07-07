@@ -557,8 +557,8 @@ public final class StatMeth {
 		final ContentValues cv = new ContentValues();
 		Uri uri = null;
 		
-		// Set the events start time to now
-		cv.put(Events.DTEND, new Date().getTime());
+		// Set the events start time to one second ago
+		cv.put(Events.DTEND, new Date().getTime() - 1000);
 		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
 		
 		// Update the calendar, and call sync()

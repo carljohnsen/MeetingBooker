@@ -93,37 +93,10 @@
                 android:id="@+id/currentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/currentUpcom"
+                android:layout_alignBottom="@+id/currentUpcom"
                 android:layout_marginLeft="5sp"
                 android:layout_toRightOf="@+id/colon1"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/currentOrg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/currentUpcom"
-                android:layout_marginRight="5sp"
-                android:textStyle="bold"
-                android:text="@string/text_organizer"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/colon2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/colon3"
-                android:layout_alignTop="@+id/currentOrg"
-                android:text="@string/colon"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/currentOrganizer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/colon2"
-                android:layout_marginLeft="5sp"
-                android:layout_toRightOf="@+id/colon2"
                 android:textSize="24sp" />
 
             <TextView
@@ -131,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/currentOrganizer"
+                android:layout_below="@+id/currentTitle"
                 android:layout_marginRight="5sp"
                 android:textStyle="bold"
                 android:text="@string/text_description"
@@ -156,11 +129,40 @@
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/currentStartEnd"
+                android:id="@+id/currentOrg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/currentDesc"
+                android:layout_marginRight="5sp"
+                android:textStyle="bold"
+                android:text="@string/text_organizer"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/colon2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/colon3"
+                android:layout_alignTop="@+id/currentOrg"
+                android:text="@string/colon"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/currentOrganizer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/colon2"
+                android:layout_marginLeft="5sp"
+                android:layout_toRightOf="@+id/colon2"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/currentStartEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/currentOrganizer"
                 android:layout_marginRight="5sp"
                 android:textStyle="bold"
                 android:text="@string/text_start_end"
@@ -206,18 +208,26 @@
             android:layout_alignBottom="@+id/curnextLay"
             android:layout_alignParentRight="true" >
 
-            <Button
+            <TextView
                 android:id="@+id/nextMeetingButton"
-                android:layout_width="wrap_content"
+                android:layout_width="90sp"
                 android:layout_height="match_parent"
+                android:clickable="true"
+                android:background="@drawable/custom_button2"
                 android:onClick="startNextMeeting"
+                android:gravity="center"
+                android:textSize="20sp"
                 android:text="@string/text_nextmeeting"
                 android:textColor="@android:color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/endMeetingButton"
-                android:layout_width="wrap_content"
+                android:layout_width="90sp"
                 android:layout_height="match_parent"
+                android:clickable="true"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:background="@drawable/custom_button2"
                 android:onClick="endMeeting"
                 android:text="@string/text_endmeeting"
                 android:textColor="@android:color/black" />
@@ -238,14 +248,16 @@
             android:layout_above="@+id/newMeetingButton"
             android:layout_below="@+id/line2" />
 
-        <Button
+        <TextView
             android:id="@+id/newMeetingButton"
             android:layout_width="match_parent"
             android:layout_height="80sp"
+            android:clickable="true"
+            android:gravity="center"
             android:layout_alignParentBottom="true"
+            android:background="@drawable/custom_button2"
             android:onClick="newMeeting"
             android:text="@string/text_newmeeting"
-            android:textColor="@android:color/black"
             android:textSize="20sp" />
     </RelativeLayout>
 

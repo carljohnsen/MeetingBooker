@@ -12,8 +12,8 @@
     <string name="text_cancel">Cancel</string>
     <string name="text_add">Add</string>
     <string name="text_newmeeting">New Meeting</string>
-    <string name="text_nextmeeting">Start Meeting</string>
-    <string name="text_endmeeting">End Meeting</string>
+    <string name="text_nextmeeting">Start</string>
+    <string name="text_endmeeting">End</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_edit">EditActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>

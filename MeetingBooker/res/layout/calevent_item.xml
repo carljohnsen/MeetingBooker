@@ -29,35 +29,11 @@
         android:layout_marginLeft="5sp" />
     
     <TextView 
-        android:id="@+id/evOrg"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/evTitle"
-        android:text="@string/text_organizer" />
-    
-    <TextView
-        android:id="@+id/evcol2"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignTop="@+id/evOrg"
-        android:layout_alignRight="@+id/evcol3"
-        android:text="@string/colon" />
-    
-    <TextView
-        android:id="@+id/evOrganizer"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignTop="@+id/evcol2"
-        android:layout_toRightOf="@+id/evcol2"
-        android:layout_marginLeft="5sp" />
-    
-    <TextView 
         android:id="@+id/evDes"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/evOrganizer"
+        android:layout_below="@+id/evTitle"
         android:text="@string/text_description" />
     
     <TextView
@@ -78,11 +54,35 @@
         android:layout_toRightOf="@+id/evcol3" />
     
     <TextView 
-        android:id="@+id/evStartEnd"
+        android:id="@+id/evOrg"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/evDescription"
+        android:text="@string/text_organizer" />
+    
+    <TextView
+        android:id="@+id/evcol2"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/evOrg"
+        android:layout_alignRight="@+id/evcol3"
+        android:text="@string/colon" />
+    
+    <TextView
+        android:id="@+id/evOrganizer"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/evcol2"
+        android:layout_toRightOf="@+id/evcol2"
+        android:layout_marginLeft="5sp" />
+    
+    <TextView 
+        android:id="@+id/evStartEnd"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/evOrganizer"
         android:text="@string/text_start_end" />
     
     <TextView

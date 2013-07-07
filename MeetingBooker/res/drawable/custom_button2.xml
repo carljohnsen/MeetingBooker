@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@drawable/button_pressed2" />
+    <item>
+        <shape>
+            <gradient 
+                android:startColor="#22222222"
+                android:endColor="#22222222"
+                android:angle="90"/>
+            <stroke 
+                android:width="3dp" 
+                android:color="#22555555" />
+            <corners 
+                android:radius="3dp" />
+            <padding
+                android:bottom="10dp" 
+                android:left="10dp" 
+                android:right="10dp" 
+                android:top="10dp" />
+        </shape>
+    </item>
+</selector>

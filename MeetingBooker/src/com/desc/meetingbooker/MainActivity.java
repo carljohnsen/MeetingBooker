@@ -48,11 +48,11 @@ public final class MainActivity extends Activity {
 	private static TextView 	  currentStart;
 	private static TextView 	  currentTitle;
 	private static TextView 	  currentUpcom;
-	private static Button 		  endMeeting;
+	private static TextView		  endMeeting;
 	private static RelativeLayout line2;
 	private static ListView 	  listView;
 	private static View 		  mainView;
-	private static Button 		  nextMeeting;
+	private static TextView		  nextMeeting;
 	
 	// All of the data fields
 	private   static ArrayAdapter<CalEvent> adapter;
@@ -103,11 +103,11 @@ public final class MainActivity extends Activity {
 		currentStart 	 = (TextView) 		findViewById(R.id.currentStart);
 		currentTitle 	 = (TextView) 		findViewById(R.id.currentTitle);
 		currentUpcom 	 = (TextView) 		findViewById(R.id.currentUpcom);
-		endMeeting 		 = (Button) 		findViewById(R.id.endMeetingButton);
+		endMeeting 		 = (TextView) 		findViewById(R.id.endMeetingButton);
 		line2 			 = (RelativeLayout) findViewById(R.id.line2);
 		listView 		 = (ListView) 		findViewById(R.id.listView1);
 		mainView 		 = (View) 			findViewById(R.id.mainLay);
-		nextMeeting 	 = (Button) 		findViewById(R.id.nextMeetingButton);
+		nextMeeting 	 = (TextView) 		findViewById(R.id.nextMeetingButton);
 
 		// Set the name of the Calendar
 		calendarName.setText(roomName);

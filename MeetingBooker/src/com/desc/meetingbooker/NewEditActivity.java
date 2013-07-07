@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -35,14 +36,14 @@ import android.widget.AdapterView.OnItemClickListener;
 public final class NewEditActivity extends Activity {
 	
 	// All of the Views
-	private static Button 	  add;
+	private static TextView	  add;
 	private static ImageView  delete;
 	private static EditText   descText;
 	private static ListView   intervalPicker;
 	private static TimePicker timeEnd;
 	private static TimePicker timeStart;
 	private static EditText   titleText;
-	private static Button 	  update;
+	private static TextView	  update;
 
 	// All of the data fields
 	private static 		 TimeWindowAdapter 	   adapter;
@@ -79,8 +80,8 @@ public final class NewEditActivity extends Activity {
 		// Cast all the views
 		titleText = 	 (EditText)   findViewById(R.id.editTitle);
 		descText = 		 (EditText)   findViewById(R.id.editDesc);
-		add = 			 (Button) 	  findViewById(R.id.addButton);
-		update = 		 (Button) 	  findViewById(R.id.updateButton);
+		add = 			 (TextView)	  findViewById(R.id.addButton);
+		update = 		 (TextView)	  findViewById(R.id.updateButton);
 		delete = 		 (ImageView)  findViewById(R.id.deleteButton);
 		timeStart = 	 (TimePicker) findViewById(R.id.timePickerStart);
 		timeEnd = 		 (TimePicker) findViewById(R.id.timePickerEnd);
