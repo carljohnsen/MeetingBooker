@@ -278,19 +278,19 @@ public final class StatMeth {
 	 * @param event The selected time
 	 * @return true, if it does not overlap
 	 */
-	public final static boolean isFree(final CalEvent event) {
+	public final static boolean isFree(final CalEvent event, 
+			final Context context) {
 		Log.d(TAG, "called isFree()");
-		// Ensure that current is also checked
-		if (MainActivity.current != null) {
-			MainActivity.eventlist.add(MainActivity.current);
-		}
-		if (!MainActivity.eventlist.isEmpty()) {
+		ArrayList<CalEvent> eventlist = readCalendarNoRemove(context);
+		if (!eventlist.isEmpty()) {
 			// Check against all other events today
-			final int len = MainActivity.eventlist.size();
+			final int len = eventlist.size();
 			for (int i = 0; i < len; i++) {
-				final CalEvent ev = MainActivity.eventlist.get(i);
-				if ((// If new event is between start & end time
-				event.startTime >= ev.startTime && event.endTime <= ev.endTime)
+				final CalEvent ev = eventlist.get(i);
+				if ((
+						// If new event is between start & end time
+						event.startTime >= ev.startTime && 
+						event.endTime <= ev.endTime)
 						||
 						// If new event overlaps the start time
 						(event.startTime <= ev.startTime && 
@@ -298,6 +298,10 @@ public final class StatMeth {
 						||
 						// If new event overlaps the end time
 						(event.startTime < ev.endTime && 
+						event.endTime >= ev.endTime)
+						||
+						// If start time is before and end time is after
+						(event.startTime <= ev.startTime &&
 						event.endTime >= ev.endTime)) {
 					return false;
 				}
@@ -318,24 +322,26 @@ public final class StatMeth {
 	 * @return true, if there is free time to extend
 	 */
 	public final static boolean isUpdatable(final CalEvent event,
-			final int index) {
+			final Context context) {
 		Log.d(TAG, "called isUpdatable");
-		// Ensure that current is checked, and the event that is being updated,
-		// is removed from the list
-		if (!(index == -1)) {
-			MainActivity.eventlist.add(MainActivity.current);
-			MainActivity.eventlist.remove(index);
-		}
+		
+		ArrayList<CalEvent> eventlist = readCalendarNoRemove(context);
+		
 		// Return true, if the only event, is the one that is being updated
-		if (MainActivity.eventlist.isEmpty()) {
+		if (eventlist.isEmpty()) {
 			return true;
 		}
 		// Check against all events today
-		final int len = MainActivity.eventlist.size();
+		final int len = eventlist.size();
 		for (int i = 0; i < len; i++) {
-			final CalEvent ev = MainActivity.eventlist.get(i);
-			if ((// If new event is between start & end time
-			event.startTime >= ev.startTime && event.endTime <= ev.endTime)
+			final CalEvent ev = eventlist.get(i);
+			if (ev.id == event.id) {
+				continue;
+			}
+			if ((
+					// If new event is between start & end time
+					event.startTime >= ev.startTime && 
+					event.endTime <= ev.endTime)
 					||
 					// If new event overlaps the start time
 					(event.startTime <= ev.startTime && 
@@ -343,6 +349,10 @@ public final class StatMeth {
 					||
 					// If new event overlaps the end time
 					(event.startTime < ev.endTime && 
+					event.endTime >= ev.endTime)
+					||
+					// If new event starts before and ends after
+					(event.startTime <= ev.startTime &&
 					event.endTime >= ev.endTime)) {
 				return false;
 			}
@@ -394,7 +404,7 @@ public final class StatMeth {
 		final ContentResolver contentResolver = context.getContentResolver();
 
 		// Calling the query
-		String query = "CALENDAR_ID = 1 AND DTSTART <= ? AND DTEND > ?";
+		String query = "CALENDAR_ID = 6 AND DTSTART <= ? AND DTEND > ?";
 		Time t = new Time();
 		t.setToNow();
 		String dtEnd = "" + t.toMillis(false);
@@ -437,6 +447,65 @@ public final class StatMeth {
 		Collections.sort(eventlist, new CustomComparator());
 
 		Log.d(TAG, "readCalendar() is done");
+		
+		return eventlist;
+	}
+	
+	public final static ArrayList<CalEvent> readCalendarNoRemove(
+			final Context context) {
+		Log.d(TAG, "called readCalendarNoRemove()");
+		
+		/// The ArrayList to hold the events
+		final ArrayList<CalEvent> eventlist = new ArrayList<CalEvent>();
+
+		// Get the ContentResolver
+		final ContentResolver contentResolver = context.getContentResolver();
+
+		// Calling the query
+		String query = "CALENDAR_ID = 6 AND DTSTART <= ? AND DTEND > ?";
+		Time t = new Time();
+		t.setToNow();
+		t.set(00, 00, 00, t.monthDay, t.month, t.year);
+		String dtEnd = "" + t.toMillis(false);
+		t.set(59, 59, 23, t.monthDay, t.month, t.year);
+		String dtStart = "" + t.toMillis(false);
+		String[] selectionArgs = { dtStart, dtEnd };
+		cursor = contentResolver.query(CalendarContract.Events.CONTENT_URI,
+				COLS, query, selectionArgs, null);
+		cursor.moveToFirst();
+
+		// Getting the used DateFormat from the Android device
+		final Format tf = DateFormat.getTimeFormat(context);
+
+		Long start = 0L;
+
+		// Writing all the events to the eventlist
+		while (!cursor.isAfterLast()) {
+			start = cursor.getLong(0);
+			boolean isUnderway = false;
+			if (start < new Date().getTime()) {
+				isUnderway = true;
+			}
+			eventlist.add(new CalEvent(
+					cursor.getLong(0), 	 // Start time
+					cursor.getLong(1), 	 // End Time
+					cursor.getString(2), // Title
+					cursor.getString(3), // Description
+					tf, 				 // TimeFormat
+					isUnderway, 		 // Is underway
+					cursor.getLong(4), 	 // Event ID
+					cursor.getString(5)  // Organizer
+					));
+
+			cursor.moveToNext();
+
+		}
+		cursor.close();
+
+		// Sorts eventlist by start time
+		Collections.sort(eventlist, new CustomComparator());
+
+		Log.d(TAG, "readCalendarNoRemove() is done");
 		
 		return eventlist;
 	}
@@ -521,7 +590,7 @@ public final class StatMeth {
 
 		// Insert all the required information
 		final ContentValues values = new ContentValues();
-		values.put("calendar_id", 1);
+		values.put("calendar_id", 6);
 		values.put("title", event.title);
 		values.put("allDay", 0);
 		values.put("dtstart", event.startTime);
@@ -625,8 +694,8 @@ public final class StatMeth {
 		final ContentValues cv = new ContentValues();
 		Uri uri = null;
 		
-		// Set the new start time to now
-		cv.put(Events.DTSTART, new Date().getTime());
+		// Set the new start time to one second ago
+		cv.put(Events.DTSTART, new Date().getTime() - 1000);
 		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
 		
 		// Update, and call sync()

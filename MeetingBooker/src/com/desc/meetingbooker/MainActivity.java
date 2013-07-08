@@ -268,7 +268,7 @@ public final class MainActivity extends Activity {
 		if (endDelete) {
 			StatMeth.updateEnd(current, context);
 		} else {
-			current.description = current.description + " ended";
+			current.description = current.description + " - ended";
 			StatMeth.update(current, context);
 			sync();
 		}
@@ -413,7 +413,7 @@ public final class MainActivity extends Activity {
 				&& current.description.endsWith("ended")) {
 			mainView.setBackgroundColor(Color.YELLOW);
 			currentAvail.setText("Available");
-			currentUpcom.setText("Last Meeting:");
+			currentUpcom.setText("Last\nMeeting:");
 			endMeeting.setVisibility(Button.GONE);
 		}
 

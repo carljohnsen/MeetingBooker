@@ -197,7 +197,7 @@ public final class NewEditActivity extends Activity {
 		
 		// If the selected time is available, insert the event
 		// If not, notify the user
-		if (StatMeth.isFree(event)) {
+		if (StatMeth.isFree(event, context)) {
 			StatMeth.setNewEvent(event, context);
 			finish();
 		} else {
@@ -510,7 +510,7 @@ public final class NewEditActivity extends Activity {
 		
 		// If the selected time is available, update the event
 		// If not, notify the user
-		if (StatMeth.isUpdatable(newEvent, index)) {
+		if (StatMeth.isUpdatable(newEvent, context)) {
 			StatMeth.update(newEvent, context);
 			finish();
 		} else {
