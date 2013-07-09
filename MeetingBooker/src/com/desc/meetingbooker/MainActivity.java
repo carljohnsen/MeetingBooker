@@ -258,6 +258,7 @@ public final class MainActivity extends Activity {
 		Log.d(TAG, "called dim()");
 		mainWrap.setVisibility(View.GONE);
 		black_box.setVisibility(RelativeLayout.VISIBLE);
+		black_box.setBackgroundColor(context.getResources().getColor(R.color.black));
 		WindowManager.LayoutParams lp = window.getAttributes();
 		lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_OFF;
 		window.setAttributes(lp);
@@ -321,12 +322,20 @@ public final class MainActivity extends Activity {
 	 */
 	public static final void lighten() {
 		Log.d(TAG, "called lighten()");
-		mainWrap.setVisibility(View.VISIBLE);
-		black_box.setVisibility(RelativeLayout.GONE);
-		WindowManager.LayoutParams lp = window.getAttributes();
-		lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL;
-		window.setAttributes(lp);
-		mainView.setClickable(false);
+		if (hasPressed) {
+			mainWrap.setVisibility(View.VISIBLE);
+			black_box.setVisibility(RelativeLayout.GONE);
+			WindowManager.LayoutParams lp = window.getAttributes();
+			lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL;
+			window.setAttributes(lp);
+		} else {
+			mainWrap.setVisibility(View.VISIBLE);
+			black_box.setVisibility(RelativeLayout.VISIBLE);
+			black_box.setBackgroundColor(context.getResources().getColor(R.color.see_through));
+			WindowManager.LayoutParams lp = window.getAttributes();
+			lp.screenBrightness = 0.25f;
+			window.setAttributes(lp);
+		}
 	}
 
 	/**

@@ -19,6 +19,7 @@ public final class R {
         public static final int grey=0x7f040001;
         public static final int orangedark=0x7f040007;
         public static final int orangelight=0x7f040006;
+        public static final int see_through=0x7f040009;
         public static final int white=0x7f040000;
     }
     public static final class drawable {
