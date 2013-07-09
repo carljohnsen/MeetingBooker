@@ -37,8 +37,9 @@ import android.widget.TextView;
  * @since 04-04-2013
  */
 public final class MainActivity extends Activity {
-
+	
 	// All of the Views
+	private static TextView 	  black_box;
 	private static TextView 	  calendarName;
 	private static View 		  curNextLay;
 	private static TextView 	  currentAvail;
@@ -52,6 +53,7 @@ public final class MainActivity extends Activity {
 	private static RelativeLayout line2;
 	private static ListView 	  listView;
 	private static View 		  mainView;
+	private static View			  mainWrap;
 	private static TextView		  nextMeeting;
 	
 	// All of the data fields
@@ -60,10 +62,14 @@ public final class MainActivity extends Activity {
 	protected static CalEvent 				current = null;
 	protected static ArrayList<CalEvent> 	eventlist = 
 												new ArrayList<CalEvent>();
-	private   static boolean 				isDelayed = false;
-	private   static boolean 				isOverTime = false;
-	private   static final String 			TAG = MainActivity
+	private   static		boolean			hasPressed = false;
+	private   static 		boolean			isDelayed = false;
+	private   static 		boolean			isOverTime = false;
+	private   static final  String 			TAG = MainActivity
 												.class.getSimpleName();
+	private	  		 		Timer			timer;
+	private					TimerTask		timerTask;
+	private   static 		Window 			window;
 
 	// All of the config fields
 	protected static boolean canEnd;
@@ -85,15 +91,19 @@ public final class MainActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+		
 		// Set content view
 		setContentView(R.layout.activity_main);
+		
+		// Get window
+		window = getWindow();
 
 		// Get the context
 		context = getApplicationContext();
 		StatMeth.readConfig(context);
 
 		// Cast all the Views
+		black_box		 = (TextView)		findViewById(R.id.black_box);
 		calendarName 	 = (TextView) 		findViewById(R.id.calendarName);
 		curNextLay 		 = (View) 			findViewById(R.id.curnextLay);
 		currentAvail 	 = (TextView) 		findViewById(R.id.currentAvail);
@@ -107,6 +117,7 @@ public final class MainActivity extends Activity {
 		line2 			 = (RelativeLayout) findViewById(R.id.line2);
 		listView 		 = (ListView) 		findViewById(R.id.listView1);
 		mainView 		 = (View) 			findViewById(R.id.mainLay);
+		mainWrap		 = (View)			findViewById(R.id.mainLayWrap);
 		nextMeeting 	 = (TextView) 		findViewById(R.id.nextMeetingButton);
 
 		// Set the name of the Calendar
@@ -136,9 +147,8 @@ public final class MainActivity extends Activity {
 
 		// Make a new Timer for continuous update of calendar ie. call sync()
 		// every 5 seconds
-		final Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-			
+		timer = new Timer();
+		timerTask = new TimerTask() {
 			@Override
 			public final void run() {
 				runOnUiThread(new Runnable() {
@@ -150,8 +160,8 @@ public final class MainActivity extends Activity {
 					
 				});
 			}
-			
-		}, 10, 5000);
+		};
+		timer.scheduleAtFixedRate(timerTask, 10, 5000);
 		Log.d(TAG, "onCreate() done");
 	}
 
@@ -162,7 +172,8 @@ public final class MainActivity extends Activity {
 		
 		// Check if there are new events in the calendar, and check if there is
 		// a new roomName
-		MainActivity.sync();
+		tempLighten(mainView);
+		sync();
 		calendarName.setText(roomName);
 	}
 	
@@ -239,6 +250,19 @@ public final class MainActivity extends Activity {
 			line2.setVisibility(RelativeLayout.GONE);
 		}
 	}
+	
+	/**
+	 * Changes the background color to black, and dims the display
+	 */
+	private static final void dim() {
+		Log.d(TAG, "called dim()");
+		mainWrap.setVisibility(View.GONE);
+		black_box.setVisibility(RelativeLayout.VISIBLE);
+		WindowManager.LayoutParams lp = window.getAttributes();
+		lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_OFF;
+		window.setAttributes(lp);
+		mainView.setClickable(true);
+	}
 
 	/**
 	 * The method called if the user clicks on curNextLay. Does the same as the 
@@ -290,6 +314,19 @@ public final class MainActivity extends Activity {
 		}
 		// If the eventlist is empty, give endExtend minutes
 		return current.endTime + (60000 * endExtend);
+	}
+	
+	/**
+	 * Opposite of dim(). Lights up the display
+	 */
+	public static final void lighten() {
+		Log.d(TAG, "called lighten()");
+		mainWrap.setVisibility(View.VISIBLE);
+		black_box.setVisibility(RelativeLayout.GONE);
+		WindowManager.LayoutParams lp = window.getAttributes();
+		lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL;
+		window.setAttributes(lp);
+		mainView.setClickable(false);
 	}
 
 	/**
@@ -347,6 +384,13 @@ public final class MainActivity extends Activity {
 	 */
 	protected final static void sync() {
 		Log.d(TAG, "called sync()");
+		if (!hasPressed && StatMeth.isEvening()) {
+			dim();
+			return;
+		} else {
+			lighten();
+		}
+		
 		// The event that is currently underway
 		current = null;
 
@@ -422,6 +466,25 @@ public final class MainActivity extends Activity {
 		adapter.addAll(eventlist);
 		Log.d(TAG, "sync() is done");
 
+	}
+	
+	/**
+	 * The method called when pressing the main layout
+	 * 
+	 * @param view The View of the layout
+	 */
+	public final void tempLighten(View view) {
+		Log.d(TAG, "pressed the dimmed screen");
+		hasPressed = true;
+		lighten();
+		sync();
+		Timer tim = new Timer();
+		tim.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				hasPressed = false;
+			}
+		}, 10000);
 	}
 
 	/**

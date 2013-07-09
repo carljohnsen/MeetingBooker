@@ -271,6 +271,22 @@ public final class StatMeth {
 		Log.d(TAG, "called isBefore()");
 		return event.endTime < event.startTime;
 	}
+	
+	/**
+	 * Checks if time is < 08:00 or > 20:00
+	 * 
+	 * @return true, if the time is before 08:00 or after 20:00
+	 */
+	public final static boolean isEvening() {
+		Time t = new Time();
+		t.setToNow();
+		t.set(0, 0, 8, t.monthDay, t.month, t.year);
+		long eight = t.toMillis(false);
+		t.set(0, 0, 20, t.monthDay, t.month, t.year);
+		long twenty = t.toMillis(false);
+		long now = new Date().getTime();
+		return now <= eight || now >= twenty;
+	}
 
 	/**
 	 * Checks whether or not the selected time will overlap with existing events
