@@ -249,6 +249,7 @@ public final class NewEditActivity extends Activity {
 							final int which) {
 						Log.d(TAG, "pressed OK button");
 						StatMeth.delete(event, context);
+						MainActivity.sync();
 						finish();
 					}
 

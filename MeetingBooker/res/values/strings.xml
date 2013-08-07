@@ -35,5 +35,6 @@
     <string name="text_start_end">Start | End</string>
     <string name="text_available_time">Available times:</string>
     <string name="text_no_description">(no description)</string>
+    <string name="text_upcom_meetings">Upcoming meetings:</string>
 
 </resources>

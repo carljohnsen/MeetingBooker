@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,7 @@ public final class MainActivity extends Activity {
 	private static View 		  mainView;
 	private static View			  mainWrap;
 	private static TextView		  nextMeeting;
+	private static TextView		  upcomMeetings;
 	
 	// All of the data fields
 	private   static ArrayAdapter<CalEvent> adapter;
@@ -121,6 +123,7 @@ public final class MainActivity extends Activity {
 		mainView 		 = (View) 			findViewById(R.id.mainLay);
 		mainWrap		 = (View)			findViewById(R.id.mainLayWrap);
 		nextMeeting 	 = (TextView) 		findViewById(R.id.nextMeetingButton);
+		upcomMeetings	 = (TextView)		findViewById(R.id.upcom_meetings);
 
 		// Set the name of the Calendar
 		calendarName.setText(roomName);
@@ -247,6 +250,7 @@ public final class MainActivity extends Activity {
 			curNextLay.setClickable(true);
 			curNextLay.setVisibility(View.VISIBLE);
 			line2.setVisibility(RelativeLayout.VISIBLE);
+			upcomMeetings.setVisibility(TextView.VISIBLE);
 		} else {
 			Log.d(TAG, "hide curnextLay");
 			curNextLay.setClickable(false);
@@ -254,6 +258,7 @@ public final class MainActivity extends Activity {
 			nextMeeting.setVisibility(Button.GONE);
 			endMeeting.setVisibility(Button.GONE);
 			line2.setVisibility(RelativeLayout.GONE);
+			upcomMeetings.setVisibility(TextView.GONE);
 		}
 	}
 	
@@ -358,7 +363,7 @@ public final class MainActivity extends Activity {
 	}
 	
 	/**
-	 * 
+	 * Resets the touch timer for the light dimmer
 	 */
 	@Override
 	public void onUserInteraction() {
@@ -422,6 +427,16 @@ public final class MainActivity extends Activity {
 		// ArrayList
 		eventlist = StatMeth.readCalendar(context);
 		Log.d(TAG, "found " + eventlist.size() + " events today");
+		
+		// Check if it should display "Upcoming meetings", or inform that there 
+		// arent any the rest of the day
+		if (eventlist.size() > 1) {
+			upcomMeetings.setTypeface(null, Typeface.BOLD);
+			upcomMeetings.setText("Upcoming meetings:");
+		} else {
+			upcomMeetings.setTypeface(null, Typeface.NORMAL);
+			upcomMeetings.setText("There are no meetings the rest of the day");
+		}
 
 		// Checks if any of the event in the ArrayList is underway,
 		// and sets it as current event and removes it from the list
