@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CalendarContract;
+import android.provider.CalendarContract.Attendees;
 import android.provider.CalendarContract.Events;
 import android.text.format.DateFormat;
 import android.text.format.Time;
@@ -128,6 +129,48 @@ public final class StatMeth {
 		
 		// Update the calendar
 		cr.update(uri, cv, null, null);
+	}
+	
+	/**
+	 * Finds all of the attendees, that are bound to the given event id
+	 * 
+	 * @param id The id of the event
+	 * @param context The context of the application
+	 */
+	public final static ArrayList<Attendee> getAttendees(final long id, 
+			final Context context) {
+		// The ArrayList that will hold all of the attendees
+		final ArrayList<Attendee> attlist = new ArrayList<Attendee>();
+		
+		// Get the ContentResolver
+		final ContentResolver cr = context.getContentResolver();
+		
+		// Make the query
+		final String query = "EVENT_ID = ?";
+		final String[] args = { "" + id };
+		final String[] cols = {
+			CalendarContract.Attendees.ATTENDEE_NAME,
+			CalendarContract.Attendees.ATTENDEE_EMAIL,
+			CalendarContract.Attendees.ATTENDEE_RELATIONSHIP,
+			CalendarContract.Attendees.ATTENDEE_TYPE,
+			CalendarContract.Attendees.ATTENDEE_STATUS
+		};
+		
+		// Call the query and bind the Cursor to it
+		cursor = cr.query(CalendarContract.Attendees.CONTENT_URI, 
+				cols, query, args, null);
+		cursor.moveToFirst();
+		
+		// Save all of the results in the ArrayList
+		while (!cursor.isAfterLast()) {
+			attlist.add(new Attendee(cursor.getString(0),
+					cursor.getString(1),
+					cursor.getString(2),
+					cursor.getString(3),
+					cursor.getString(4)));
+		}
+		
+		return attlist;
 	}
 
 	/**
@@ -400,7 +443,7 @@ public final class StatMeth {
 			return "ERROR";
 		}
 	}
-
+	
 	/**
 	 * The method that reads the calendar
 	 * 
@@ -420,7 +463,7 @@ public final class StatMeth {
 		final ContentResolver contentResolver = context.getContentResolver();
 
 		// Calling the query
-		String query = "CALENDAR_ID = 6 AND DTSTART <= ? AND DTEND > ?";
+		String query = "CALENDAR_ID = 1 AND DTSTART <= ? AND DTEND > ?";
 		Time t = new Time();
 		t.setToNow();
 		String dtEnd = "" + t.toMillis(false);
@@ -478,7 +521,7 @@ public final class StatMeth {
 		final ContentResolver contentResolver = context.getContentResolver();
 
 		// Calling the query
-		String query = "CALENDAR_ID = 6 AND DTSTART <= ? AND DTEND > ?";
+		String query = "DTSTART <= ? AND DTEND > ?";
 		Time t = new Time();
 		t.setToNow();
 		t.set(00, 00, 00, t.monthDay, t.month, t.year);
@@ -606,7 +649,7 @@ public final class StatMeth {
 
 		// Insert all the required information
 		final ContentValues values = new ContentValues();
-		values.put("calendar_id", 6);
+		values.put("calendar_id", 1);
 		values.put("title", event.title);
 		values.put("allDay", 0);
 		values.put("dtstart", event.startTime);
@@ -617,6 +660,25 @@ public final class StatMeth {
 		
 		// Insert the event
 		cr.insert(EVENTS_URI, values);
+		
+		// Get attendees uri
+		final Uri ATTENDEES_URI = Uri.parse(CalendarContract.Attendees.CONTENT_URI.toString());
+		final ContentValues values2 = new ContentValues();
+		
+		// Get last inserted id
+		String[] COLS = { CalendarContract.Events._ID };
+		Cursor cursor = cr.query(CalendarContract.Events.CONTENT_URI, COLS,
+				 null, null, null);
+		cursor.moveToLast();
+		long id = cursor.getLong(0);
+		
+		// Insert all the required information
+		values2.put(Attendees.ATTENDEE_NAME, "Meeting Room");
+		values2.put(Attendees.ATTENDEE_EMAIL, "meetingroom@test.rootdomain");
+		values2.put(Attendees.EVENT_ID, id);
+		
+		// Insert the attendee
+		cr.insert(ATTENDEES_URI, values2);
 
 	}
 

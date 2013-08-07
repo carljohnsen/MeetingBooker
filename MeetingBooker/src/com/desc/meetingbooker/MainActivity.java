@@ -69,6 +69,8 @@ public final class MainActivity extends Activity {
 												.class.getSimpleName();
 	private	  		 		Timer			timer;
 	private					TimerTask		timerTask;
+	private					TimerTask		touchTask;
+	private					Timer			touchTimer;
 	private   static 		Window 			window;
 
 	// All of the config fields
@@ -162,6 +164,10 @@ public final class MainActivity extends Activity {
 			}
 		};
 		timer.scheduleAtFixedRate(timerTask, 10, 5000);
+		
+		// Initialize the touch timer
+		touchTimer = new Timer();
+		
 		Log.d(TAG, "onCreate() done");
 	}
 
@@ -350,6 +356,15 @@ public final class MainActivity extends Activity {
 		intent.putExtra("type", 0);
 		startActivityForResult(intent, 1);
 	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void onUserInteraction() {
+		tempLighten(curNextLay);
+		super.onUserInteraction();
+	}
 
 	/**
 	 * Fills the curNextLay with information from the given event
@@ -487,13 +502,15 @@ public final class MainActivity extends Activity {
 		hasPressed = true;
 		lighten();
 		sync();
-		Timer tim = new Timer();
-		tim.schedule(new TimerTask() {
+		touchTimer.cancel();
+		touchTimer = new Timer();
+		touchTask = new TimerTask() {
 			@Override
 			public void run() {
 				hasPressed = false;
 			}
-		}, 10000);
+		};
+		touchTimer.schedule(touchTask, 10000);
 	}
 
 	/**
