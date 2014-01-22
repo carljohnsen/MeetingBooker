@@ -45,13 +45,11 @@ public final class MainActivity extends Activity {
 	private static View 		  curNextLay;
 	private static TextView 	  currentAvail;
 	private static TextView 	  currentDesc;
-	private static TextView 	  currentEnd;
+	private static TextView 	  currentTime;
 	private static TextView 	  currentOrganizer;
-	private static TextView 	  currentStart;
 	private static TextView 	  currentTitle;
 	private static TextView 	  currentUpcom;
 	private static TextView		  endMeeting;
-	private static RelativeLayout line2;
 	private static ListView 	  listView;
 	private static View 		  mainView;
 	private static View			  mainWrap;
@@ -108,22 +106,20 @@ public final class MainActivity extends Activity {
 
 		// Cast all the Views
 		black_box		 = (TextView)		findViewById(R.id.black_box);
-		calendarName 	 = (TextView) 		findViewById(R.id.calendarName);
-		curNextLay 		 = (View) 			findViewById(R.id.curnextLay);
-		currentAvail 	 = (TextView) 		findViewById(R.id.currentAvail);
-		currentDesc 	 = (TextView) 		findViewById(R.id.currentDesc);
-		currentEnd 		 = (TextView) 		findViewById(R.id.currentEnd);
-		currentOrganizer = (TextView) 		findViewById(R.id.currentOrganizer);
-		currentStart 	 = (TextView) 		findViewById(R.id.currentStart);
-		currentTitle 	 = (TextView) 		findViewById(R.id.currentTitle);
-		currentUpcom 	 = (TextView) 		findViewById(R.id.currentUpcom);
-		endMeeting 		 = (TextView) 		findViewById(R.id.endMeetingButton);
-		line2 			 = (RelativeLayout) findViewById(R.id.line2);
-		listView 		 = (ListView) 		findViewById(R.id.listView1);
-		mainView 		 = (View) 			findViewById(R.id.mainLay);
-		mainWrap		 = (View)			findViewById(R.id.mainLayWrap);
-		nextMeeting 	 = (TextView) 		findViewById(R.id.nextMeetingButton);
-		upcomMeetings	 = (TextView)		findViewById(R.id.upcom_meetings);
+		calendarName 	 = (TextView) 		findViewById(R.id.calendar_name);
+		curNextLay 		 = (View) 			findViewById(R.id.current_next_lay);
+		currentAvail 	 = (TextView) 		findViewById(R.id.current_available);
+		currentTitle 	 = (TextView) 		findViewById(R.id.curnext_title_value);
+		currentDesc 	 = (TextView) 		findViewById(R.id.curnext_description_value);
+		currentOrganizer = (TextView) 		findViewById(R.id.curnext_organizer_value);
+		currentTime		 = (TextView) 		findViewById(R.id.curnext_time_value);
+		currentUpcom 	 = (TextView) 		findViewById(R.id.curnext_title_field);
+		nextMeeting 	 = (TextView) 		findViewById(R.id.next_meeting_button);
+		endMeeting 		 = (TextView) 		findViewById(R.id.end_meeting_button);
+		listView 		 = (ListView) 		findViewById(R.id.cal_event_list);
+		mainView 		 = (View) 			findViewById(R.id.main_lay);
+		mainWrap		 = (View)			findViewById(R.id.main_lay_wrap);
+		upcomMeetings	 = (TextView)		findViewById(R.id.upcoming_meetings);
 
 		// Set the name of the Calendar
 		calendarName.setText(roomName);
@@ -249,7 +245,6 @@ public final class MainActivity extends Activity {
 			Log.d(TAG, "show curnextLay");
 			curNextLay.setClickable(true);
 			curNextLay.setVisibility(View.VISIBLE);
-			line2.setVisibility(RelativeLayout.VISIBLE);
 			upcomMeetings.setVisibility(TextView.VISIBLE);
 		} else {
 			Log.d(TAG, "hide curnextLay");
@@ -257,7 +252,6 @@ public final class MainActivity extends Activity {
 			curNextLay.setVisibility(View.GONE);
 			nextMeeting.setVisibility(Button.GONE);
 			endMeeting.setVisibility(Button.GONE);
-			line2.setVisibility(RelativeLayout.GONE);
 			upcomMeetings.setVisibility(TextView.GONE);
 		}
 	}
@@ -381,8 +375,7 @@ public final class MainActivity extends Activity {
 		currentTitle.setText(event.title);
 		currentOrganizer.setText(event.organizer);
 		currentDesc.setText(event.description);
-		currentStart.setText("" + event.getStartTime() + " | ");
-		currentEnd.setText("" + event.getEndTime());
+		currentTime.setText(event.getTimeWindow().toString());
 	}
 
 	/**
@@ -459,8 +452,8 @@ public final class MainActivity extends Activity {
 		// Sets the background color(Red if any event is underway, green if not)
 		if (current != null && current.isUnderway) {
 			mainView.setBackgroundColor(Color.RED);
-			currentAvail.setText("Unavailable");
-			currentUpcom.setText("Current\nMeeting");
+			currentAvail.setText("UNAVAILABLE");
+			currentUpcom.setText("Current Meeting");
 			nextMeeting.setVisibility(Button.GONE);
 			
 			// If the config allows it, show the end meeting button
@@ -475,8 +468,8 @@ public final class MainActivity extends Activity {
 			curShow(true);
 		} else {
 			mainView.setBackgroundColor(Color.GREEN);
-			currentAvail.setText("Available");
-			currentUpcom.setText("Upcoming\nMeeting");
+			currentAvail.setText("AVAILABLE");
+			currentUpcom.setText("Upcoming Meeting");
 			isOverTime = false;
 			
 			// If there is a current event, show the curNextLay

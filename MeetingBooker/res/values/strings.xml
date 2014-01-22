@@ -36,5 +36,6 @@
     <string name="text_available_time">Available times:</string>
     <string name="text_no_description">(no description)</string>
     <string name="text_upcom_meetings">Upcoming meetings:</string>
+    <string name="text_time">Time</string>
 
 </resources>

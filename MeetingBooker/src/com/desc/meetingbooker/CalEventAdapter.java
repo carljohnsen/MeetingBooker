@@ -71,10 +71,10 @@ public final class CalEventAdapter extends ArrayAdapter<CalEvent> {
 			
 			// Make a new ViewHold, and find the Views
 			holder = new ViewHold();
-			holder.item1 = (TextView) v.findViewById(R.id.evTitle);
-			holder.item2 = (TextView) v.findViewById(R.id.evOrganizer);
-			holder.item3 = (TextView) v.findViewById(R.id.evDescription);
-			holder.item4 = (TextView) v.findViewById(R.id.evStEn);
+			holder.item1 = (TextView) v.findViewById(R.id.event_title_value);
+			holder.item2 = (TextView) v.findViewById(R.id.event_organizer_value);
+			holder.item3 = (TextView) v.findViewById(R.id.event_description_value);
+			holder.item4 = (TextView) v.findViewById(R.id.event_time_value);
 			v.setTag(holder);
 		} else {
 			holder = (ViewHold) v.getTag();
@@ -86,8 +86,7 @@ public final class CalEventAdapter extends ArrayAdapter<CalEvent> {
 			holder.item1.setText(event.title);
 			holder.item2.setText(event.organizer);
 			holder.item3.setText(event.description);
-			holder.item4.setText(event.getStartTime() + " | "
-					+ event.getEndTime());
+			holder.item4.setText(event.getTimeWindow().toString());
 		}
 		
 		return v;
