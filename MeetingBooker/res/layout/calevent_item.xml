@@ -11,7 +11,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="5sp"
         android:text="@string/text_title"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/event_colon1"
@@ -20,7 +21,8 @@
         android:layout_alignRight="@+id/event_colon2"
         android:layout_alignTop="@+id/event_title_field"
         android:text="@string/colon"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/event_title_value"
@@ -29,7 +31,8 @@
         android:layout_alignTop="@+id/event_colon1"
         android:layout_marginLeft="5sp"
         android:layout_toRightOf="@+id/event_colon1"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/event_description_field"
@@ -38,7 +41,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/event_title_value"
         android:text="@string/text_description"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/event_colon2"
@@ -49,7 +53,8 @@
         android:layout_marginRight="5sp"
         android:layout_toRightOf="@+id/event_description_field"
         android:text="@string/colon"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/event_description_value"
@@ -57,7 +62,8 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/event_colon2"
         android:layout_toRightOf="@+id/event_colon2"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/event_organizer_field"
@@ -66,7 +72,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/event_description_value"
         android:text="@string/text_organizer"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/event_colon3"
@@ -75,7 +82,8 @@
         android:layout_alignRight="@+id/event_colon2"
         android:layout_alignTop="@+id/event_organizer_field"
         android:text="@string/colon"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/event_organizer_value"
@@ -84,7 +92,8 @@
         android:layout_alignTop="@+id/event_colon3"
         android:layout_marginLeft="5sp"
         android:layout_toRightOf="@+id/event_colon3"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/event_time_field"
@@ -93,7 +102,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/event_organizer_value"
         android:text="@string/text_time"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/event_colon4"
@@ -102,7 +112,8 @@
         android:layout_alignRight="@+id/event_colon2"
         android:layout_alignTop="@+id/event_time_field"
         android:text="@string/colon"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/event_time_value"
@@ -111,7 +122,8 @@
         android:layout_alignTop="@+id/event_colon4"
         android:layout_marginLeft="5sp"
         android:layout_toRightOf="@+id/event_colon4"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/white" />
 
     <RelativeLayout
         android:id="@+id/line1"

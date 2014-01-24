@@ -1,0 +1,232 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="350dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="5dp"
+    tools:context=".NewMeetingActivity" >
+<!-- 
+    <RelativeLayout
+        android:id="@+id/titleTVWrap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/editTitle"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5sp"
+        android:layout_toLeftOf="@+id/editTitle" >
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/text_title"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/newEditColon1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/colon"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/editTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editDesc"
+        android:layout_toLeftOf="@+id/deleteButton"
+        android:ems="15"
+        android:inputType="text"
+        android:text="@string/text_spontaneous"
+        android:textSize="20sp" >
+    </EditText>
+
+    <ImageView
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/editTitle"
+        android:layout_marginLeft="5sp"
+        android:background="@drawable/imageview_selector"
+        android:contentDescription="@string/delete_description"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:onClick="delete"
+        android:src="@drawable/content_discard" />
+
+    <RelativeLayout
+        android:id="@+id/descTVWrap"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/editDesc"
+        android:layout_alignTop="@+id/editDesc"
+        android:layout_marginRight="5sp" >
+
+        <TextView
+            android:id="@+id/descTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:layout_marginRight="5sp"
+            android:text="@string/text_description"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/newEditColon2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/descTextView"
+            android:text="@string/colon"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/editDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTitle"
+        android:layout_toRightOf="@+id/descTVWrap"
+        android:ems="15"
+        android:hint="@string/text_no_description"
+        android:inputType="text"
+        android:textSize="20sp" />
+
+    <RelativeLayout
+        android:id="@+id/timeStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/descTVWrap" >
+
+        <TextView
+            android:id="@+id/textStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/text_start"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TimePicker
+            android:id="@+id/timePickerStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/textStart" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/timeEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/timeStart"
+        android:layout_below="@+id/descTVWrap" >
+
+        <TextView
+            android:id="@+id/textEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/text_end"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TimePicker
+            android:id="@+id/timePickerEnd"
+            android:layout_toRightOf="@+id/textEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/intervalTextLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timeEnd" >
+
+        <TextView
+            android:id="@+id/intervalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:text="@string/text_available_time"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </RelativeLayout>
+    
+    <ListView
+        android:id="@+id/intervalView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/intervalTextLay"
+        android:layout_above="@+id/addUpCancel"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="6sp" />
+
+    <RelativeLayout
+        android:id="@+id/addUpCancel"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:layout_alignParentBottom="true" >
+
+        <TextView
+            android:id="@+id/addButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_button1"
+            android:layout_toLeftOf="@+id/blankCenter"
+            android:clickable="true"
+            android:textSize="20sp"
+            android:onClick="add"
+            android:gravity="center"
+            android:text="@string/text_add" />
+
+        <TextView
+            android:id="@+id/blankCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text=" " />
+
+        <TextView
+            android:id="@+id/updateButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_button1"
+            android:layout_toLeftOf="@+id/blankCenter"
+            android:clickable="true"
+            android:textSize="20sp"
+            android:onClick="update"
+            android:gravity="center"
+            android:text="@string/text_update" />
+
+        <TextView
+            android:id="@+id/cancelButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_button1"
+            android:layout_toRightOf="@+id/blankCenter"
+            android:clickable="true"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:onClick="cancel"
+            android:text="@string/text_cancel"
+            android:textColorHint="@color/orangedark" />
+
+    </RelativeLayout>
+ -->
+</RelativeLayout>

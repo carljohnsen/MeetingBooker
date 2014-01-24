@@ -44,6 +44,7 @@ public final class StatMeth {
 			CalendarContract.Events._ID, CalendarContract.Events.ORGANIZER };
 	private static Cursor cursor;
 	private static ArrayList<Setting> settings;
+	private static String calID; 
 
 	/**
 	 * Creates a new config.cfg file
@@ -92,10 +93,15 @@ public final class StatMeth {
 			interpret(line);
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			line = "calendarid 2";
+			interpret(line);
+			line += "\n";
+			outputStream.write(line, 0, line.length());
 			line = "calendarname " + getCalendarName(context);
 			interpret(line);
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			
 			
 			// Close the file
 			outputStream.close();
@@ -186,11 +192,13 @@ public final class StatMeth {
 		final String[] que = { 
 			CalendarContract.Calendars.CALENDAR_DISPLAY_NAME 
 		};
+		// Make sure only the selcted calendar id name is fetched
+		final String id = "_ID = " + calID;
 		
 		// Get the ContentResolver, and extract the Cursor
 		final ContentResolver cr = context.getContentResolver();
 		final Cursor cursor = cr.query(CalendarContract.Calendars.CONTENT_URI,
-				que, null, null, null);
+				que, id, null, null);
 		
 		// Take the information from the first result, and return it
 		cursor.moveToFirst();
@@ -301,6 +309,12 @@ public final class StatMeth {
 			settings.add(setting);
 			return;
 		}
+		if (command.equals("calendarid")) {
+			StatMeth.calID = value;
+			setting = new Setting(command, value, "String", "Calendar ID");
+			settings.add(setting);
+			return;
+		}
 	}
 
 	/**
@@ -340,7 +354,7 @@ public final class StatMeth {
 	public final static boolean isFree(final CalEvent event, 
 			final Context context) {
 		Log.d(TAG, "called isFree()");
-		ArrayList<CalEvent> eventlist = readCalendarNoRemove(context);
+		ArrayList<CalEvent> eventlist = readCalendar(context);
 		if (!eventlist.isEmpty()) {
 			// Check against all other events today
 			final int len = eventlist.size();
@@ -384,7 +398,7 @@ public final class StatMeth {
 			final Context context) {
 		Log.d(TAG, "called isUpdatable");
 		
-		ArrayList<CalEvent> eventlist = readCalendarNoRemove(context);
+		ArrayList<CalEvent> eventlist = readCalendar(context);
 		
 		// Return true, if the only event, is the one that is being updated
 		if (eventlist.isEmpty()) {
@@ -463,7 +477,7 @@ public final class StatMeth {
 		final ContentResolver contentResolver = context.getContentResolver();
 
 		// Calling the query
-		String query = "CALENDAR_ID = 1 AND DTSTART <= ? AND DTEND > ?";
+		String query = "CALENDAR_ID = " + calID + " AND DTSTART <= ? AND DTEND > ?";
 		Time t = new Time();
 		t.setToNow();
 		String dtEnd = "" + t.toMillis(false);
@@ -506,65 +520,6 @@ public final class StatMeth {
 		Collections.sort(eventlist, new CustomComparator());
 
 		Log.d(TAG, "readCalendar() is done");
-		
-		return eventlist;
-	}
-	
-	public final static ArrayList<CalEvent> readCalendarNoRemove(
-			final Context context) {
-		Log.d(TAG, "called readCalendarNoRemove()");
-		
-		/// The ArrayList to hold the events
-		final ArrayList<CalEvent> eventlist = new ArrayList<CalEvent>();
-
-		// Get the ContentResolver
-		final ContentResolver contentResolver = context.getContentResolver();
-
-		// Calling the query
-		String query = "DTSTART <= ? AND DTEND > ?";
-		Time t = new Time();
-		t.setToNow();
-		t.set(00, 00, 00, t.monthDay, t.month, t.year);
-		String dtEnd = "" + t.toMillis(false);
-		t.set(59, 59, 23, t.monthDay, t.month, t.year);
-		String dtStart = "" + t.toMillis(false);
-		String[] selectionArgs = { dtStart, dtEnd };
-		cursor = contentResolver.query(CalendarContract.Events.CONTENT_URI,
-				COLS, query, selectionArgs, null);
-		cursor.moveToFirst();
-
-		// Getting the used DateFormat from the Android device
-		final Format tf = DateFormat.getTimeFormat(context);
-
-		Long start = 0L;
-
-		// Writing all the events to the eventlist
-		while (!cursor.isAfterLast()) {
-			start = cursor.getLong(0);
-			boolean isUnderway = false;
-			if (start < new Date().getTime()) {
-				isUnderway = true;
-			}
-			eventlist.add(new CalEvent(
-					cursor.getLong(0), 	 // Start time
-					cursor.getLong(1), 	 // End Time
-					cursor.getString(2), // Title
-					cursor.getString(3), // Description
-					tf, 				 // TimeFormat
-					isUnderway, 		 // Is underway
-					cursor.getLong(4), 	 // Event ID
-					cursor.getString(5)  // Organizer
-					));
-
-			cursor.moveToNext();
-
-		}
-		cursor.close();
-
-		// Sorts eventlist by start time
-		Collections.sort(eventlist, new CustomComparator());
-
-		Log.d(TAG, "readCalendarNoRemove() is done");
 		
 		return eventlist;
 	}
@@ -649,7 +604,7 @@ public final class StatMeth {
 
 		// Insert all the required information
 		final ContentValues values = new ContentValues();
-		values.put("calendar_id", 1);
+		values.put("calendar_id", calID);
 		values.put("title", event.title);
 		values.put("allDay", 0);
 		values.put("dtstart", event.startTime);

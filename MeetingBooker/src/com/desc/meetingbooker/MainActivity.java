@@ -452,8 +452,8 @@ public final class MainActivity extends Activity {
 		// Sets the background color(Red if any event is underway, green if not)
 		if (current != null && current.isUnderway) {
 			mainView.setBackgroundColor(Color.RED);
-			currentAvail.setText("UNAVAILABLE");
-			currentUpcom.setText("Current Meeting");
+			currentAvail.setText("Unavailable");
+			currentUpcom.setText("Current meeting");
 			nextMeeting.setVisibility(Button.GONE);
 			
 			// If the config allows it, show the end meeting button
@@ -468,8 +468,8 @@ public final class MainActivity extends Activity {
 			curShow(true);
 		} else {
 			mainView.setBackgroundColor(Color.GREEN);
-			currentAvail.setText("AVAILABLE");
-			currentUpcom.setText("Upcoming Meeting");
+			currentAvail.setText("Available");
+			currentUpcom.setText("Upcoming meeting");
 			isOverTime = false;
 			
 			// If there is a current event, show the curNextLay
