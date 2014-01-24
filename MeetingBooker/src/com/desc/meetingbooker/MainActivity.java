@@ -425,10 +425,10 @@ public final class MainActivity extends Activity {
 		// arent any the rest of the day
 		if (eventlist.size() > 1) {
 			upcomMeetings.setTypeface(null, Typeface.BOLD);
-			upcomMeetings.setText("Upcoming meetings:");
+			upcomMeetings.setText(R.string.text_upcom_meetings);
 		} else {
 			upcomMeetings.setTypeface(null, Typeface.NORMAL);
-			upcomMeetings.setText("There are no meetings the rest of the day");
+			upcomMeetings.setText(R.string.text_no_more_meeting);
 		}
 
 		// Checks if any of the event in the ArrayList is underway,
@@ -452,8 +452,8 @@ public final class MainActivity extends Activity {
 		// Sets the background color(Red if any event is underway, green if not)
 		if (current != null && current.isUnderway) {
 			mainView.setBackgroundColor(Color.RED);
-			currentAvail.setText("Unavailable");
-			currentUpcom.setText("Current meeting");
+			currentAvail.setText(R.string.text_unavailable);
+			currentUpcom.setText(R.string.text_current_meet);
 			nextMeeting.setVisibility(Button.GONE);
 			
 			// If the config allows it, show the end meeting button
@@ -468,8 +468,8 @@ public final class MainActivity extends Activity {
 			curShow(true);
 		} else {
 			mainView.setBackgroundColor(Color.GREEN);
-			currentAvail.setText("Available");
-			currentUpcom.setText("Upcoming meeting");
+			currentAvail.setText(R.string.text_available);
+			currentUpcom.setText(R.string.text_upcom_meetings);
 			isOverTime = false;
 			
 			// If there is a current event, show the curNextLay
@@ -488,8 +488,8 @@ public final class MainActivity extends Activity {
 		if (!endDelete && current != null
 				&& current.description.endsWith("ended")) {
 			mainView.setBackgroundColor(Color.YELLOW);
-			currentAvail.setText("Available");
-			currentUpcom.setText("Last\nMeeting:");
+			currentAvail.setText(R.string.text_available);
+			currentUpcom.setText(R.string.text_last_meet);
 			endMeeting.setVisibility(Button.GONE);
 		}
 

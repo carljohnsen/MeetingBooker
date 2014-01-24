@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/imageview_selector"
-                android:contentDescription="@string/settings_description"
+                android:contentDescription="@string/description_settings"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:minHeight="50dp"
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/curnext_title_field"
                     android:layout_toRightOf="@+id/curnext_title_field"
-                    android:text="@string/colon"
+                    android:text="@string/text_colon"
                     android:layout_marginLeft="5sp"
                     android:layout_marginRight="5sp"
                     android:textSize="30sp"
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/curnext_colon1"
                     android:layout_alignTop="@+id/curnext_description_field"
-                    android:text="@string/colon"
+                    android:text="@string/text_colon"
                     android:layout_marginRight="5sp"
                     android:textSize="30sp" 
                     android:textColor="@color/white" />
@@ -171,7 +171,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/curnext_colon1"
                     android:layout_alignTop="@+id/curnext_organizer_field"
-                    android:text="@string/colon"
+                    android:text="@string/text_colon"
                     android:layout_marginRight="5sp"
                     android:textSize="30sp"
                     android:textColor="@color/white" />
@@ -202,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/curnext_colon1"
                     android:layout_alignTop="@+id/curnext_time_field"
-                    android:text="@string/colon"
+                    android:text="@string/text_colon"
                     android:layout_marginRight="5sp"
                     android:textSize="30sp"
                     android:textColor="@color/white" />
@@ -248,7 +248,7 @@
                     android:clickable="true"
                     android:gravity="center"
                     android:onClick="endMeeting"
-                    android:text="@string/text_endmeeting"
+                    android:text="@string/text_end"
                     android:textSize="20sp"
                     android:layout_alignParentBottom="true"
                     android:textColor="@color/white" />
@@ -263,7 +263,7 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:onClick="newMeeting"
-                android:text="@string/text_newmeeting"
+                android:text="@string/text_new_meeting"
                 android:textSize="20sp"
                 android:textColor="@color/white" />
         </RelativeLayout>

@@ -10,7 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="@string/title_activity_new_meeting"
         android:textSize="75sp" />
 
     <DigitalClock
@@ -46,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/new_edit_colon2"
             android:layout_alignBottom="@+id/new_edit_title_value"
-            android:text="@string/colon"
+            android:text="@string/text_colon"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -69,7 +68,7 @@
             android:layout_alignTop="@+id/new_edit_title_value"
             android:layout_marginLeft="5sp"
             android:background="@drawable/imageview_selector"
-            android:contentDescription="@string/delete_description"
+            android:contentDescription="@string/description_delete"
             android:minHeight="50dp"
             android:minWidth="50dp"
             android:onClick="delete"
@@ -91,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/new_edit_description_field"
             android:layout_alignBottom="@+id/new_edit_description_value"
-            android:text="@string/colon"
+            android:text="@string/text_colon"
             android:textSize="24sp"
             android:textStyle="bold" />
 

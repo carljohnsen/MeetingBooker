@@ -29,13 +29,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.desc.meetingbooker.NewMeetingActivity"
-            android:label="@string/title_activity_new_meeting"
-            android:windowSoftInputMode="adjustResize" >
-        </activity>
-        <activity
             android:name="com.desc.meetingbooker.NewEditActivity"
-            android:label="@string/title_activity_edit" >
+            android:label="@string/title_activity_new_edit" >
         </activity>
         <activity
             android:name="com.desc.meetingbooker.SettingsActivity"

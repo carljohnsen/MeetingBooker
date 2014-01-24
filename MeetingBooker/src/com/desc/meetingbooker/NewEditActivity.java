@@ -36,23 +36,24 @@ import android.widget.AdapterView.OnItemClickListener;
 public final class NewEditActivity extends Activity {
 	
 	// All of the Views
-	private static TextView	  add;
+	private static TextView	activityTitle;
+	private static TextView	add;
 	private static ImageView  delete;
 	private static EditText   descText;
 	private static ListView   intervalPicker;
 	private static TimePicker timeEnd;
 	private static TimePicker timeStart;
 	private static EditText   titleText;
-	private static TextView	  update;
+	private static TextView	update;
 
 	// All of the data fields
-	private static 		 TimeWindowAdapter 	   adapter;
+	private static 		TimeWindowAdapter 	   adapter;
 	private static final Calendar 			   cal = Calendar.getInstance();
-	private static 		 Context 			   context;
-	private static 		 Date 				   date = new Date();
-	private static 		 CalEvent 			   event;
-	private static 		 int 				   index;
-	private static final String 			   TAG = NewEditActivity
+	private static 		Context 			   context;
+	private static 		Date 				   date = new Date();
+	private static 		CalEvent 			   event;
+	private static 		int 				   index;
+	private static final String 				   TAG = NewEditActivity
 														 .class.getSimpleName();
 	private static 		 ArrayList<TimeWindow> windowList;
 
@@ -78,6 +79,7 @@ public final class NewEditActivity extends Activity {
 		context = getApplicationContext();
 
 		// Cast all the views
+		activityTitle =  (TextView)   findViewById(R.id.new_edit_title);
 		titleText = 	 (EditText)   findViewById(R.id.new_edit_title_value);
 		descText = 		 (EditText)   findViewById(R.id.new_edit_description_value);
 		add = 			 (TextView)	  findViewById(R.id.new_edit_add_button);
@@ -357,6 +359,9 @@ public final class NewEditActivity extends Activity {
 	private final void setEdit() {
 		Log.d(TAG, "called setEdit()");
 		
+		// Change the title
+		activityTitle.setText(R.string.text_edit_meeting);
+		
 		// Gets the index of the selected event
 		index = this.getIntent().getIntExtra("event", -2);
 		if (index == -1) {
@@ -388,6 +393,10 @@ public final class NewEditActivity extends Activity {
 	 */
 	private final void setNew() {
 		Log.d(TAG, "called setNew()");
+		
+		// Change the title
+		activityTitle.setText(R.string.text_new_meeting);
+		
 		// Hide the delete button
 		delete.setVisibility(Button.GONE);
 		
