@@ -25,6 +25,7 @@
     <string name="text_nextmeeting">Start</string>
     <string name="text_no_description">(no description)</string>
     <string name="text_no_more_meeting">There are no meetings the rest of the day</string>
+    <string name="text_no_upcoming">There are no upcoming or current meetings</string>
     <string name="text_old_password">Old password</string>
     <string name="text_organizer">Organizer</string>
     <string name="text_password">Password</string>
@@ -35,6 +36,7 @@
     <string name="text_time">Time</string>
     <string name="text_title">Title</string>
     <string name="text_unavailable">Unavailable</string>
+    <string name="text_upcom_meeting">Upcoming meeting</string>
     <string name="text_upcom_meetings">Upcoming meetings:</string>
     <string name="text_update">Update</string>
     <string name="text_wrong_password">Wrong password</string>

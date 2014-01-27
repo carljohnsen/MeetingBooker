@@ -9,7 +9,7 @@
         android:id="@+id/main_lay_wrap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp" >
 
         <RelativeLayout
             android:id="@+id/main_title"
@@ -27,27 +27,26 @@
                     android:id="@+id/calendar_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="75sp"
-                    android:textColor="@color/white" />
-                
-                <TextView 
+                    android:textColor="@color/white"
+                    android:textSize="75sp" />
+
+                <TextView
                     android:id="@+id/name_avail_space"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textSize="75sp"
+                    android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/calendar_name"
                     android:text="@string/text_blank"
-                    android:textColor="@color/white" />
-                
+                    android:textColor="@color/white"
+                    android:textSize="75sp" />
+
                 <TextView
                     android:id="@+id/current_available"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/calendar_name"
                     android:layout_toRightOf="@+id/name_avail_space"
-                    android:textSize="75sp"
-                    android:textColor="@color/white" />
-                
+                    android:textColor="@color/white"
+                    android:textSize="75sp" />
             </RelativeLayout>
 
             <DigitalClock
@@ -56,17 +55,17 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/name_avail_wrapper"
                 android:layout_centerHorizontal="true"
-                android:textSize="50sp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="50sp" />
 
             <ImageView
                 android:id="@+id/settings_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/imageview_selector"
-                android:contentDescription="@string/description_settings"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
+                android:background="@drawable/imageview_selector"
+                android:contentDescription="@string/description_settings"
                 android:minHeight="50dp"
                 android:minWidth="50dp"
                 android:onClick="settings"
@@ -98,21 +97,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:textColor="@color/white"
                     android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/curnext_colon1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/curnext_title_field"
-                    android:layout_toRightOf="@+id/curnext_title_field"
-                    android:text="@string/text_colon"
                     android:layout_marginLeft="5sp"
                     android:layout_marginRight="5sp"
-                    android:textSize="30sp"
-                    android:textColor="@color/white" />
+                    android:layout_toRightOf="@+id/curnext_title_field"
+                    android:text="@string/text_colon"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/curnext_title_value"
@@ -120,8 +119,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/curnext_colon1"
                     android:layout_toRightOf="@+id/curnext_colon1"
-                    android:textSize="30sp"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/curnext_description_field"
@@ -130,9 +129,9 @@
                     android:layout_alignParentLeft="true"
                     android:layout_below="@+id/curnext_title_value"
                     android:text="@string/text_description"
+                    android:textColor="@color/white"
                     android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/curnext_colon2"
@@ -140,10 +139,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/curnext_colon1"
                     android:layout_alignTop="@+id/curnext_description_field"
-                    android:text="@string/text_colon"
                     android:layout_marginRight="5sp"
-                    android:textSize="30sp" 
-                    android:textColor="@color/white" />
+                    android:text="@string/text_colon"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/curnext_description_value"
@@ -151,8 +150,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/curnext_colon2"
                     android:layout_toRightOf="@+id/curnext_colon2"
-                    android:textSize="30sp"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/curnext_organizer_field"
@@ -161,9 +160,9 @@
                     android:layout_alignParentLeft="true"
                     android:layout_below="@+id/curnext_description_value"
                     android:text="@string/text_organizer"
+                    android:textColor="@color/white"
                     android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/curnext_colon3"
@@ -171,10 +170,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/curnext_colon1"
                     android:layout_alignTop="@+id/curnext_organizer_field"
-                    android:text="@string/text_colon"
                     android:layout_marginRight="5sp"
-                    android:textSize="30sp"
-                    android:textColor="@color/white" />
+                    android:text="@string/text_colon"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/curnext_organizer_value"
@@ -182,8 +181,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/curnext_colon3"
                     android:layout_toRightOf="@+id/curnext_colon3"
-                    android:textSize="30sp"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/curnext_time_field"
@@ -192,9 +191,9 @@
                     android:layout_alignParentLeft="true"
                     android:layout_below="@+id/curnext_organizer_value"
                     android:text="@string/text_time"
+                    android:textColor="@color/white"
                     android:textSize="30sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/curnext_colon4"
@@ -202,10 +201,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/curnext_colon1"
                     android:layout_alignTop="@+id/curnext_time_field"
-                    android:text="@string/text_colon"
                     android:layout_marginRight="5sp"
-                    android:textSize="30sp"
-                    android:textColor="@color/white" />
+                    android:text="@string/text_colon"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/curnext_time_value"
@@ -213,8 +212,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/curnext_colon4"
                     android:layout_toRightOf="@+id/curnext_colon4"
-                    android:textSize="30sp"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -224,34 +223,34 @@
                 android:layout_above="@+id/new_meeting_button"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/current_next_lay"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" >
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp" >
 
                 <TextView
                     android:id="@+id/next_meeting_button"
                     android:layout_width="match_parent"
                     android:layout_height="80sp"
+                    android:layout_alignParentBottom="true"
                     android:background="@drawable/custom_button2"
                     android:clickable="true"
                     android:gravity="center"
                     android:onClick="startNextMeeting"
                     android:text="@string/text_nextmeeting"
-                    android:textSize="20sp"
-                    android:layout_alignParentBottom="true"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/end_meeting_button"
                     android:layout_width="match_parent"
                     android:layout_height="80sp"
+                    android:layout_alignParentBottom="true"
                     android:background="@drawable/custom_button2"
                     android:clickable="true"
                     android:gravity="center"
                     android:onClick="endMeeting"
                     android:text="@string/text_end"
-                    android:textSize="20sp"
-                    android:layout_alignParentBottom="true"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
             </RelativeLayout>
 
             <TextView
@@ -264,8 +263,17 @@
                 android:gravity="center"
                 android:onClick="newMeeting"
                 android:text="@string/text_new_meeting"
-                android:textSize="20sp"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/main_no_upcoming"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#44222222"
+                android:text="@string/text_no_upcoming"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -278,13 +286,14 @@
             android:layout_marginLeft="10dp"
             android:background="#44222222"
             android:padding="5dp" >
+
             <TextView
                 android:id="@+id/upcoming_meetings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="@color/white" />
+                android:textStyle="bold" />
 
             <ListView
                 android:id="@+id/cal_event_list"

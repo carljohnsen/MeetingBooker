@@ -49,18 +49,19 @@ public final class MainActivity extends Activity {
 	private static TextView 	  currentOrganizer;
 	private static TextView 	  currentTitle;
 	private static TextView 	  currentUpcom;
-	private static TextView		  endMeeting;
+	private static TextView	  endMeeting;
 	private static ListView 	  listView;
 	private static View 		  mainView;
-	private static View			  mainWrap;
-	private static TextView		  nextMeeting;
-	private static TextView		  upcomMeetings;
+	private static View		  mainWrap;
+	private static TextView	  noUpcom;
+	private static TextView	  nextMeeting;
+	private static TextView	  upcomMeetings;
 	
 	// All of the data fields
-	private   static ArrayAdapter<CalEvent> adapter;
-	private   static Context 				context;
+	private   static ArrayAdapter<CalEvent> 	adapter;
+	private   static Context 					context;
 	protected static CalEvent 				current = null;
-	protected static ArrayList<CalEvent> 	eventlist = 
+	protected static ArrayList<CalEvent> 		eventlist = 
 												new ArrayList<CalEvent>();
 	private   static		boolean			hasPressed = false;
 	private   static 		boolean			isDelayed = false;
@@ -71,16 +72,16 @@ public final class MainActivity extends Activity {
 	private					TimerTask		timerTask;
 	private					TimerTask		touchTask;
 	private					Timer			touchTimer;
-	private   static 		Window 			window;
+	private   static 			Window 			window;
 
 	// All of the config fields
 	protected static boolean canEnd;
 	protected static boolean endDelete;
-	protected static int 	 endExtend;
+	protected static int 	 	endExtend;
 	protected static boolean extendEnd;
 	protected static boolean extendStart;
-	protected static String  roomName;
-	protected static int 	 startExtend;
+	protected static String  	roomName;
+	protected static int 	 	startExtend;
 
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
@@ -115,6 +116,7 @@ public final class MainActivity extends Activity {
 		currentTime		 = (TextView) 		findViewById(R.id.curnext_time_value);
 		currentUpcom 	 = (TextView) 		findViewById(R.id.curnext_title_field);
 		nextMeeting 	 = (TextView) 		findViewById(R.id.next_meeting_button);
+		noUpcom			 = (TextView)		findViewById(R.id.main_no_upcoming);
 		endMeeting 		 = (TextView) 		findViewById(R.id.end_meeting_button);
 		listView 		 = (ListView) 		findViewById(R.id.cal_event_list);
 		mainView 		 = (View) 			findViewById(R.id.main_lay);
@@ -245,14 +247,14 @@ public final class MainActivity extends Activity {
 			Log.d(TAG, "show curnextLay");
 			curNextLay.setClickable(true);
 			curNextLay.setVisibility(View.VISIBLE);
-			upcomMeetings.setVisibility(TextView.VISIBLE);
+			noUpcom.setVisibility(View.GONE);
 		} else {
 			Log.d(TAG, "hide curnextLay");
 			curNextLay.setClickable(false);
 			curNextLay.setVisibility(View.GONE);
-			nextMeeting.setVisibility(Button.GONE);
-			endMeeting.setVisibility(Button.GONE);
-			upcomMeetings.setVisibility(TextView.GONE);
+			endMeeting.setVisibility(View.GONE);
+			nextMeeting.setVisibility(View.GONE);
+			noUpcom.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -469,7 +471,7 @@ public final class MainActivity extends Activity {
 		} else {
 			mainView.setBackgroundColor(Color.GREEN);
 			currentAvail.setText(R.string.text_available);
-			currentUpcom.setText(R.string.text_upcom_meetings);
+			currentUpcom.setText(R.string.text_upcom_meeting);
 			isOverTime = false;
 			
 			// If there is a current event, show the curNextLay
