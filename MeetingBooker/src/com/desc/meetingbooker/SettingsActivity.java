@@ -34,7 +34,7 @@ import android.widget.TextView;
 public final class SettingsActivity extends Activity {
 
 	private final String TAG = SettingsActivity.class.getSimpleName();
-	private ArrayList<Setting> config;
+	private static ArrayList<Setting> config;
 	private static ListView settingList;
 	private SettingsAdapter adapter;
 	private static Context context;
@@ -50,7 +50,7 @@ public final class SettingsActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		
+
 		// Set content view
 		setContentView(R.layout.activity_settings);
 
@@ -63,16 +63,14 @@ public final class SettingsActivity extends Activity {
 		adapter = new SettingsAdapter(this, R.id.settingList, config);
 		settingList.setAdapter(adapter);
 
-		// Set  OnItemClickListener
+		// Set OnItemClickListener
 		settingList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public final void onItemClick(final AdapterView<?> arg0,
-					final View arg1, 
-					final int position, 
-					final long arg3) {
-				
+					final View arg1, final int position, final long arg3) {
+
 				Log.d(TAG, "List was clicked on position " + position);
-				
+
 				// Check if it is a boolean, so that it should check/uncheck
 				if (config.get(position).valueType.equals("boolean")) {
 					// Find the box
@@ -80,8 +78,8 @@ public final class SettingsActivity extends Activity {
 							.findViewById(R.id.settingCheck);
 					// check / uncheck
 					box.setChecked(!box.isChecked());
-					
-					// If its either extendend or extendstart, gray out the 
+
+					// If its either extendend or extendstart, gray out the
 					// time selectors
 					if (position == 0 || position == 2) {
 						final View v = settingList.getChildAt(position + 1);
@@ -99,7 +97,7 @@ public final class SettingsActivity extends Activity {
 					}
 					return;
 				}
-				
+
 				// Check if it is an int, so that it should use numberfragment
 				if (config.get(position).valueType.equals("int")) {
 					if (position == 1 || position == 3) {
@@ -115,7 +113,7 @@ public final class SettingsActivity extends Activity {
 					fragment.show(getFragmentManager(), "BLA");
 					return;
 				}
-				
+
 				// Check if it is a String, so that it should show stringfrag.
 				if (config.get(position).valueType.equals("String")) {
 					StringFragment.index = position;
@@ -123,7 +121,17 @@ public final class SettingsActivity extends Activity {
 					fragment.show(getFragmentManager(), "BLA");
 					return;
 				}
-				
+
+				// TODO Check if it is a hashmap, so that it should show
+				// hashmaofrag.
+				if (config.get(position).valueType.equals("hashmap")) {
+					ListFragment.index = position;
+					ListFragment.setting = config.get(position);
+					final ListFragment fragment = new ListFragment();
+					fragment.show(getFragmentManager(), "BLA");
+					return;
+				}
+
 			}
 		});
 
@@ -133,7 +141,8 @@ public final class SettingsActivity extends Activity {
 	/**
 	 * Exits the SettingsActivity
 	 * 
-	 * @param view The View of the button
+	 * @param view
+	 *            The View of the button
 	 */
 	public final void cancel(final View view) {
 		Log.d(TAG, "pressed Cancel button");
@@ -144,7 +153,8 @@ public final class SettingsActivity extends Activity {
 	 * The method called by the "Change password" button. Inflates change
 	 * password fragment
 	 * 
-	 * @param view The View of the button
+	 * @param view
+	 *            The View of the button
 	 */
 	public final void newPassword(final View view) {
 		Log.d(TAG, "pressed NewPassword button");
@@ -160,7 +170,7 @@ public final class SettingsActivity extends Activity {
 		Log.d(TAG, "called readList()");
 		// Make a new ArrayList
 		final ArrayList<Setting> temp = new ArrayList<Setting>();
-		
+
 		// Add all the settings to the ArrayList
 		for (int i = 0; i < config.size(); i++) {
 			final View v = settingList.getChildAt(i);
@@ -176,7 +186,7 @@ public final class SettingsActivity extends Activity {
 			set.value = value;
 			temp.add(set);
 		}
-		
+
 		// Return the AraryList
 		return temp;
 	}
@@ -184,13 +194,99 @@ public final class SettingsActivity extends Activity {
 	/**
 	 * Reads the formula, and then writes it to the config file
 	 * 
-	 * @param view The View from the button
+	 * @param view
+	 *            The View from the button
 	 */
 	public final void save(final View view) {
 		Log.d(TAG, "pressed Save button");
 		config = readList();
 		StatMeth.write(config, getApplicationContext());
 		finish();
+	}
+
+	/**
+	 * A DialogFragment, that shows a list of possible Calendar names
+	 * 
+	 * @author Carl Johnsen
+	 * @version 1.0
+	 * @since 28-01-2014 TODO !!!
+	 */
+	public final static class ListFragment extends DialogFragment {
+		// TODO !!!
+		private static String TAG = ListFragment.class.getSimpleName();
+		private static int index;
+		private static Setting setting;
+
+		// TODO !!!
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			Log.d(TAG, "called onCreateDialog()");
+
+			// Inflate the View
+			final AlertDialog.Builder builder = new AlertDialog.Builder(
+					getActivity());
+			final LayoutInflater inflater = getActivity().getLayoutInflater();
+			final View v = inflater.inflate(R.layout.fragment_list, null);
+
+			// Find the ListView in the fragment
+			final ArrayList<CalName> list = StatMeth.getCalendarNames(context);
+			final ListView listView = (ListView) v
+					.findViewById(R.id.fragment_list_list);
+			final TextView name = (TextView) v
+					.findViewById(R.id.fragment_list_name);
+			final TextView id = (TextView) v
+					.findViewById(R.id.fragment_list_id);
+			
+			name.setText(StatMeth.getCalendarName(context));
+			id.setText(setting.value);
+			
+			listView.setAdapter(new CalNameAdapter(this.getActivity(),
+					R.layout.item_calname, list));
+			listView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public final void onItemClick(final AdapterView<?> arg0,
+						final View arg1, final int position, final long arg3) {
+					CalName selected = list.get(position);
+					name.setText(selected.name);
+					id.setText(selected.id);
+					setting.value = selected.id;
+				}
+			});
+			
+			builder.setPositiveButton("OK",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(final DialogInterface arg0,
+								final int arg1) {
+							Log.d(TAG, "pressed OK button");
+							// Save the selected CalName, and save it in a
+							// Setting
+							config.set(index, setting);
+
+							final View vi = settingList.getChildAt(index);
+							TextView tv = (TextView) vi
+									.findViewById(R.id.settingVal);
+							tv.setText(setting.value);
+							tv = (TextView) vi.findViewById(R.id.settingName);
+							tv.setText("Calendar ID : " + name.getText());
+						}
+
+					})
+					.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public final void onClick(
+										final DialogInterface dialog,
+										final int which) {
+									Log.d(TAG, "pressed Cancel button");
+									// DO NOTHING
+								}
+							});
+			return builder.create();
+		}
+
 	}
 
 	/**
@@ -212,17 +308,17 @@ public final class SettingsActivity extends Activity {
 			final AlertDialog.Builder builder = new AlertDialog.Builder(
 					getActivity());
 			final LayoutInflater inflater = getActivity().getLayoutInflater();
-			final View v = inflater
-					.inflate(R.layout.number_picker_layout, null);
-			
+			final View v = inflater.inflate(R.layout.fragment_number_picker,
+					null);
+
 			// Find the fragments View
 			final NumberPicker n = (NumberPicker) v
 					.findViewById(R.id.numberPicker);
-			
+
 			// Find the ListViews child
 			final View vi = settingList.getChildAt(index);
 			final TextView tv = (TextView) vi.findViewById(R.id.settingName);
-			
+
 			// Set the boundries of the NumberPicker
 			if ((tv.getText() + "").startsWith("Length")) {
 				n.setMinValue(15);
@@ -231,7 +327,7 @@ public final class SettingsActivity extends Activity {
 				n.setMinValue(0);
 				n.setMaxValue(30);
 			}
-			
+
 			// Remove focus from the NumberPicker
 			n.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
@@ -277,9 +373,9 @@ public final class SettingsActivity extends Activity {
 			final AlertDialog.Builder builder = new AlertDialog.Builder(
 					getActivity());
 			final LayoutInflater inflater = getActivity().getLayoutInflater();
-			final View v = inflater.inflate(R.layout.change_password_layout,
+			final View v = inflater.inflate(R.layout.fragment_change_password,
 					null);
-			
+
 			// Find the prompt View for displaying reason for error
 			final TextView prompt = (TextView) v
 					.findViewById(R.id.changePrompt);
@@ -303,7 +399,7 @@ public final class SettingsActivity extends Activity {
 								@Override
 								public void onClick(final DialogInterface arg0,
 										final int arg1) {
-									
+
 									// Find the fragments views
 									final EditText oldText = (EditText) v
 											.findViewById(R.id.pwOld);
@@ -332,27 +428,25 @@ public final class SettingsActivity extends Activity {
 										StatMeth.savePassword(new1, context);
 										return;
 									}
-									
+
 									// If the two new differ from each other
 									if (!new1.equals(new2)) {
-										Log.d(TAG, "new password: two new dont"+
-										" match");
+										Log.d(TAG, "new password: two new dont"
+												+ " match");
 										error = 1;
-										final PasswordFragment fragment = 
-												new PasswordFragment();
+										final PasswordFragment fragment = new PasswordFragment();
 										fragment.show(getFragmentManager(),
 												"BLA");
 										return;
 									}
-									
+
 									// If the typed old differs from the stored
 									// old
 									if (!old.equals(storedpw)) {
-										Log.d(TAG, "new password: old was" + 
-										" wrong");
+										Log.d(TAG, "new password: old was"
+												+ " wrong");
 										error = 2;
-										final PasswordFragment fragment = 
-												new PasswordFragment();
+										final PasswordFragment fragment = new PasswordFragment();
 										fragment.show(getFragmentManager(),
 												"BLA");
 										return;
@@ -378,7 +472,7 @@ public final class SettingsActivity extends Activity {
 	}
 
 	/**
-	 * A DialogFragment with a EditText field in. Used for editing String 
+	 * A DialogFragment with a EditText field in. Used for editing String
 	 * settings-
 	 * 
 	 * @author Carl Johnsen
@@ -386,7 +480,7 @@ public final class SettingsActivity extends Activity {
 	 * @since 03-07-2013
 	 */
 	public final static class StringFragment extends DialogFragment {
-		
+
 		private static String TAG = StringFragment.class.getSimpleName();
 		private static int index;
 
@@ -397,17 +491,18 @@ public final class SettingsActivity extends Activity {
 			final AlertDialog.Builder builder = new AlertDialog.Builder(
 					getActivity());
 			final LayoutInflater inflater = getActivity().getLayoutInflater();
-			final View v = inflater.inflate(R.layout.string_edit_layout, null);
-			
+			final View v = inflater
+					.inflate(R.layout.fragment_string_edit, null);
+
 			// Find the fragments Views
 			final TextView layTV = (TextView) v.findViewById(R.id.editLayTV);
 			final EditText edit = (EditText) v.findViewById(R.id.editLayET);
-			
+
 			// Find the ListViews child
 			final View vi = settingList.getChildAt(index);
 			final TextView tv1 = (TextView) vi.findViewById(R.id.settingVal);
 			final TextView tv2 = (TextView) vi.findViewById(R.id.settingName);
-			
+
 			// Fill the fragments Views with information from the ListView
 			edit.setHint(tv1.getText());
 			layTV.setText(tv2.getText());
@@ -433,7 +528,7 @@ public final class SettingsActivity extends Activity {
 											.findViewById(R.id.settingVal);
 									tv.setText(name);
 								}
-								
+
 							})
 					.setNegativeButton("Cancel",
 							new DialogInterface.OnClickListener() {

@@ -127,7 +127,7 @@ public final class MainActivity extends Activity {
 		calendarName.setText(roomName);
 
 		// Make a new CalEventAdapter and give it to the ListView
-		adapter = new CalEventAdapter(this, R.layout.calevent_item, eventlist);
+		adapter = new CalEventAdapter(this, R.layout.item_calevent, eventlist);
 		listView.setAdapter(adapter);
 
 		// Set a custom OnItemClickListener
@@ -545,7 +545,7 @@ public final class MainActivity extends Activity {
 					getActivity());
 			final LayoutInflater inflater = getActivity().getLayoutInflater();
 			final View v = inflater
-					.inflate(R.layout.password_prompt_layout, null);
+					.inflate(R.layout.fragment_password_prompt, null);
 			
 			// If the fragment have been started by a wrong typed password,
 			// notify the user

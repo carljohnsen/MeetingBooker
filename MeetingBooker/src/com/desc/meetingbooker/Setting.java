@@ -15,11 +15,13 @@ public final class Setting {
 	protected final String valueType;
 	
 	/**
-	 * Constructs a new Setting object
+	 * Constructs a new Setting object, that is either a String,
+	 * or a number wrapped in a string
 	 * 
 	 * @param name The name of the setting
 	 * @param value The value linked to the name
 	 * @param valueType The type of the value
+	 * @param desc The description of the Setting
 	 */
 	public Setting(final String name, 
 			final String value, 

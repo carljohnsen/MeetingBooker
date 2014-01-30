@@ -11,6 +11,7 @@ import java.text.Format;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.TimeZone;
 
 import android.content.ContentResolver;
@@ -62,43 +63,43 @@ public final class StatMeth {
 			// Write all the config lines
 			String line;
 			line = "extendstarttime true";
-			interpret(line);
+			interpret(line, context);
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "starttime 15";
-			interpret(line);
+			interpret(line, context);
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "extendendtime true";
-			interpret(line);
+			interpret(line, context);
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "endtime 15";
-			interpret(line);
+			interpret(line, context);
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "candelete true";
-			interpret(line);
+			interpret(line, context);
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "canend true";
-			interpret(line);
+			interpret(line, context);
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "enddelete true";
-			interpret(line);
+			interpret(line, context);
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "windowsize 60";
-			interpret(line);
+			interpret(line, context);
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "calendarid 2";
-			interpret(line);
+			interpret(line, context);
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "calendarname " + getCalendarName(context);
-			interpret(line);
+			interpret(line, context);
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			
@@ -206,6 +207,45 @@ public final class StatMeth {
 		cursor.close();
 		return result;
 	}
+	
+	/**
+	 * Used for retrieving possible Calendar names, and ID's
+	 * 
+	 * @param context The context of the app, used to extract the CONTENT_URI
+	 * 				   and the ContentResolver
+	 * @return An HashMap containing Calendar names and their corresponding
+	 * 			ID's
+	 */
+	public final static ArrayList<CalName> getCalendarNames(final Context context) {
+		Log.d(TAG, "called getCalendarNames()");
+		
+		HashMap<String, String> result = new HashMap<String,String>();
+		
+		// The query
+		final String[] query = {
+				CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
+				CalendarContract.Calendars._ID
+		};
+		
+		// Get the ContentResolver, and extract the cursor
+		final ContentResolver cr = context.getContentResolver();
+		final Cursor cursor = cr.query(CalendarContract.Calendars.CONTENT_URI, 
+				query, null, null, null);
+		// Move the cursor to the first result
+		cursor.moveToFirst();
+		// Loop over the results
+		while(!cursor.isAfterLast()) {
+			// Get the name and the id of the results
+			String name = cursor.getString(0);
+			String id = cursor.getString(1);
+			// Put them in the HashMap
+			result.put(name, id);
+			// Move to next result
+			cursor.moveToNext();
+		}
+		
+		return toArrayList(result);
+	}
 
 	/**
 	 * Used for retrieving the password from private file pwd
@@ -241,7 +281,7 @@ public final class StatMeth {
 	 * 
 	 * @param str The string that will be interpretet
 	 */
-	private final static void interpret(final String str) {
+	private final static void interpret(final String str, final Context context) {
 		// Find the whitespace in the String, and split it into two
 		final int index = str.indexOf(' ');
 		final String command = str.substring(0, index);
@@ -257,15 +297,13 @@ public final class StatMeth {
 		}
 		if (command.equals("endtime")) {
 			MainActivity.endExtend = Integer.parseInt(value);
-			setting = 
-					new Setting(command, value, "int", "Minutes to extend by");
+			setting = new Setting(command, value, "int", "Minutes to extend by");
 			settings.add(setting);
 			return;
 		}
 		if (command.equals("extendstarttime")) {
 			MainActivity.extendStart = Boolean.parseBoolean(value);
-			setting = new Setting(command, value, "boolean",
-					"Extend start time");
+			setting = new Setting(command, value, "boolean", "Extend start time");
 			settings.add(setting);
 			return;
 		}
@@ -311,7 +349,7 @@ public final class StatMeth {
 		}
 		if (command.equals("calendarid")) {
 			StatMeth.calID = value;
-			setting = new Setting(command, value, "String", "Calendar ID");
+			setting = new Setting(command, value, "hashmap", "Calendar ID : " + getCalendarName(context));
 			settings.add(setting);
 			return;
 		}
@@ -547,7 +585,7 @@ public final class StatMeth {
 			// Read each line
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
-				interpret(line);
+				interpret(line, context);
 			}
 			Log.d(TAG, "called interpret() " + settings.size() + " times");
 			
@@ -635,6 +673,21 @@ public final class StatMeth {
 		// Insert the attendee
 		cr.insert(ATTENDEES_URI, values2);
 
+	}
+	
+	/**
+	 * Converts an HashMap to an ArrayList of CalName
+	 * 
+	 * @param map The HashMap that should be converted
+	 * @return An ArrayList of CalName
+	 */
+	public static ArrayList<CalName> toArrayList(HashMap<String, String> map) {
+		ArrayList<CalName> result = new ArrayList<CalName>();
+		for (String key : map.keySet()) {
+			result.add(new CalName(key, map.get(key)));
+		}
+		Log.d(TAG, "Found " + result.size() + " CalNames");
+		return result;
 	}
 
 	/**

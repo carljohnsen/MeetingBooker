@@ -67,7 +67,7 @@ public final class CalEventAdapter extends ArrayAdapter<CalEvent> {
 			// Inflate the View
 			final LayoutInflater vi = (LayoutInflater) activity
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.calevent_item, null);
+			v = vi.inflate(R.layout.item_calevent, null);
 			
 			// Make a new ViewHold, and find the Views
 			holder = new ViewHold();

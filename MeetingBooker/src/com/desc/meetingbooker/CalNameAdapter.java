@@ -11,44 +11,46 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 /**
- * An custom ArrayAdapter for NewEditActivity
- * 
- * @author carljohnsen
+ * An custom ArrayAdapter for the ListView in the ListFragment
+ *  
+ * @author Carl Johnsen
  * @version 1.0
- * @since 03-07-2013
+ * @since 28-01-2014
  */
-public final class TimeWindowAdapter extends ArrayAdapter<TimeWindow> {
+public class CalNameAdapter extends ArrayAdapter<CalName> {
 
-	private final ArrayList<TimeWindow> entries;
+	private final ArrayList<CalName> entries;
 	private final Activity activity;
-
+	
 	/**
-	 * The constructor for an TimeWindowAdapter
+	 * The constructor for an CalNameAdapter
 	 * 
 	 * @param a 				 The activity it is used
 	 * @param textViewResourceId The layout it uses
 	 * @param entries 			 The ArrayList that will be set up in the list
 	 */
-	public TimeWindowAdapter(final Activity a, 
-			final int textViewResourceId,
-			final ArrayList<TimeWindow> entries) {
+	public CalNameAdapter(Activity a, 
+			int textViewResourceId,
+			ArrayList<CalName> entries) {
 		super(a, textViewResourceId, entries);
 		this.entries = entries;
 		this.activity = a;
 	}
-
+	
 	/**
 	 * The ViewHolder for an item in the list
 	 * 
-	 * @author carljohnsen
+	 * @author Carl Johnsen
 	 * @version 1.0
-	 * @since 03-07-2013
+	 * @since 28-01-2014
 	 */
 	public final static class ViewHold {
-		/** R.id.windowItem */
+		/** R.id.item_calname_name */
 		public TextView item1;
+		/** R.id.item_calname_id */
+		public TextView item2;
 	}
-
+	
 	@Override
 	public final View getView(final int position, 
 			final View convertView,
@@ -61,24 +63,25 @@ public final class TimeWindowAdapter extends ArrayAdapter<TimeWindow> {
 			// Inflate the View
 			final LayoutInflater vi = (LayoutInflater) activity
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.item_timewindow, null);
+			v = vi.inflate(R.layout.item_calname, null);
 			
-			// Make a new ViewHolder and find the Views
+			// Make a new ViewHold, and find the Views
 			holder = new ViewHold();
-			holder.item1 = (TextView) v.findViewById(R.id.windowItem);
+			holder.item1 = (TextView) v.findViewById(R.id.item_calname_name);
+			holder.item2 = (TextView) v.findViewById(R.id.item_calname_id);
 			v.setTag(holder);
 		} else {
 			holder = (ViewHold) v.getTag();
 		}
 		
-		// Take the TimeWindow and fill its information into the View
-		final TimeWindow window = entries.get(position);
-		if (window != null) {
-			String time = window.getStartString() + " | "
-					+ window.getEndString();
-			holder.item1.setText(time);
+		// Take the event, and fill its information into the Views
+		final CalName calname = entries.get(position);
+		if (calname != null) {
+			holder.item1.setText(calname.name);
+			holder.item2.setText(calname.id);
 		}
+		
 		return v;
 	}
-
+	
 }

@@ -95,7 +95,7 @@ public final class NewEditActivity extends Activity {
 		
 		// Find TimeWindows, make a new adapter and add it to the ListView
 		windowList = findTimeWindow();
-		adapter = new TimeWindowAdapter(this, R.layout.timewindow_item,
+		adapter = new TimeWindowAdapter(this, R.layout.item_timewindow,
 				windowList);
 		intervalPicker.setAdapter(adapter);
 		Log.d(TAG, "found " + windowList.size() + " TimeWindows");

@@ -66,7 +66,7 @@ public final class SettingsAdapter extends ArrayAdapter<Setting> {
 			// Inflate the View
 			final LayoutInflater vi = (LayoutInflater) activity
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.setting_item, null);
+			v = vi.inflate(R.layout.item_setting, null);
 			
 			// Make a new ViewHolder and find the Views
 			holder = new ViewHolder();
