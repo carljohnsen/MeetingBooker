@@ -68,7 +68,7 @@ public class CalNameAdapter extends ArrayAdapter<CalName> {
 			// Make a new ViewHold, and find the Views
 			holder = new ViewHold();
 			holder.item1 = (TextView) v.findViewById(R.id.item_calname_name);
-			holder.item2 = (TextView) v.findViewById(R.id.item_calname_id);
+			holder.item2 = (TextView) v.findViewById(R.id.item_calname_id_value);
 			v.setTag(holder);
 		} else {
 			holder = (ViewHold) v.getTag();

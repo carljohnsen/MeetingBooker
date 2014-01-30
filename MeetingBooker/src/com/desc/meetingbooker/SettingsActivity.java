@@ -123,11 +123,11 @@ public final class SettingsActivity extends Activity {
 				}
 
 				// TODO Check if it is a hashmap, so that it should show
-				// hashmaofrag.
+				// CustomListFragment
 				if (config.get(position).valueType.equals("hashmap")) {
-					ListFragment.index = position;
-					ListFragment.setting = config.get(position);
-					final ListFragment fragment = new ListFragment();
+					CustomListFragment.index = position;
+					CustomListFragment.setting = config.get(position);
+					final CustomListFragment fragment = new CustomListFragment();
 					fragment.show(getFragmentManager(), "BLA");
 					return;
 				}
@@ -206,14 +206,15 @@ public final class SettingsActivity extends Activity {
 
 	/**
 	 * A DialogFragment, that shows a list of possible Calendar names
+	 * Named Custom*, because of name clash with android.content.ListFragment
 	 * 
 	 * @author Carl Johnsen
 	 * @version 1.0
 	 * @since 28-01-2014 TODO !!!
 	 */
-	public final static class ListFragment extends DialogFragment {
+	public final static class CustomListFragment extends DialogFragment {
 		// TODO !!!
-		private static String TAG = ListFragment.class.getSimpleName();
+		private static String TAG = CustomListFragment.class.getSimpleName();
 		private static int index;
 		private static Setting setting;
 
@@ -229,19 +230,19 @@ public final class SettingsActivity extends Activity {
 			final View v = inflater.inflate(R.layout.fragment_list, null);
 
 			// Find the ListView in the fragment
-			final ArrayList<CalName> list = StatMeth.getCalendarNames(context);
 			final ListView listView = (ListView) v
 					.findViewById(R.id.fragment_list_list);
 			final TextView name = (TextView) v
 					.findViewById(R.id.fragment_list_name);
 			final TextView id = (TextView) v
-					.findViewById(R.id.fragment_list_id);
+					.findViewById(R.id.fragment_list_id_value);
 			
 			name.setText(StatMeth.getCalendarName(context));
 			id.setText(setting.value);
 			
-			listView.setAdapter(new CalNameAdapter(this.getActivity(),
-					R.layout.item_calname, list));
+			final ArrayList<CalName> list = StatMeth.getCalendarNames(context);
+			CalNameAdapter adapter = new CalNameAdapter(this.getActivity(), R.layout.item_calname, list);
+			listView.setAdapter(adapter);
 			listView.setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public final void onItemClick(final AdapterView<?> arg0,
@@ -253,7 +254,7 @@ public final class SettingsActivity extends Activity {
 				}
 			});
 			
-			builder.setPositiveButton("OK",
+			builder.setView(v).setPositiveButton("OK",
 					new DialogInterface.OnClickListener() {
 
 						@Override

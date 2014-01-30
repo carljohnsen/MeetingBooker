@@ -6,11 +6,20 @@
     <TextView android:id="@+id/item_calname_name"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:textSize="25sp" />
     
-    <TextView android:id="@+id/item_calname_id"
+    <TextView android:id="@+id/item_calname_id_field"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_alignParentRight="true" />
+        android:layout_toLeftOf="@+id/item_calname_id_value"
+        android:textSize="25sp"
+        android:text="@string/text_id_colon" />
+    
+    <TextView android:id="@+id/item_calname_id_value"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textSize="25sp" />
 
 </RelativeLayout>

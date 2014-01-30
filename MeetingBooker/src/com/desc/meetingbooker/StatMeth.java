@@ -11,7 +11,6 @@ import java.text.Format;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.TimeZone;
 
 import android.content.ContentResolver;
@@ -219,7 +218,7 @@ public final class StatMeth {
 	public final static ArrayList<CalName> getCalendarNames(final Context context) {
 		Log.d(TAG, "called getCalendarNames()");
 		
-		HashMap<String, String> result = new HashMap<String,String>();
+		ArrayList<CalName> result = new ArrayList<CalName>();
 		
 		// The query
 		final String[] query = {
@@ -239,12 +238,12 @@ public final class StatMeth {
 			String name = cursor.getString(0);
 			String id = cursor.getString(1);
 			// Put them in the HashMap
-			result.put(name, id);
+			result.add(new CalName(name,id));
 			// Move to next result
 			cursor.moveToNext();
 		}
 		
-		return toArrayList(result);
+		return result;
 	}
 
 	/**
@@ -675,12 +674,14 @@ public final class StatMeth {
 
 	}
 	
-	/**
+	/* TODO useless, as i have changed the way getCalendarNames behaves
+	 * /**
+	 *
 	 * Converts an HashMap to an ArrayList of CalName
 	 * 
 	 * @param map The HashMap that should be converted
 	 * @return An ArrayList of CalName
-	 */
+	 *
 	public static ArrayList<CalName> toArrayList(HashMap<String, String> map) {
 		ArrayList<CalName> result = new ArrayList<CalName>();
 		for (String key : map.keySet()) {
@@ -688,7 +689,7 @@ public final class StatMeth {
 		}
 		Log.d(TAG, "Found " + result.size() + " CalNames");
 		return result;
-	}
+	} */
 
 	/**
 	 * Used when the application has updated an event, and needs to edit the
