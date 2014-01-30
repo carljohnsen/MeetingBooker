@@ -122,8 +122,6 @@ public final class SettingsActivity extends Activity {
 					return;
 				}
 
-				// TODO Check if it is a hashmap, so that it should show
-				// CustomListFragment
 				if (config.get(position).valueType.equals("hashmap")) {
 					CustomListFragment.index = position;
 					CustomListFragment.setting = config.get(position);
@@ -210,15 +208,13 @@ public final class SettingsActivity extends Activity {
 	 * 
 	 * @author Carl Johnsen
 	 * @version 1.0
-	 * @since 28-01-2014 TODO !!!
+	 * @since 28-01-2014 
 	 */
 	public final static class CustomListFragment extends DialogFragment {
-		// TODO !!!
 		private static String TAG = CustomListFragment.class.getSimpleName();
 		private static int index;
 		private static Setting setting;
 
-		// TODO !!!
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			Log.d(TAG, "called onCreateDialog()");
@@ -253,8 +249,10 @@ public final class SettingsActivity extends Activity {
 					setting.value = selected.id;
 				}
 			});
-			
-			builder.setView(v).setPositiveButton("OK",
+			// TODO Ændre UI på dette fragment, så selected ikke ser så malplaceret ud
+			builder.setView(v)
+				.setTitle(R.string.text_choose_calendar)
+				.setPositiveButton("OK",
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -332,7 +330,9 @@ public final class SettingsActivity extends Activity {
 			// Remove focus from the NumberPicker
 			n.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
-			builder.setView(v).setPositiveButton("OK",
+			builder.setView(v)
+				.setTitle(R.string.text_pick_a_number)
+				.setPositiveButton("OK",
 					new DialogInterface.OnClickListener() {
 
 						@Override
@@ -386,14 +386,15 @@ public final class SettingsActivity extends Activity {
 				break;
 			case 1:
 				prompt.setVisibility(TextView.VISIBLE);
-				prompt.setText("The new passwords didn't match");
+				prompt.setText(R.string.text_passwords_didnt_match);
 				break;
 			case 2:
 				prompt.setVisibility(TextView.VISIBLE);
-				prompt.setText("The old password was wrong");
+				prompt.setText(R.string.text_wrong_old_password);
 				break;
 			}
 			builder.setView(v)
+					.setTitle(R.string.text_change_password_colon)
 					.setPositiveButton("OK",
 							new DialogInterface.OnClickListener() {
 
@@ -496,7 +497,6 @@ public final class SettingsActivity extends Activity {
 					.inflate(R.layout.fragment_string_edit, null);
 
 			// Find the fragments Views
-			final TextView layTV = (TextView) v.findViewById(R.id.editLayTV);
 			final EditText edit = (EditText) v.findViewById(R.id.editLayET);
 
 			// Find the ListViews child
@@ -506,9 +506,9 @@ public final class SettingsActivity extends Activity {
 
 			// Fill the fragments Views with information from the ListView
 			edit.setHint(tv1.getText());
-			layTV.setText(tv2.getText());
 
 			builder.setView(v)
+					.setTitle(tv2.getText() + ":")
 					.setPositiveButton("OK",
 							new DialogInterface.OnClickListener() {
 

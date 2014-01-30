@@ -11,6 +11,8 @@
     <string name="text_blank">&#160;</string>
     <string name="text_cancel">Cancel</string>
     <string name="text_change_password">Change password</string>
+    <string name="text_change_password_colon">Change password:</string>
+    <string name="text_choose_calendar">Choose which calendar to display:</string>
     <string name="text_colon">:</string>
     <string name="text_confirm_password">Confirm new password</string>
     <string name="text_current_meet">Current meeting</string>
@@ -18,6 +20,7 @@
     <string name="text_description">Description</string>
     <string name="text_edit_meeting">Edit meeting</string>
     <string name="text_end">End</string>
+    <string name="text_enter_password">Enter password:</string>
     <string name="text_extendEnd">Extend End</string>
     <string name="text_id_colon">ID:&#160;</string>
     <string name="text_last_meet">Last meeting</string>
@@ -30,6 +33,8 @@
     <string name="text_old_password">Old password</string>
     <string name="text_organizer">Organizer</string>
     <string name="text_password">Password</string>
+    <string name="text_passwords_didnt_match">The new passwords didn\'t match</string>
+    <string name="text_pick_a_number">Pick a number:</string>
     <string name="text_save">Save</string>
     <string name="text_selected">Selected:&#160;</string>
     <string name="text_settings">Settings</string>
@@ -42,6 +47,7 @@
     <string name="text_upcom_meetings">Upcoming meetings:</string>
     <string name="text_update">Update</string>
     <string name="text_wrong_password">Wrong password</string>
+    <string name="text_wrong_old_password">The old password was wrong</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_new_edit">NewEditActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>

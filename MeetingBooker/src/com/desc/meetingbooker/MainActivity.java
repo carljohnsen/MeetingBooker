@@ -556,6 +556,7 @@ public final class MainActivity extends Activity {
 			}
 			
 			builder.setView(v)
+					.setTitle(R.string.text_enter_password)
 					.setPositiveButton("OK",
 							new DialogInterface.OnClickListener() {
 
