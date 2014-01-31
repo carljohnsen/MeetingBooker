@@ -70,9 +70,9 @@ public final class SettingsAdapter extends ArrayAdapter<Setting> {
 			
 			// Make a new ViewHolder and find the Views
 			holder = new ViewHolder();
-			holder.item1 = (TextView) v.findViewById(R.id.settingName);
-			holder.item2 = (TextView) v.findViewById(R.id.settingVal);
-			holder.item3 = (CheckBox) v.findViewById(R.id.settingCheck);
+			holder.item1 = (TextView) v.findViewById(R.id.setting_name);
+			holder.item2 = (TextView) v.findViewById(R.id.setting_value);
+			holder.item3 = (CheckBox) v.findViewById(R.id.setting_check);
 			v.setTag(holder);
 		} else {
 			holder = (ViewHolder) v.getTag();

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     
-    <TextView android:id="@+id/settingName"
+    <TextView android:id="@+id/setting_name"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_centerVertical="true"
@@ -12,7 +12,7 @@
         android:layout_marginTop="25sp"
         android:textSize="25sp" />
 
-    <TextView android:id="@+id/settingVal"
+    <TextView android:id="@+id/setting_value"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_centerVertical="true"
@@ -20,7 +20,7 @@
         android:layout_marginRight="20sp"
         android:textSize="20sp" />
     
-    <CheckBox android:id="@+id/settingCheck"
+    <CheckBox android:id="@+id/setting_check"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_marginRight="20sp"

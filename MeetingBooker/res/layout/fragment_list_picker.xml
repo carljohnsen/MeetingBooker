@@ -4,30 +4,30 @@
     android:layout_height="match_parent"
     android:padding="5dp" >
     
-    <TextView android:id="@+id/fragment_list_select"
+    <TextView android:id="@+id/list_picker_select"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:textStyle="bold"
         android:text="@string/text_selected"
         android:textSize="30sp" />
     
-    <TextView android:id="@+id/fragment_list_name"
+    <TextView android:id="@+id/list_picker_name"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_toLeftOf="@+id/fragment_list_id_field"
-        android:layout_toRightOf="@+id/fragment_list_select"
+        android:layout_toLeftOf="@+id/list_picker_id_field"
+        android:layout_toRightOf="@+id/list_picker_select"
         android:layout_alignParentTop="true"
         android:textSize="30sp" />
     
-    <TextView android:id="@+id/fragment_list_id_field"
+    <TextView android:id="@+id/list_picker_id_field"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="@string/text_id_colon"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/fragment_list_id_value"
+        android:layout_toLeftOf="@+id/list_picker_id_value"
         android:textSize="30sp" />
     
-    <TextView android:id="@+id/fragment_list_id_value"
+    <TextView android:id="@+id/list_picker_id_value"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
@@ -35,17 +35,17 @@
         android:textSize="30sp" />
     
     <RelativeLayout
-        android:id="@+id/fragment_list_hline"
+        android:id="@+id/list_picker_hline"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@+id/fragment_list_select"
+        android:layout_below="@+id/list_picker_select"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:background="#55555555" />
     
-    <ListView android:id="@+id/fragment_list_list"
+    <ListView android:id="@+id/list_picker_list"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@+id/fragment_list_hline" />
+        android:layout_below="@+id/list_picker_hline" />
 
 </RelativeLayout>

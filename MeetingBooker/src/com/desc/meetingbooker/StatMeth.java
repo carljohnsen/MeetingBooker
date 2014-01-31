@@ -136,48 +136,6 @@ public final class StatMeth {
 		// Update the calendar
 		cr.update(uri, cv, null, null);
 	}
-	
-	/**
-	 * Finds all of the attendees, that are bound to the given event id
-	 * 
-	 * @param id The id of the event
-	 * @param context The context of the application
-	 */
-	public final static ArrayList<Attendee> getAttendees(final long id, 
-			final Context context) {
-		// The ArrayList that will hold all of the attendees
-		final ArrayList<Attendee> attlist = new ArrayList<Attendee>();
-		
-		// Get the ContentResolver
-		final ContentResolver cr = context.getContentResolver();
-		
-		// Make the query
-		final String query = "EVENT_ID = ?";
-		final String[] args = { "" + id };
-		final String[] cols = {
-			CalendarContract.Attendees.ATTENDEE_NAME,
-			CalendarContract.Attendees.ATTENDEE_EMAIL,
-			CalendarContract.Attendees.ATTENDEE_RELATIONSHIP,
-			CalendarContract.Attendees.ATTENDEE_TYPE,
-			CalendarContract.Attendees.ATTENDEE_STATUS
-		};
-		
-		// Call the query and bind the Cursor to it
-		cursor = cr.query(CalendarContract.Attendees.CONTENT_URI, 
-				cols, query, args, null);
-		cursor.moveToFirst();
-		
-		// Save all of the results in the ArrayList
-		while (!cursor.isAfterLast()) {
-			attlist.add(new Attendee(cursor.getString(0),
-					cursor.getString(1),
-					cursor.getString(2),
-					cursor.getString(3),
-					cursor.getString(4)));
-		}
-		
-		return attlist;
-	}
 
 	/**
 	 * The method to get the name of the calendar

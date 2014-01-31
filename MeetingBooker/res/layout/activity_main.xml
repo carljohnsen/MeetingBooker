@@ -12,64 +12,64 @@
         android:layout_margin="10dp" >
 
         <RelativeLayout
-            android:id="@+id/main_title"
+            android:id="@+id/main_title_wrap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp" >
 
             <RelativeLayout
-                android:id="@+id/name_avail_wrapper"
+                android:id="@+id/main_title_name_avail_wrap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true" >
 
                 <TextView
-                    android:id="@+id/calendar_name"
+                    android:id="@+id/main_title_calendar_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:textSize="75sp" />
 
                 <TextView
-                    android:id="@+id/name_avail_space"
+                    android:id="@+id/main_title_blank"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/calendar_name"
+                    android:layout_toRightOf="@+id/main_title_calendar_name"
                     android:text="@string/text_blank"
                     android:textColor="@color/white"
                     android:textSize="75sp" />
 
                 <TextView
-                    android:id="@+id/current_available"
+                    android:id="@+id/main_title_available"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/calendar_name"
-                    android:layout_toRightOf="@+id/name_avail_space"
+                    android:layout_alignTop="@+id/main_title_calendar_name"
+                    android:layout_toRightOf="@+id/main_title_blank"
                     android:textColor="@color/white"
                     android:textSize="75sp" />
             </RelativeLayout>
 
             <DigitalClock
-                android:id="@+id/main_clock"
+                android:id="@+id/main_title_clock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/name_avail_wrapper"
+                android:layout_below="@+id/main_title_name_avail_wrap"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/white"
                 android:textSize="50sp" />
 
             <ImageView
-                android:id="@+id/settings_button"
+                android:id="@+id/main_title_settings_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:background="@drawable/imageview_selector"
+                android:background="@drawable/selector_imageview"
                 android:contentDescription="@string/description_settings"
                 android:minHeight="50dp"
                 android:minWidth="50dp"
                 android:onClick="settings"
-                android:src="@drawable/action_settings" />
+                android:src="@drawable/icon_settings" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -78,22 +78,22 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/main_title"
+            android:layout_below="@+id/main_title_wrap"
             android:layout_toLeftOf="@+id/main_right" >
 
             <RelativeLayout
-                android:id="@+id/current_next_lay"
+                android:id="@+id/main_left_current_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:background="#44222222"
+                android:background="@drawable/selector_relative"
                 android:clickable="true"
                 android:onClick="editCurrent"
                 android:padding="5dp" >
 
                 <TextView
-                    android:id="@+id/curnext_title_field"
+                    android:id="@+id/main_left_current_title_field"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -102,136 +102,136 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/curnext_colon1"
+                    android:id="@+id/main_left_current_colon1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/curnext_title_field"
+                    android:layout_alignTop="@+id/main_left_current_title_field"
                     android:layout_marginLeft="5sp"
                     android:layout_marginRight="5sp"
-                    android:layout_toRightOf="@+id/curnext_title_field"
+                    android:layout_toRightOf="@+id/main_left_current_title_field"
                     android:text="@string/text_colon"
                     android:textColor="@color/white"
                     android:textSize="30sp" />
 
                 <TextView
-                    android:id="@+id/curnext_title_value"
+                    android:id="@+id/main_left_current_title_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/curnext_colon1"
-                    android:layout_toRightOf="@+id/curnext_colon1"
+                    android:layout_alignTop="@+id/main_left_current_colon1"
+                    android:layout_toRightOf="@+id/main_left_current_colon1"
                     android:textColor="@color/white"
                     android:textSize="30sp" />
 
                 <TextView
-                    android:id="@+id/curnext_description_field"
+                    android:id="@+id/main_left_current_description_field"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/curnext_title_value"
+                    android:layout_below="@+id/main_left_current_title_value"
                     android:text="@string/text_description"
                     android:textColor="@color/white"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/curnext_colon2"
+                    android:id="@+id/main_left_current_colon2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/curnext_colon1"
-                    android:layout_alignTop="@+id/curnext_description_field"
+                    android:layout_alignLeft="@+id/main_left_current_colon1"
+                    android:layout_alignTop="@+id/main_left_current_description_field"
                     android:layout_marginRight="5sp"
                     android:text="@string/text_colon"
                     android:textColor="@color/white"
                     android:textSize="30sp" />
 
                 <TextView
-                    android:id="@+id/curnext_description_value"
+                    android:id="@+id/main_left_current_description_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/curnext_colon2"
-                    android:layout_toRightOf="@+id/curnext_colon2"
+                    android:layout_alignTop="@+id/main_left_current_colon2"
+                    android:layout_toRightOf="@+id/main_left_current_colon2"
                     android:textColor="@color/white"
                     android:textSize="30sp" />
 
                 <TextView
-                    android:id="@+id/curnext_organizer_field"
+                    android:id="@+id/main_left_current_organizer_field"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/curnext_description_value"
+                    android:layout_below="@+id/main_left_current_description_value"
                     android:text="@string/text_organizer"
                     android:textColor="@color/white"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/curnext_colon3"
+                    android:id="@+id/main_left_current_colon3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/curnext_colon1"
-                    android:layout_alignTop="@+id/curnext_organizer_field"
+                    android:layout_alignLeft="@+id/main_left_current_colon1"
+                    android:layout_alignTop="@+id/main_left_current_organizer_field"
                     android:layout_marginRight="5sp"
                     android:text="@string/text_colon"
                     android:textColor="@color/white"
                     android:textSize="30sp" />
 
                 <TextView
-                    android:id="@+id/curnext_organizer_value"
+                    android:id="@+id/main_left_current_organizer_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/curnext_colon3"
-                    android:layout_toRightOf="@+id/curnext_colon3"
+                    android:layout_alignTop="@+id/main_left_current_colon3"
+                    android:layout_toRightOf="@+id/main_left_current_colon3"
                     android:textColor="@color/white"
                     android:textSize="30sp" />
 
                 <TextView
-                    android:id="@+id/curnext_time_field"
+                    android:id="@+id/main_left_current_time_field"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/curnext_organizer_value"
+                    android:layout_below="@+id/main_left_current_organizer_value"
                     android:text="@string/text_time"
                     android:textColor="@color/white"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/curnext_colon4"
+                    android:id="@+id/main_left_current_colon4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/curnext_colon1"
-                    android:layout_alignTop="@+id/curnext_time_field"
+                    android:layout_alignLeft="@+id/main_left_current_colon1"
+                    android:layout_alignTop="@+id/main_left_current_time_field"
                     android:layout_marginRight="5sp"
                     android:text="@string/text_colon"
                     android:textColor="@color/white"
                     android:textSize="30sp" />
 
                 <TextView
-                    android:id="@+id/curnext_time_value"
+                    android:id="@+id/main_left_current_time_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/curnext_colon4"
-                    android:layout_toRightOf="@+id/curnext_colon4"
+                    android:layout_alignTop="@+id/main_left_current_colon4"
+                    android:layout_toRightOf="@+id/main_left_current_colon4"
                     android:textColor="@color/white"
                     android:textSize="30sp" />
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/start_end_button_lay"
+                android:id="@+id/main_left_current_start_end_button_wrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/new_meeting_button"
+                android:layout_above="@+id/main_left_new_meeting_button"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/current_next_lay"
+                android:layout_below="@+id/main_left_current_wrap"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp" >
 
                 <TextView
-                    android:id="@+id/next_meeting_button"
+                    android:id="@+id/main_left_current_next_button"
                     android:layout_width="match_parent"
                     android:layout_height="80sp"
                     android:layout_alignParentBottom="true"
-                    android:background="@drawable/custom_button2"
+                    android:background="@drawable/button_custom"
                     android:clickable="true"
                     android:gravity="center"
                     android:onClick="startNextMeeting"
@@ -240,11 +240,11 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/end_meeting_button"
+                    android:id="@+id/main_left_current_end_button"
                     android:layout_width="match_parent"
                     android:layout_height="80sp"
                     android:layout_alignParentBottom="true"
-                    android:background="@drawable/custom_button2"
+                    android:background="@drawable/button_custom"
                     android:clickable="true"
                     android:gravity="center"
                     android:onClick="endMeeting"
@@ -254,11 +254,11 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/new_meeting_button"
+                android:id="@+id/main_left_new_meeting_button"
                 android:layout_width="match_parent"
                 android:layout_height="80sp"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/custom_button2"
+                android:background="@drawable/button_custom"
                 android:clickable="true"
                 android:gravity="center"
                 android:onClick="newMeeting"
@@ -267,7 +267,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/main_no_upcoming"
+                android:id="@+id/main_left_no_upcoming"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#44222222"
@@ -282,13 +282,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/main_title"
+            android:layout_below="@+id/main_title_wrap"
             android:layout_marginLeft="10dp"
             android:background="#44222222"
             android:padding="5dp" >
 
             <TextView
-                android:id="@+id/upcoming_meetings"
+                android:id="@+id/main_right_upcoming_meetings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
@@ -296,15 +296,15 @@
                 android:textStyle="bold" />
 
             <ListView
-                android:id="@+id/cal_event_list"
+                android:id="@+id/main_right_event_list"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/upcoming_meetings" />
+                android:layout_below="@+id/main_right_upcoming_meetings" />
         </RelativeLayout>
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/black_box"
+        android:id="@+id/main_black_box"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black"

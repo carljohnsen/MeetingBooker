@@ -65,7 +65,7 @@ public final class TimeWindowAdapter extends ArrayAdapter<TimeWindow> {
 			
 			// Make a new ViewHolder and find the Views
 			holder = new ViewHold();
-			holder.item1 = (TextView) v.findViewById(R.id.windowItem);
+			holder.item1 = (TextView) v.findViewById(R.id.timewindow_textview);
 			v.setTag(holder);
 		} else {
 			holder = (ViewHold) v.getTag();

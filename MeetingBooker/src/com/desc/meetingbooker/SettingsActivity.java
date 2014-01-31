@@ -59,8 +59,8 @@ public final class SettingsActivity extends Activity {
 		config = StatMeth.readConfig(context);
 
 		// Set up the ListView
-		settingList = (ListView) findViewById(R.id.settingList);
-		adapter = new SettingsAdapter(this, R.id.settingList, config);
+		settingList = (ListView) findViewById(R.id.settings_list);
+		adapter = new SettingsAdapter(this, R.id.settings_list, config);
 		settingList.setAdapter(adapter);
 
 		// Set OnItemClickListener
@@ -75,7 +75,7 @@ public final class SettingsActivity extends Activity {
 				if (config.get(position).valueType.equals("boolean")) {
 					// Find the box
 					final CheckBox box = (CheckBox) arg1
-							.findViewById(R.id.settingCheck);
+							.findViewById(R.id.setting_check);
 					// check / uncheck
 					box.setChecked(!box.isChecked());
 
@@ -84,9 +84,9 @@ public final class SettingsActivity extends Activity {
 					if (position == 0 || position == 2) {
 						final View v = settingList.getChildAt(position + 1);
 						final TextView com = (TextView) v
-								.findViewById(R.id.settingName);
+								.findViewById(R.id.setting_name);
 						final TextView val = (TextView) v
-								.findViewById(R.id.settingVal);
+								.findViewById(R.id.setting_value);
 						if (!box.isChecked()) {
 							com.setTextColor(Color.GRAY);
 							val.setTextColor(Color.GRAY);
@@ -103,7 +103,7 @@ public final class SettingsActivity extends Activity {
 					if (position == 1 || position == 3) {
 						final View v = settingList.getChildAt(position - 1);
 						final CheckBox box = (CheckBox) v
-								.findViewById(R.id.settingCheck);
+								.findViewById(R.id.setting_check);
 						if (!box.isChecked()) {
 							return;
 						}
@@ -175,10 +175,10 @@ public final class SettingsActivity extends Activity {
 			final Setting set = config.get(i);
 			final String value;
 			if (set.valueType.equals("boolean")) {
-				CheckBox box = (CheckBox) v.findViewById(R.id.settingCheck);
+				CheckBox box = (CheckBox) v.findViewById(R.id.setting_check);
 				value = "" + box.isChecked();
 			} else {
-				TextView tv = (TextView) v.findViewById(R.id.settingVal);
+				TextView tv = (TextView) v.findViewById(R.id.setting_value);
 				value = "" + tv.getText();
 			}
 			set.value = value;
@@ -223,15 +223,15 @@ public final class SettingsActivity extends Activity {
 			final AlertDialog.Builder builder = new AlertDialog.Builder(
 					getActivity());
 			final LayoutInflater inflater = getActivity().getLayoutInflater();
-			final View v = inflater.inflate(R.layout.fragment_list, null);
+			final View v = inflater.inflate(R.layout.fragment_list_picker, null);
 
 			// Find the ListView in the fragment
 			final ListView listView = (ListView) v
-					.findViewById(R.id.fragment_list_list);
+					.findViewById(R.id.list_picker_list);
 			final TextView name = (TextView) v
-					.findViewById(R.id.fragment_list_name);
+					.findViewById(R.id.list_picker_name);
 			final TextView id = (TextView) v
-					.findViewById(R.id.fragment_list_id_value);
+					.findViewById(R.id.list_picker_id_value);
 			
 			name.setText(StatMeth.getCalendarName(context));
 			id.setText(setting.value);
@@ -265,9 +265,9 @@ public final class SettingsActivity extends Activity {
 
 							final View vi = settingList.getChildAt(index);
 							TextView tv = (TextView) vi
-									.findViewById(R.id.settingVal);
+									.findViewById(R.id.setting_value);
 							tv.setText(setting.value);
-							tv = (TextView) vi.findViewById(R.id.settingName);
+							tv = (TextView) vi.findViewById(R.id.setting_name);
 							tv.setText("Calendar ID : " + name.getText());
 						}
 
@@ -312,11 +312,11 @@ public final class SettingsActivity extends Activity {
 
 			// Find the fragments View
 			final NumberPicker n = (NumberPicker) v
-					.findViewById(R.id.numberPicker);
+					.findViewById(R.id.number_picker_picker);
 
 			// Find the ListViews child
 			final View vi = settingList.getChildAt(index);
-			final TextView tv = (TextView) vi.findViewById(R.id.settingName);
+			final TextView tv = (TextView) vi.findViewById(R.id.setting_name);
 
 			// Set the boundries of the NumberPicker
 			if ((tv.getText() + "").startsWith("Length")) {
@@ -341,11 +341,11 @@ public final class SettingsActivity extends Activity {
 							Log.d(TAG, "pressed OK button");
 							// Read the NumberPicker and save the information
 							final NumberPicker picker = (NumberPicker) v
-									.findViewById(R.id.numberPicker);
+									.findViewById(R.id.number_picker_picker);
 							final int number = picker.getValue();
 							final View vi = settingList.getChildAt(index);
 							final TextView tv = (TextView) vi
-									.findViewById(R.id.settingVal);
+									.findViewById(R.id.setting_value);
 							tv.setText("" + number);
 						}
 
@@ -379,7 +379,7 @@ public final class SettingsActivity extends Activity {
 
 			// Find the prompt View for displaying reason for error
 			final TextView prompt = (TextView) v
-					.findViewById(R.id.changePrompt);
+					.findViewById(R.id.change_pass_prompt);
 			switch (error) {
 			case 0:
 				prompt.setVisibility(TextView.GONE);
@@ -404,11 +404,11 @@ public final class SettingsActivity extends Activity {
 
 									// Find the fragments views
 									final EditText oldText = (EditText) v
-											.findViewById(R.id.pwOld);
+											.findViewById(R.id.change_pass_old);
 									final EditText newText = (EditText) v
-											.findViewById(R.id.pwNew1);
+											.findViewById(R.id.change_pass_new1);
 									final EditText confText = (EditText) v
-											.findViewById(R.id.pwNew2);
+											.findViewById(R.id.change_pass_new2);
 
 									// Save the data in the Views
 									final String old = oldText.getText()
@@ -497,12 +497,12 @@ public final class SettingsActivity extends Activity {
 					.inflate(R.layout.fragment_string_edit, null);
 
 			// Find the fragments Views
-			final EditText edit = (EditText) v.findViewById(R.id.editLayET);
+			final EditText edit = (EditText) v.findViewById(R.id.string_edit_edit);
 
 			// Find the ListViews child
 			final View vi = settingList.getChildAt(index);
-			final TextView tv1 = (TextView) vi.findViewById(R.id.settingVal);
-			final TextView tv2 = (TextView) vi.findViewById(R.id.settingName);
+			final TextView tv1 = (TextView) vi.findViewById(R.id.setting_value);
+			final TextView tv2 = (TextView) vi.findViewById(R.id.setting_name);
 
 			// Fill the fragments Views with information from the ListView
 			edit.setHint(tv1.getText());
@@ -520,13 +520,13 @@ public final class SettingsActivity extends Activity {
 									// Read the fragment Views, and save them
 									// in the ListView
 									final EditText edit = (EditText) v
-											.findViewById(R.id.editLayET);
+											.findViewById(R.id.string_edit_edit);
 									final String name = edit.getText()
 											.toString();
 									final View vi = settingList
 											.getChildAt(index);
 									final TextView tv = (TextView) vi
-											.findViewById(R.id.settingVal);
+											.findViewById(R.id.setting_value);
 									tv.setText(name);
 								}
 

@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/event_title_field"
+        android:id="@+id/calevent_title_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -15,121 +15,121 @@
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/event_colon1"
+        android:id="@+id/calevent_colon1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/event_colon2"
-        android:layout_alignTop="@+id/event_title_field"
+        android:layout_alignRight="@+id/calevent_colon2"
+        android:layout_alignTop="@+id/calevent_title_field"
         android:text="@string/text_colon"
         android:textSize="20sp"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/event_title_value"
+        android:id="@+id/calevent_title_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/event_colon1"
+        android:layout_alignTop="@+id/calevent_colon1"
         android:layout_marginLeft="5sp"
-        android:layout_toRightOf="@+id/event_colon1"
+        android:layout_toRightOf="@+id/calevent_colon1"
         android:textSize="20sp"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/event_description_field"
+        android:id="@+id/calevent_description_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/event_title_value"
+        android:layout_below="@+id/calevent_title_value"
         android:text="@string/text_description"
         android:textSize="20sp"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/event_colon2"
+        android:id="@+id/calevent_colon2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/event_description_field"
+        android:layout_alignTop="@+id/calevent_description_field"
         android:layout_marginLeft="5sp"
         android:layout_marginRight="5sp"
-        android:layout_toRightOf="@+id/event_description_field"
+        android:layout_toRightOf="@+id/calevent_description_field"
         android:text="@string/text_colon"
         android:textSize="20sp"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/event_description_value"
+        android:id="@+id/calevent_description_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/event_colon2"
-        android:layout_toRightOf="@+id/event_colon2"
+        android:layout_alignTop="@+id/calevent_colon2"
+        android:layout_toRightOf="@+id/calevent_colon2"
         android:textSize="20sp"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/event_organizer_field"
+        android:id="@+id/calevent_organizer_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/event_description_value"
+        android:layout_below="@+id/calevent_description_value"
         android:text="@string/text_organizer"
         android:textSize="20sp"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/event_colon3"
+        android:id="@+id/calevent_colon3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/event_colon2"
-        android:layout_alignTop="@+id/event_organizer_field"
+        android:layout_alignRight="@+id/calevent_colon2"
+        android:layout_alignTop="@+id/calevent_organizer_field"
         android:text="@string/text_colon"
         android:textSize="20sp"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/event_organizer_value"
+        android:id="@+id/calevent_organizer_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/event_colon3"
+        android:layout_alignTop="@+id/calevent_colon3"
         android:layout_marginLeft="5sp"
-        android:layout_toRightOf="@+id/event_colon3"
+        android:layout_toRightOf="@+id/calevent_colon3"
         android:textSize="20sp"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/event_time_field"
+        android:id="@+id/calevent_time_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/event_organizer_value"
+        android:layout_below="@+id/calevent_organizer_value"
         android:text="@string/text_time"
         android:textSize="20sp"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/event_colon4"
+        android:id="@+id/calevent_colon4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/event_colon2"
-        android:layout_alignTop="@+id/event_time_field"
+        android:layout_alignRight="@+id/calevent_colon2"
+        android:layout_alignTop="@+id/calevent_time_field"
         android:text="@string/text_colon"
         android:textSize="20sp"
         android:textColor="@color/white" />
 
     <TextView
-        android:id="@+id/event_time_value"
+        android:id="@+id/calevent_time_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/event_colon4"
+        android:layout_alignTop="@+id/calevent_colon4"
         android:layout_marginLeft="5sp"
-        android:layout_toRightOf="@+id/event_colon4"
+        android:layout_toRightOf="@+id/calevent_colon4"
         android:textSize="20sp"
         android:textColor="@color/white" />
 
     <RelativeLayout
-        android:id="@+id/line1"
+        android:id="@+id/calevent_line"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@+id/event_time_value"
+        android:layout_below="@+id/calevent_time_value"
         android:layout_marginTop="5dp"
         android:background="#55555555" />
 

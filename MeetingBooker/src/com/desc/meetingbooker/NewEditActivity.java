@@ -80,14 +80,14 @@ public final class NewEditActivity extends Activity {
 
 		// Cast all the views
 		activityTitle =  (TextView)   findViewById(R.id.new_edit_title);
-		titleText = 	 (EditText)   findViewById(R.id.new_edit_title_value);
-		descText = 		 (EditText)   findViewById(R.id.new_edit_description_value);
-		add = 			 (TextView)	  findViewById(R.id.new_edit_add_button);
-		update = 		 (TextView)	  findViewById(R.id.new_edit_update_button);
-		delete = 		 (ImageView)  findViewById(R.id.new_edit_delete_button);
-		timeStart = 	 (TimePicker) findViewById(R.id.new_edit_time_picker_start);
-		timeEnd = 		 (TimePicker) findViewById(R.id.new_edit_time_picker_end);
-		intervalPicker = (ListView)   findViewById(R.id.new_edit_interval_list);
+		titleText = 	 (EditText)   findViewById(R.id.new_edit_left_title_value);
+		descText = 		 (EditText)   findViewById(R.id.new_edit_left_description_value);
+		add = 			 (TextView)	  findViewById(R.id.new_edit_right_add_button);
+		update = 		 (TextView)	  findViewById(R.id.new_edit_right_update_button);
+		delete = 		 (ImageView)  findViewById(R.id.new_edit_left_delete_button);
+		timeStart = 	 (TimePicker) findViewById(R.id.new_edit_left_time_picker_start);
+		timeEnd = 		 (TimePicker) findViewById(R.id.new_edit_left_time_picker_end);
+		intervalPicker = (ListView)   findViewById(R.id.new_edit_right_interval_list);
 		
 		// Sets the TimePickers to use 24 hour
 		timeStart.setIs24HourView(true);

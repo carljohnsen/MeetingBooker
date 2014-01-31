@@ -5,30 +5,30 @@
     tools:context=".SettingsActivity" >
 
     <ListView
-        android:id="@+id/settingList"
+        android:id="@+id/settings_list"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_above="@+id/changePassword"
+        android:layout_above="@+id/settings_change_password_button"
         android:layout_alignParentTop="true" />
     
     <Button
-        android:id="@+id/changePassword"
+        android:id="@+id/settings_change_password_button"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:onClick="newPassword"
-        android:layout_above="@+id/settingSave"
+        android:layout_above="@+id/settings_save_button"
         android:text="@string/text_change_password" />
     
     <Button 
-        android:id="@+id/settingSave"
+        android:id="@+id/settings_save_button"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:onClick="save" 
-        android:layout_above="@+id/settingCancel"
+        android:layout_above="@+id/settings_cancel_button"
         android:text="@string/text_save" />
     
     <Button 
-        android:id="@+id/settingCancel"
+        android:id="@+id/settings_cancel_button"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:onClick="cancel" 

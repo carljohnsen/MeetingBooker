@@ -27,93 +27,93 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/new_edit_clock"
-        android:layout_toLeftOf="@+id/blank_center1" >
+        android:layout_toLeftOf="@+id/new_edit_blank_center" >
 
         <TextView
-            android:id="@+id/new_edit_title_field"
+            android:id="@+id/new_edit_left_title_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignBottom="@+id/new_edit_title_value"
+            android:layout_alignBottom="@+id/new_edit_left_title_value"
             android:text="@string/text_title"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/new_edit_colon1"
+            android:id="@+id/new_edit_left_colon1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/new_edit_colon2"
-            android:layout_alignBottom="@+id/new_edit_title_value"
+            android:layout_alignLeft="@+id/new_edit_left_colon2"
+            android:layout_alignBottom="@+id/new_edit_left_title_value"
             android:text="@string/text_colon"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/new_edit_title_value"
+            android:id="@+id/new_edit_left_title_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/new_edit_delete_button"
-            android:layout_toRightOf="@+id/new_edit_colon1"
+            android:layout_toLeftOf="@+id/new_edit_left_delete_button"
+            android:layout_toRightOf="@+id/new_edit_left_colon1"
             android:ems="15"
             android:inputType="text"
             android:text="@string/text_spontaneous"
             android:textSize="24sp" />
 
         <ImageView
-            android:id="@+id/new_edit_delete_button"
+            android:id="@+id/new_edit_left_delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/new_edit_title_value"
+            android:layout_alignTop="@+id/new_edit_left_title_value"
             android:layout_marginLeft="5sp"
-            android:background="@drawable/imageview_selector"
+            android:background="@drawable/selector_imageview"
             android:contentDescription="@string/description_delete"
             android:minHeight="50dp"
             android:minWidth="50dp"
             android:onClick="delete"
-            android:src="@drawable/content_discard" />
+            android:src="@drawable/icon_discard" />
 
         <TextView
-            android:id="@+id/new_edit_description_field"
+            android:id="@+id/new_edit_left_description_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignBottom="@+id/new_edit_description_value"
+            android:layout_alignBottom="@+id/new_edit_left_description_value"
             android:text="@string/text_description"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/new_edit_colon2"
+            android:id="@+id/new_edit_left_colon2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/new_edit_description_field"
-            android:layout_alignBottom="@+id/new_edit_description_value"
+            android:layout_toRightOf="@+id/new_edit_left_description_field"
+            android:layout_alignBottom="@+id/new_edit_left_description_value"
             android:text="@string/text_colon"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/new_edit_description_value"
+            android:id="@+id/new_edit_left_description_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/new_edit_colon2"
-            android:layout_below="@+id/new_edit_title_value"
+            android:layout_toRightOf="@+id/new_edit_left_colon2"
+            android:layout_below="@+id/new_edit_left_title_value"
             android:ems="15"
             android:inputType="text"
             android:hint="@string/text_no_description"
             android:textSize="24sp" />
 
         <RelativeLayout
-            android:id="@+id/new_edit_time_wrapper"
+            android:id="@+id/new_edit_left_time_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@+id/new_edit_description_field" >
+            android:layout_below="@+id/new_edit_left_description_field" >
 
             <TextView
-                android:id="@+id/new_edit_start_text"
+                android:id="@+id/new_edit_left_start_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -122,22 +122,22 @@
                 android:textSize="24sp" />
 
             <TimePicker
-                android:id="@+id/new_edit_time_picker_start"
+                android:id="@+id/new_edit_left_time_picker_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/new_edit_start_text" />
+                android:layout_toRightOf="@+id/new_edit_left_start_text" />
 
             <TextView
-                android:id="@+id/new_edit_end_text"
+                android:id="@+id/new_edit_left_end_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/new_edit_time_picker_end"
+                android:layout_toLeftOf="@+id/new_edit_left_time_picker_end"
                 android:text="@string/text_end"
                 android:textSize="24sp" />
 
             <TimePicker
-                android:id="@+id/new_edit_time_picker_end"
+                android:id="@+id/new_edit_left_time_picker_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true" />
@@ -145,7 +145,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/blank_center1"
+        android:id="@+id/new_edit_blank_center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -158,10 +158,10 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/new_edit_clock"
-        android:layout_toRightOf="@+id/blank_center1" >
+        android:layout_toRightOf="@+id/new_edit_blank_center" >
 
         <TextView
-            android:id="@+id/new_edit_available_times"
+            android:id="@+id/new_edit_right_available_times"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -170,24 +170,24 @@
             android:textSize="24sp" />
 
         <ListView
-            android:id="@+id/new_edit_interval_list"
+            android:id="@+id/new_edit_right_interval_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/new_edit_button_wrapper"
-            android:layout_below="@+id/new_edit_available_times" />
+            android:layout_above="@+id/new_edit_right_button_wrap"
+            android:layout_below="@+id/new_edit_right_available_times" />
 
         <RelativeLayout
-            android:id="@+id/new_edit_button_wrapper"
+            android:id="@+id/new_edit_right_button_wrap"
             android:layout_width="match_parent"
             android:layout_height="75sp"
             android:layout_alignParentBottom="true" >
 
             <TextView
-                android:id="@+id/new_edit_add_button"
+                android:id="@+id/new_edit_right_add_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/blank_center2"
-                android:background="@drawable/custom_button1"
+                android:layout_toLeftOf="@+id/new_edit_right_blank_center"
+                android:background="@drawable/button_custom"
                 android:clickable="true"
                 android:gravity="center"
                 android:onClick="add"
@@ -195,11 +195,11 @@
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/new_edit_update_button"
+                android:id="@+id/new_edit_right_update_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/blank_center2"
-                android:background="@drawable/custom_button1"
+                android:layout_toLeftOf="@+id/new_edit_right_blank_center"
+                android:background="@drawable/button_custom"
                 android:clickable="true"
                 android:gravity="center"
                 android:onClick="update"
@@ -207,18 +207,18 @@
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/blank_center2"
+                android:id="@+id/new_edit_right_blank_center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/text_blank" />
 
             <TextView
-                android:id="@+id/new_edit_cancel_button"
+                android:id="@+id/new_edit_right_cancel_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/blank_center2"
-                android:background="@drawable/custom_button1"
+                android:layout_toRightOf="@+id/new_edit_right_blank_center"
+                android:background="@drawable/button_custom"
                 android:clickable="true"
                 android:gravity="center"
                 android:onClick="cancel"

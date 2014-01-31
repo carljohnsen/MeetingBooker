@@ -2,10 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/list_borders" >
+    android:background="@drawable/borders_list" >
     
     <TextView
-        android:id="@+id/windowItem"
+        android:id="@+id/timewindow_textview"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_centerInParent="true"

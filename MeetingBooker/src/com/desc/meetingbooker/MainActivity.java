@@ -106,22 +106,22 @@ public final class MainActivity extends Activity {
 		StatMeth.readConfig(context);
 
 		// Cast all the Views
-		black_box		 = (TextView)		findViewById(R.id.black_box);
-		calendarName 	 = (TextView) 		findViewById(R.id.calendar_name);
-		curNextLay 		 = (View) 			findViewById(R.id.current_next_lay);
-		currentAvail 	 = (TextView) 		findViewById(R.id.current_available);
-		currentTitle 	 = (TextView) 		findViewById(R.id.curnext_title_value);
-		currentDesc 	 = (TextView) 		findViewById(R.id.curnext_description_value);
-		currentOrganizer = (TextView) 		findViewById(R.id.curnext_organizer_value);
-		currentTime		 = (TextView) 		findViewById(R.id.curnext_time_value);
-		currentUpcom 	 = (TextView) 		findViewById(R.id.curnext_title_field);
-		nextMeeting 	 = (TextView) 		findViewById(R.id.next_meeting_button);
-		noUpcom			 = (TextView)		findViewById(R.id.main_no_upcoming);
-		endMeeting 		 = (TextView) 		findViewById(R.id.end_meeting_button);
-		listView 		 = (ListView) 		findViewById(R.id.cal_event_list);
+		black_box		 = (TextView)		findViewById(R.id.main_black_box);
+		calendarName 	 = (TextView) 		findViewById(R.id.main_title_calendar_name);
+		curNextLay 		 = (View) 			findViewById(R.id.main_left_current_wrap);
+		currentAvail 	 = (TextView) 		findViewById(R.id.main_title_available);
+		currentTitle 	 = (TextView) 		findViewById(R.id.main_left_current_title_value);
+		currentDesc 	 = (TextView) 		findViewById(R.id.main_left_current_description_value);
+		currentOrganizer = (TextView) 		findViewById(R.id.main_left_current_organizer_value);
+		currentTime		 = (TextView) 		findViewById(R.id.main_left_current_time_value);
+		currentUpcom 	 = (TextView) 		findViewById(R.id.main_left_current_title_field);
+		nextMeeting 	 = (TextView) 		findViewById(R.id.main_left_current_next_button);
+		noUpcom			 = (TextView)		findViewById(R.id.main_left_no_upcoming);
+		endMeeting 		 = (TextView) 		findViewById(R.id.main_left_current_end_button);
+		listView 		 = (ListView) 		findViewById(R.id.main_right_event_list);
 		mainView 		 = (View) 			findViewById(R.id.main_lay);
 		mainWrap		 = (View)			findViewById(R.id.main_lay_wrap);
-		upcomMeetings	 = (TextView)		findViewById(R.id.upcoming_meetings);
+		upcomMeetings	 = (TextView)		findViewById(R.id.main_right_upcoming_meetings);
 
 		// Set the name of the Calendar
 		calendarName.setText(roomName);
@@ -550,9 +550,9 @@ public final class MainActivity extends Activity {
 			// If the fragment have been started by a wrong typed password,
 			// notify the user
 			if (wasWrong) {
-				v.findViewById(R.id.pwPrompt).setVisibility(TextView.VISIBLE);
+				v.findViewById(R.id.pass_prompt_prompt).setVisibility(TextView.VISIBLE);
 			} else {
-				v.findViewById(R.id.pwPrompt).setVisibility(TextView.GONE);
+				v.findViewById(R.id.pass_prompt_prompt).setVisibility(TextView.GONE);
 			}
 			
 			builder.setView(v)
@@ -569,7 +569,7 @@ public final class MainActivity extends Activity {
 									// Find the the typed password, and the
 									// saved password
 									final EditText pwtext = (EditText) 
-											v.findViewById(R.id.pwEdit);
+											v.findViewById(R.id.pass_prompt_edit);
 									final String typedpw = pwtext.getText()
 											.toString();
 									final String storedpw = StatMeth

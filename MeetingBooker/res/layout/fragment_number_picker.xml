@@ -5,7 +5,7 @@
     android:padding="5dp" >
 
     <NumberPicker
-        android:id="@+id/numberPicker"
+        android:id="@+id/number_picker_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
