@@ -170,8 +170,7 @@ public final class StatMeth {
 	 * 
 	 * @param context The context of the app, used to extract the CONTENT_URI
 	 * 				   and the ContentResolver
-	 * @return An HashMap containing Calendar names and their corresponding
-	 * 			ID's
+	 * @return An ArrayList of CalName
 	 */
 	public final static ArrayList<CalName> getCalendarNames(final Context context) {
 		Log.d(TAG, "called getCalendarNames()");
@@ -631,23 +630,6 @@ public final class StatMeth {
 		cr.insert(ATTENDEES_URI, values2);
 
 	}
-	
-	/* TODO useless, as i have changed the way getCalendarNames behaves
-	 * /**
-	 *
-	 * Converts an HashMap to an ArrayList of CalName
-	 * 
-	 * @param map The HashMap that should be converted
-	 * @return An ArrayList of CalName
-	 *
-	public static ArrayList<CalName> toArrayList(HashMap<String, String> map) {
-		ArrayList<CalName> result = new ArrayList<CalName>();
-		for (String key : map.keySet()) {
-			result.add(new CalName(key, map.get(key)));
-		}
-		Log.d(TAG, "Found " + result.size() + " CalNames");
-		return result;
-	} */
 
 	/**
 	 * Used when the application has updated an event, and needs to edit the
