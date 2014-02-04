@@ -30,12 +30,12 @@ public final class SettingsAdapter extends ArrayAdapter<Setting> {
 	 * @param textViewResourceId The layout it uses
 	 * @param entries 			 The ArrayList that will be set up in the list
 	 */
-	public SettingsAdapter(final Activity a, 
+	public SettingsAdapter(final Activity activity, 
 			final int textViewResourceId,
 			final ArrayList<Setting> entries) {
-		super(a, textViewResourceId, entries);
+		super(activity, textViewResourceId, entries);
 		this.entries = entries;
-		this.activity = a;
+		this.activity = activity;
 	}
 
 	/**
@@ -46,12 +46,12 @@ public final class SettingsAdapter extends ArrayAdapter<Setting> {
 	 * @since 28-06-2013
 	 */
 	public final static class ViewHolder {
-		/** R.id.SettingName */
-		public TextView item1;
-		/** R.id.settingVal */
-		public TextView item2;
-		/** R.id.settingCheck */
-		public CheckBox item3;
+		/** R.id.setting_name */
+		public TextView name;
+		/** R.id.setting_value */
+		public TextView value;
+		/** R.id.setting_check */
+		public CheckBox checkbox;
 	}
 
 	@Override
@@ -70,9 +70,9 @@ public final class SettingsAdapter extends ArrayAdapter<Setting> {
 			
 			// Make a new ViewHolder and find the Views
 			holder = new ViewHolder();
-			holder.item1 = (TextView) v.findViewById(R.id.setting_name);
-			holder.item2 = (TextView) v.findViewById(R.id.setting_value);
-			holder.item3 = (CheckBox) v.findViewById(R.id.setting_check);
+			holder.name 	= (TextView) v.findViewById(R.id.setting_name);
+			holder.value 	= (TextView) v.findViewById(R.id.setting_value);
+			holder.checkbox = (CheckBox) v.findViewById(R.id.setting_check);
 			v.setTag(holder);
 		} else {
 			holder = (ViewHolder) v.getTag();
@@ -81,13 +81,13 @@ public final class SettingsAdapter extends ArrayAdapter<Setting> {
 		// Take the Setting, and fill its information into the Views
 		final Setting setting = entries.get(position);
 		if (setting != null) {
-			holder.item1.setText(setting.desc);
+			holder.name.setText(setting.description);
 			if (setting.valueType.equals("boolean")) {
-				holder.item2.setVisibility(TextView.GONE);
-				holder.item3.setChecked(Boolean.parseBoolean(setting.value));
+				holder.value.setVisibility(TextView.GONE);
+				holder.checkbox.setChecked(Boolean.parseBoolean(setting.value));
 			} else {
-				holder.item2.setText(setting.value);
-				holder.item3.setVisibility(CheckBox.GONE);
+				holder.value.setText(setting.value);
+				holder.checkbox.setVisibility(CheckBox.GONE);
 			}
 		}
 		return v;

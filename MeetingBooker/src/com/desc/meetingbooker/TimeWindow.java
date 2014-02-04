@@ -23,8 +23,8 @@ public final class TimeWindow {
 	 * @param end The end time of the window
 	 */
 	public TimeWindow(final long start, final long end) {
-		this.start = start;
-		this.end = end;
+		this.start 	= start;
+		this.end 	= end;
 	}
 	
 	/**

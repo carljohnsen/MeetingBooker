@@ -40,39 +40,40 @@ import android.widget.TextView;
 public final class MainActivity extends Activity {
 	
 	// All of the Views
-	private static TextView 	  black_box;
+	private static TextView 	  blackBox;
 	private static TextView 	  calendarName;
-	private static View 		  curNextLay;
+	private static View 		  currentWrap;
 	private static TextView 	  currentAvail;
-	private static TextView 	  currentDesc;
+	private static TextView 	  currentDescription;
 	private static TextView 	  currentTime;
 	private static TextView 	  currentOrganizer;
 	private static TextView 	  currentTitle;
 	private static TextView 	  currentUpcom;
-	private static TextView	  endMeeting;
-	private static ListView 	  listView;
+	private static TextView	  endMeetingButton;
+	private static ListView 	  eventListView;
 	private static View 		  mainView;
 	private static View		  mainWrap;
-	private static TextView	  noUpcom;
-	private static TextView	  nextMeeting;
-	private static TextView	  upcomMeetings;
+	private static TextView	  noUpcoming;
+	private static TextView	  nextMeetingButton;
+	private static TextView	  upcomingMeetings;
 	
 	// All of the data fields
-	private   static ArrayAdapter<CalEvent> 	adapter;
-	private   static Context 					context;
-	protected static CalEvent 				current = null;
-	protected static ArrayList<CalEvent> 		eventlist = 
-												new ArrayList<CalEvent>();
-	private   static		boolean			hasPressed = false;
-	private   static 		boolean			isDelayed = false;
-	private   static 		boolean			isOverTime = false;
-	private   static final  String 			TAG = MainActivity
-												.class.getSimpleName();
-	private	  		 		Timer			timer;
-	private					TimerTask		timerTask;
-	private					TimerTask		touchTask;
-	private					Timer			touchTimer;
-	private   static 			Window 			window;
+	private   	static ArrayAdapter<CalEvent> 	adapter;
+	private 	static Context 					context;
+	protected 	static CalEvent 				current = null;
+	protected 	static 	ArrayList<CalEvent> 	eventlist = 
+													new ArrayList<CalEvent>();
+	private 	static	boolean				hasPressed = false;
+	private	static 	boolean				isDelayed = false;
+	private	static 	boolean				isOverTime = false;
+	private			Timer					timer;
+	private			TimerTask				timerTask;
+	private			TimerTask				touchTask;
+	private			Timer					touchTimer;
+	private	static	Window 					window;
+	
+	// TAG used for logging
+	private static final String TAG = MainActivity.class.getSimpleName();
 
 	// All of the config fields
 	protected static boolean canEnd;
@@ -106,36 +107,36 @@ public final class MainActivity extends Activity {
 		StatMeth.readConfig(context);
 
 		// Cast all the Views
-		black_box		 = (TextView)		findViewById(R.id.main_black_box);
-		calendarName 	 = (TextView) 		findViewById(R.id.main_title_calendar_name);
-		curNextLay 		 = (View) 			findViewById(R.id.main_left_current_wrap);
-		currentAvail 	 = (TextView) 		findViewById(R.id.main_title_available);
-		currentTitle 	 = (TextView) 		findViewById(R.id.main_left_current_title_value);
-		currentDesc 	 = (TextView) 		findViewById(R.id.main_left_current_description_value);
-		currentOrganizer = (TextView) 		findViewById(R.id.main_left_current_organizer_value);
-		currentTime		 = (TextView) 		findViewById(R.id.main_left_current_time_value);
-		currentUpcom 	 = (TextView) 		findViewById(R.id.main_left_current_title_field);
-		nextMeeting 	 = (TextView) 		findViewById(R.id.main_left_current_next_button);
-		noUpcom			 = (TextView)		findViewById(R.id.main_left_no_upcoming);
-		endMeeting 		 = (TextView) 		findViewById(R.id.main_left_current_end_button);
-		listView 		 = (ListView) 		findViewById(R.id.main_right_event_list);
-		mainView 		 = (View) 			findViewById(R.id.main_lay);
-		mainWrap		 = (View)			findViewById(R.id.main_lay_wrap);
-		upcomMeetings	 = (TextView)		findViewById(R.id.main_right_upcoming_meetings);
+		blackBox		 	= (TextView)		findViewById(R.id.main_black_box);
+		calendarName 	 	= (TextView) 		findViewById(R.id.main_title_calendar_name);
+		currentWrap		 	= (View) 			findViewById(R.id.main_left_current_wrap);
+		currentAvail 	 	= (TextView) 		findViewById(R.id.main_title_available);
+		currentTitle 	 	= (TextView) 		findViewById(R.id.main_left_current_title_value);
+		currentDescription 	= (TextView) 		findViewById(R.id.main_left_current_description_value);
+		currentOrganizer 	= (TextView) 		findViewById(R.id.main_left_current_organizer_value);
+		currentTime		 	= (TextView) 		findViewById(R.id.main_left_current_time_value);
+		currentUpcom 	 	= (TextView) 		findViewById(R.id.main_left_current_title_field);
+		nextMeetingButton 	= (TextView) 		findViewById(R.id.main_left_current_next_button);
+		noUpcoming			= (TextView)		findViewById(R.id.main_left_no_upcoming);
+		endMeetingButton 	= (TextView) 		findViewById(R.id.main_left_current_end_button);
+		eventListView 		= (ListView) 		findViewById(R.id.main_right_event_list);
+		mainView 		 	= (View) 			findViewById(R.id.main_lay);
+		mainWrap		 	= (View)			findViewById(R.id.main_lay_wrap);
+		upcomingMeetings	= (TextView)		findViewById(R.id.main_right_upcoming_meetings);
 
 		// Set the name of the Calendar
 		calendarName.setText(roomName);
 
 		// Make a new CalEventAdapter and give it to the ListView
 		adapter = new CalEventAdapter(this, R.layout.item_calevent, eventlist);
-		listView.setAdapter(adapter);
+		eventListView.setAdapter(adapter);
 
 		// Set a custom OnItemClickListener
-		listView.setOnItemClickListener(new OnItemClickListener() {
+		eventListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public final void onItemClick(final AdapterView<?> arg0,
-					final View arg1, 
-					final int position, 
+					final View 	arg1, 
+					final int 	position, 
 					final long arg3) {
 				
 				// Start NewEditActivity, and send along the selected event
@@ -189,7 +190,7 @@ public final class MainActivity extends Activity {
 	 * If it have been extended one time, and it is delayed, the event will be
 	 * deleted, if the config allows it
 	 */
-	private final static void currentDelayed() {
+	private final static void currentIsDelayed() {
 		// Check if it has gone overtime, and has'nt been extended
 		final Long currentTime = new Date().getTime() + 10000;
 		if (current != null && 
@@ -221,7 +222,7 @@ public final class MainActivity extends Activity {
 	/**
 	 * Extends the end time of current, if noone have pressed "End Meeting"
 	 */
-	private final static void currentOvertime() {
+	private final static void currentGoneOvertime() {
 		// Check if the event have ended
 		if (current != null && current.description.endsWith("ended")) {
 			return;
@@ -242,19 +243,19 @@ public final class MainActivity extends Activity {
 	 * 
 	 * @param val Shows curNextLay if true
 	 */
-	private final static void curShow(final boolean val) {
-		if (val) {
-			Log.d(TAG, "show curnextLay");
-			curNextLay.setClickable(true);
-			curNextLay.setVisibility(View.VISIBLE);
-			noUpcom.setVisibility(View.GONE);
+	private final static void showCurrent(final boolean shouldShow) {
+		if (shouldShow) {
+			Log.d(TAG, "show currentWrap");
+			currentWrap	.setClickable(true);
+			currentWrap	.setVisibility(View.VISIBLE);
+			noUpcoming	.setVisibility(View.GONE);
 		} else {
-			Log.d(TAG, "hide curnextLay");
-			curNextLay.setClickable(false);
-			curNextLay.setVisibility(View.GONE);
-			endMeeting.setVisibility(View.GONE);
-			nextMeeting.setVisibility(View.GONE);
-			noUpcom.setVisibility(View.VISIBLE);
+			Log.d(TAG, "hide currentWrap");
+			currentWrap			.setClickable(false);
+			currentWrap			.setVisibility(View.GONE);
+			endMeetingButton	.setVisibility(View.GONE);
+			nextMeetingButton	.setVisibility(View.GONE);
+			noUpcoming			.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -264,8 +265,8 @@ public final class MainActivity extends Activity {
 	private static final void dim() {
 		Log.d(TAG, "called dim()");
 		mainWrap.setVisibility(View.GONE);
-		black_box.setVisibility(RelativeLayout.VISIBLE);
-		black_box.setBackgroundColor(context.getResources().getColor(R.color.black));
+		blackBox.setVisibility(RelativeLayout.VISIBLE);
+		blackBox.setBackgroundColor(context.getResources().getColor(R.color.black));
 		WindowManager.LayoutParams lp = window.getAttributes();
 		lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_OFF;
 		window.setAttributes(lp);
@@ -331,14 +332,14 @@ public final class MainActivity extends Activity {
 		Log.d(TAG, "called lighten()");
 		if (hasPressed) {
 			mainWrap.setVisibility(View.VISIBLE);
-			black_box.setVisibility(RelativeLayout.GONE);
+			blackBox.setVisibility(RelativeLayout.GONE);
 			WindowManager.LayoutParams lp = window.getAttributes();
 			lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL;
 			window.setAttributes(lp);
 		} else {
 			mainWrap.setVisibility(View.VISIBLE);
-			black_box.setVisibility(RelativeLayout.VISIBLE);
-			black_box.setBackgroundColor(context.getResources().getColor(R.color.see_through));
+			blackBox.setVisibility(RelativeLayout.VISIBLE);
+			blackBox.setBackgroundColor(context.getResources().getColor(R.color.see_through));
 			WindowManager.LayoutParams lp = window.getAttributes();
 			lp.screenBrightness = 0.25f;
 			window.setAttributes(lp);
@@ -363,7 +364,7 @@ public final class MainActivity extends Activity {
 	 */
 	@Override
 	public void onUserInteraction() {
-		tempLighten(curNextLay);
+		tempLighten(currentWrap);
 		super.onUserInteraction();
 	}
 
@@ -376,7 +377,7 @@ public final class MainActivity extends Activity {
 		Log.d(TAG, "called setCurrent()");
 		currentTitle.setText(event.title);
 		currentOrganizer.setText(event.organizer);
-		currentDesc.setText(event.description);
+		currentDescription.setText(event.description);
 		currentTime.setText(event.getTimeWindow().toString());
 	}
 
@@ -426,11 +427,11 @@ public final class MainActivity extends Activity {
 		// Check if it should display "Upcoming meetings", or inform that there 
 		// arent any the rest of the day
 		if (eventlist.size() > 1) {
-			upcomMeetings.setTypeface(null, Typeface.BOLD);
-			upcomMeetings.setText(R.string.text_upcom_meetings);
+			upcomingMeetings.setTypeface(null, Typeface.BOLD);
+			upcomingMeetings.setText(R.string.text_upcom_meetings);
 		} else {
-			upcomMeetings.setTypeface(null, Typeface.NORMAL);
-			upcomMeetings.setText(R.string.text_no_more_meeting);
+			upcomingMeetings.setTypeface(null, Typeface.NORMAL);
+			upcomingMeetings.setText(R.string.text_no_more_meeting);
 		}
 
 		// Checks if any of the event in the ArrayList is underway,
@@ -442,13 +443,13 @@ public final class MainActivity extends Activity {
 
 		// If the config allows it, check if current have gone over its end time
 		if (extendEnd) {
-			currentOvertime();
+			currentGoneOvertime();
 		}
 		
 		// If the config allows it, check if current is delayed, and havn't been
 		// started
 		if (extendStart) {
-			currentDelayed();
+			currentIsDelayed();
 		}
 
 		// Sets the background color(Red if any event is underway, green if not)
@@ -456,18 +457,18 @@ public final class MainActivity extends Activity {
 			mainView.setBackgroundColor(Color.RED);
 			currentAvail.setText(R.string.text_unavailable);
 			currentUpcom.setText(R.string.text_current_meet);
-			nextMeeting.setVisibility(Button.GONE);
+			nextMeetingButton.setVisibility(Button.GONE);
 			
 			// If the config allows it, show the end meeting button
 			if (canEnd) {
-				endMeeting.setVisibility(Button.VISIBLE);
+				endMeetingButton.setVisibility(Button.VISIBLE);
 			} else {
-				endMeeting.setVisibility(Button.GONE);
+				endMeetingButton.setVisibility(Button.GONE);
 			}
 			
 			setCurrent(current);
 			isDelayed = false;
-			curShow(true);
+			showCurrent(true);
 		} else {
 			mainView.setBackgroundColor(Color.GREEN);
 			currentAvail.setText(R.string.text_available);
@@ -476,12 +477,12 @@ public final class MainActivity extends Activity {
 			
 			// If there is a current event, show the curNextLay
 			if (current != null) {
-				nextMeeting.setVisibility(Button.VISIBLE);
-				endMeeting.setVisibility(Button.GONE);
+				nextMeetingButton.setVisibility(Button.VISIBLE);
+				endMeetingButton.setVisibility(Button.GONE);
 				setCurrent(current);
-				curShow(true);
+				showCurrent(true);
 			} else {
-				curShow(false);
+				showCurrent(false);
 			}
 		}
 
@@ -492,7 +493,7 @@ public final class MainActivity extends Activity {
 			mainView.setBackgroundColor(Color.YELLOW);
 			currentAvail.setText(R.string.text_available);
 			currentUpcom.setText(R.string.text_last_meet);
-			endMeeting.setVisibility(Button.GONE);
+			endMeetingButton.setVisibility(Button.GONE);
 		}
 
 		// Creates the listView
@@ -544,18 +545,18 @@ public final class MainActivity extends Activity {
 			final AlertDialog.Builder builder = new AlertDialog.Builder(
 					getActivity());
 			final LayoutInflater inflater = getActivity().getLayoutInflater();
-			final View v = inflater
+			final View view = inflater
 					.inflate(R.layout.fragment_password_prompt, null);
 			
 			// If the fragment have been started by a wrong typed password,
 			// notify the user
 			if (wasWrong) {
-				v.findViewById(R.id.pass_prompt_prompt).setVisibility(TextView.VISIBLE);
+				view.findViewById(R.id.pass_prompt_prompt).setVisibility(TextView.VISIBLE);
 			} else {
-				v.findViewById(R.id.pass_prompt_prompt).setVisibility(TextView.GONE);
+				view.findViewById(R.id.pass_prompt_prompt).setVisibility(TextView.GONE);
 			}
 			
-			builder.setView(v)
+			builder.setView(view)
 					.setTitle(R.string.text_enter_password)
 					.setPositiveButton("OK",
 							new DialogInterface.OnClickListener() {
@@ -569,7 +570,7 @@ public final class MainActivity extends Activity {
 									// Find the the typed password, and the
 									// saved password
 									final EditText pwtext = (EditText) 
-											v.findViewById(R.id.pass_prompt_edit);
+											view.findViewById(R.id.pass_prompt_edit);
 									final String typedpw = pwtext.getText()
 											.toString();
 									final String storedpw = StatMeth

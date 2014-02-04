@@ -9,10 +9,10 @@ package com.desc.meetingbooker;
  */
 public final class Setting {
 	
-	protected final String desc;
-	protected final String name;
-	protected String value;
-	protected final String valueType;
+	protected final 	String description;
+	protected final 	String name;
+	protected 			String value;
+	protected final 	String valueType;
 	
 	/**
 	 * Constructs a new Setting object, that is either a String,
@@ -26,11 +26,11 @@ public final class Setting {
 	public Setting(final String name, 
 			final String value, 
 			final String valueType,
-			final String desc) {
-		this.desc = desc;
-		this.name = name;
-		this.value = value;
-		this.valueType = valueType;
+			final String description) {
+		this.description 	= description;
+		this.name 			= name;
+		this.value 			= value;
+		this.valueType 		= valueType;
 	}
 
 }

@@ -25,16 +25,16 @@ public final class TimeWindowAdapter extends ArrayAdapter<TimeWindow> {
 	/**
 	 * The constructor for an TimeWindowAdapter
 	 * 
-	 * @param a 				 The activity it is used
-	 * @param textViewResourceId The layout it uses
-	 * @param entries 			 The ArrayList that will be set up in the list
+	 * @param activity			 	The activity it is used
+	 * @param textViewResourceId 	The layout it uses
+	 * @param entries 			 	The ArrayList that will be set up in the list
 	 */
-	public TimeWindowAdapter(final Activity a, 
+	public TimeWindowAdapter(final Activity activity, 
 			final int textViewResourceId,
 			final ArrayList<TimeWindow> entries) {
-		super(a, textViewResourceId, entries);
+		super(activity, textViewResourceId, entries);
 		this.entries = entries;
-		this.activity = a;
+		this.activity = activity;
 	}
 
 	/**
@@ -45,8 +45,8 @@ public final class TimeWindowAdapter extends ArrayAdapter<TimeWindow> {
 	 * @since 03-07-2013
 	 */
 	public final static class ViewHold {
-		/** R.id.windowItem */
-		public TextView item1;
+		/** R.id.timewindow_textview */
+		public TextView textview;
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public final class TimeWindowAdapter extends ArrayAdapter<TimeWindow> {
 			
 			// Make a new ViewHolder and find the Views
 			holder = new ViewHold();
-			holder.item1 = (TextView) v.findViewById(R.id.timewindow_textview);
+			holder.textview = (TextView) v.findViewById(R.id.timewindow_textview);
 			v.setTag(holder);
 		} else {
 			holder = (ViewHold) v.getTag();
@@ -76,7 +76,7 @@ public final class TimeWindowAdapter extends ArrayAdapter<TimeWindow> {
 		if (window != null) {
 			String time = window.getStartString() + " | "
 					+ window.getEndString();
-			holder.item1.setText(time);
+			holder.textview.setText(time);
 		}
 		return v;
 	}

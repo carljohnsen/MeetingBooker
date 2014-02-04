@@ -37,18 +37,18 @@ public final class NewEditActivity extends Activity {
 	
 	// All of the Views
 	private static TextView	activityTitle;
-	private static TextView	add;
-	private static ImageView  delete;
-	private static EditText   descText;
+	private static TextView	addButton;
+	private static ImageView  deleteButton;
+	private static EditText   descriptionTextEdit;
 	private static ListView   intervalPicker;
 	private static TimePicker timeEnd;
 	private static TimePicker timeStart;
-	private static EditText   titleText;
-	private static TextView	update;
+	private static EditText   titleTextEdit;
+	private static TextView	updateButton;
 
 	// All of the data fields
 	private static 		TimeWindowAdapter 	   adapter;
-	private static final Calendar 			   cal = Calendar.getInstance();
+	private static final Calendar 			   calendar = Calendar.getInstance();
 	private static 		Context 			   context;
 	private static 		Date 				   date = new Date();
 	private static 		CalEvent 			   event;
@@ -59,7 +59,7 @@ public final class NewEditActivity extends Activity {
 
 	// All of the config fields
 	protected static boolean candelete;
-	protected static int 	 windowSize;
+	protected static int 		windowSize;
 
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
@@ -79,19 +79,19 @@ public final class NewEditActivity extends Activity {
 		context = getApplicationContext();
 
 		// Cast all the views
-		activityTitle =  (TextView)   findViewById(R.id.new_edit_title);
-		titleText = 	 (EditText)   findViewById(R.id.new_edit_left_title_value);
-		descText = 		 (EditText)   findViewById(R.id.new_edit_left_description_value);
-		add = 			 (TextView)	  findViewById(R.id.new_edit_right_add_button);
-		update = 		 (TextView)	  findViewById(R.id.new_edit_right_update_button);
-		delete = 		 (ImageView)  findViewById(R.id.new_edit_left_delete_button);
-		timeStart = 	 (TimePicker) findViewById(R.id.new_edit_left_time_picker_start);
-		timeEnd = 		 (TimePicker) findViewById(R.id.new_edit_left_time_picker_end);
-		intervalPicker = (ListView)   findViewById(R.id.new_edit_right_interval_list);
+		activityTitle 		= (TextView)	findViewById(R.id.new_edit_title);
+		titleTextEdit 		= (EditText)	findViewById(R.id.new_edit_left_title_value);
+		descriptionTextEdit = (EditText)	findViewById(R.id.new_edit_left_description_value);
+		addButton 			= (TextView)	findViewById(R.id.new_edit_right_add_button);
+		updateButton 		= (TextView)	findViewById(R.id.new_edit_right_update_button);
+		deleteButton 		= (ImageView)	findViewById(R.id.new_edit_left_delete_button);
+		timeStart 			= (TimePicker) 	findViewById(R.id.new_edit_left_time_picker_start);
+		timeEnd 			= (TimePicker) 	findViewById(R.id.new_edit_left_time_picker_end);
+		intervalPicker 		= (ListView)	findViewById(R.id.new_edit_right_interval_list);
 		
 		// Sets the TimePickers to use 24 hour
-		timeStart.setIs24HourView(true);
-		timeEnd.setIs24HourView(true);
+		timeStart	.setIs24HourView(true);
+		timeEnd		.setIs24HourView(true);
 		
 		// Find TimeWindows, make a new adapter and add it to the ListView
 		windowList = findTimeWindow();
@@ -132,25 +132,25 @@ public final class NewEditActivity extends Activity {
 	 */
 	public final void add(final View view) {
 		// Set the add button to not clickable, to ensure no double bookings
-		add.setClickable(false);
+		addButton.setClickable(false);
 
 		Log.d(TAG, "pressed Add button");
 
 		// Read the fields
-		String title = titleText.getText().toString();
+		String title = titleTextEdit.getText().toString();
 		if (title.equals("")) {
-			title = titleText.getHint().toString();
+			title = titleTextEdit.getHint().toString();
 		}
-		final String desc = descText.getText().toString();
-		final int startHour = timeStart.getCurrentHour();
-		final int startMin = timeStart.getCurrentMinute();
-		final int endHour = timeEnd.getCurrentHour();
-		final int endMin = timeEnd.getCurrentMinute();
+		final String desc 		= descriptionTextEdit.getText().toString();
+		final int startHour 	= timeStart.getCurrentHour();
+		final int startMin 	= timeStart.getCurrentMinute();
+		final int endHour 		= timeEnd.getCurrentHour();
+		final int endMin 		= timeEnd.getCurrentMinute();
 
 		// Convert timePicker readings to long
-		final String startTime = cal.get(Calendar.DAY_OF_MONTH) + "-" + 
-				(cal.get(Calendar.MONTH) + 1) + "-" + 
-				cal.get(Calendar.YEAR) + " " + 
+		final String startTime = calendar.get(Calendar.DAY_OF_MONTH) + "-" + 
+				(calendar.get(Calendar.MONTH) + 1) + "-" + 
+				calendar.get(Calendar.YEAR) + " " + 
 				startHour + ":" + 
 				startMin;
 		final SimpleDateFormat formatter = new SimpleDateFormat(
@@ -161,9 +161,9 @@ public final class NewEditActivity extends Activity {
 			Log.e(TAG, e.getMessage());
 		}
 		final long start = date.getTime();
-		final String endTime = cal.get(Calendar.DAY_OF_MONTH) + "-" + 
-				(cal.get(Calendar.MONTH) + 1) + "-" + 
-				cal.get(Calendar.YEAR) + " " + 
+		final String endTime = calendar.get(Calendar.DAY_OF_MONTH) + "-" + 
+				(calendar.get(Calendar.MONTH) + 1) + "-" + 
+				calendar.get(Calendar.YEAR) + " " + 
 				endHour + ":" + 
 				endMin;
 		try {
@@ -177,7 +177,7 @@ public final class NewEditActivity extends Activity {
 		final CalEvent event = new CalEvent(start, end, title, desc);
 		
 		// If the events end time is before start time, notify the user
-		if (StatMeth.isBefore(event)) {
+		if (StatMeth.eventStartIsBeforeEnd(event)) {
 			final AlertDialog dialog = new AlertDialog.Builder(this).create();
 			dialog.setTitle("Error");
 			dialog.setMessage("End time is before start time");
@@ -193,7 +193,7 @@ public final class NewEditActivity extends Activity {
 					});
 			Log.d(TAG, "showed isBefore error dialog");
 			dialog.show();
-			add.setClickable(true);
+			addButton.setClickable(true);
 			return;
 		}
 		
@@ -218,7 +218,7 @@ public final class NewEditActivity extends Activity {
 					});
 			Log.d(TAG, "showed overlapping dialog");
 			dialog.show();
-			add.setClickable(true);
+			addButton.setClickable(true);
 		}
 	}
 
@@ -372,19 +372,19 @@ public final class NewEditActivity extends Activity {
 		
 		// If the config allows it, show the delete button
 		if (candelete) {
-			delete.setVisibility(ImageView.VISIBLE);
+			deleteButton.setVisibility(ImageView.VISIBLE);
 		} else {
-			delete.setVisibility(ImageView.GONE);
+			deleteButton.setVisibility(ImageView.GONE);
 		}
 
 		// Set the views to information from the event
-		titleText.setText(event.title);
-		descText.setText(event.description);
+		titleTextEdit.setText(event.title);
+		descriptionTextEdit.setText(event.description);
 		setTimePickers(event.getTimeWindow());
 		
 		// Hide add button and show update button
-		add.setVisibility(Button.GONE);
-		update.setVisibility(Button.VISIBLE);
+		addButton.setVisibility(Button.GONE);
+		updateButton.setVisibility(Button.VISIBLE);
 		
 	}
 
@@ -398,11 +398,11 @@ public final class NewEditActivity extends Activity {
 		activityTitle.setText(R.string.text_new_meeting);
 		
 		// Hide the delete button
-		delete.setVisibility(Button.GONE);
+		deleteButton.setVisibility(Button.GONE);
 		
 		// Set the titleTexts hint to the default value 
-		titleText.setHint(titleText.getText().toString());
-		titleText.setText("");
+		titleTextEdit.setHint(titleTextEdit.getText().toString());
+		titleTextEdit.setText("");
 		
 		// Set the TimePickers to the first found TimeWindow, if there is any
 		if (windowList.isEmpty()) {
@@ -425,8 +425,8 @@ public final class NewEditActivity extends Activity {
 		}
 		
 		// Show the add button and hide the update button
-		add.setVisibility(Button.VISIBLE);
-		update.setVisibility(Button.GONE);
+		addButton.setVisibility(Button.VISIBLE);
+		updateButton.setVisibility(Button.GONE);
 	}
 
 	// Sets time pickers to a possible interval
@@ -461,17 +461,17 @@ public final class NewEditActivity extends Activity {
 		Log.d(TAG, "pressed update button");
 
 		// Read the fields
-		final String title = titleText.getText().toString();
-		final String desc = descText.getText().toString();
-		final int startHour = timeStart.getCurrentHour();
-		final int startMin = timeStart.getCurrentMinute();
-		final int endHour = timeEnd.getCurrentHour();
-		final int endMin = timeEnd.getCurrentMinute();
+		final String title 		= titleTextEdit.getText().toString();
+		final String desc 		= descriptionTextEdit.getText().toString();
+		final int startHour 	= timeStart.getCurrentHour();
+		final int startMin 	= timeStart.getCurrentMinute();
+		final int endHour 		= timeEnd.getCurrentHour();
+		final int endMin 		= timeEnd.getCurrentMinute();
 
 		// Convert timePicker readings to long
-		final String startTime = cal.get(Calendar.DAY_OF_MONTH) + "-" + 
-				(cal.get(Calendar.MONTH) + 1) + "-" + 
-				cal.get(Calendar.YEAR) + " " + 
+		final String startTime = calendar.get(Calendar.DAY_OF_MONTH) + "-" + 
+				(calendar.get(Calendar.MONTH) + 1) + "-" + 
+				calendar.get(Calendar.YEAR) + " " + 
 				startHour + ":" + 
 				startMin;
 		final SimpleDateFormat formatter = new SimpleDateFormat(
@@ -482,9 +482,9 @@ public final class NewEditActivity extends Activity {
 			Log.e(TAG, e.getMessage());
 		}
 		final long start = date.getTime();
-		final String endTime = cal.get(Calendar.DAY_OF_MONTH) + "-" + 
-				(cal.get(Calendar.MONTH) + 1) + "-" + 
-				cal.get(Calendar.YEAR) + " " + 
+		final String endTime = calendar.get(Calendar.DAY_OF_MONTH) + "-" + 
+				(calendar.get(Calendar.MONTH) + 1) + "-" + 
+				calendar.get(Calendar.YEAR) + " " + 
 				endHour + ":" + 
 				endMin;
 		try {
@@ -499,7 +499,7 @@ public final class NewEditActivity extends Activity {
 				event.id);
 		
 		// If the end time is before the start time, notify the user
-		if (StatMeth.isBefore(newEvent)) {
+		if (StatMeth.eventStartIsBeforeEnd(newEvent)) {
 			final AlertDialog dialog = new AlertDialog.Builder(this).create();
 			dialog.setTitle("Error");
 			dialog.setMessage("End time is before start time");

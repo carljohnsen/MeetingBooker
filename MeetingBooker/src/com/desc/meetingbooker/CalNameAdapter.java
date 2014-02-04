@@ -25,16 +25,16 @@ public class CalNameAdapter extends ArrayAdapter<CalName> {
 	/**
 	 * The constructor for an CalNameAdapter
 	 * 
-	 * @param a 				 The activity it is used
-	 * @param textViewResourceId The layout it uses
-	 * @param entries 			 The ArrayList that will be set up in the list
+	 * @param activity 				The activity it is used
+	 * @param textViewResourceId 	The layout it uses
+	 * @param entries 				The ArrayList that will be set up in the list
 	 */
-	public CalNameAdapter(Activity a, 
+	public CalNameAdapter(Activity activity, 
 			int textViewResourceId,
 			ArrayList<CalName> entries) {
-		super(a, textViewResourceId, entries);
+		super(activity, textViewResourceId, entries);
 		this.entries = entries;
-		this.activity = a;
+		this.activity = activity;
 	}
 	
 	/**
@@ -46,9 +46,9 @@ public class CalNameAdapter extends ArrayAdapter<CalName> {
 	 */
 	public final static class ViewHold {
 		/** R.id.item_calname_name */
-		public TextView item1;
+		public TextView name;
 		/** R.id.item_calname_id */
-		public TextView item2;
+		public TextView id;
 	}
 	
 	@Override
@@ -56,32 +56,32 @@ public class CalNameAdapter extends ArrayAdapter<CalName> {
 			final View convertView,
 			final ViewGroup parent) {
 		
-		View v = convertView;
+		View view = convertView;
 		final ViewHold holder;
 		
-		if (v == null) {
+		if (view == null) {
 			// Inflate the View
-			final LayoutInflater vi = (LayoutInflater) activity
+			final LayoutInflater viewInflater = (LayoutInflater) activity
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.item_calname, null);
+			view = viewInflater.inflate(R.layout.item_calname, null);
 			
 			// Make a new ViewHold, and find the Views
 			holder = new ViewHold();
-			holder.item1 = (TextView) v.findViewById(R.id.calname_name);
-			holder.item2 = (TextView) v.findViewById(R.id.calname_id_value);
-			v.setTag(holder);
+			holder.name = (TextView) view.findViewById(R.id.calname_name);
+			holder.id 	= (TextView) view.findViewById(R.id.calname_id_value);
+			view.setTag(holder);
 		} else {
-			holder = (ViewHold) v.getTag();
+			holder = (ViewHold) view.getTag();
 		}
 		
 		// Take the event, and fill its information into the Views
 		final CalName calname = entries.get(position);
 		if (calname != null) {
-			holder.item1.setText(calname.name);
-			holder.item2.setText(calname.id);
+			holder.name	.setText(calname.name);
+			holder.id	.setText(calname.id);
 		}
 		
-		return v;
+		return view;
 	}
 	
 }

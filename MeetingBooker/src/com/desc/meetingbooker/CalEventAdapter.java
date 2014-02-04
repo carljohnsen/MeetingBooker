@@ -25,16 +25,16 @@ public final class CalEventAdapter extends ArrayAdapter<CalEvent> {
 	/**
 	 * The constructor for an CalEventAdapter
 	 * 
-	 * @param a 				 The activity it is used
-	 * @param textViewResourceId The layout it uses
-	 * @param entries 			 The ArrayList that will be set up in the list
+	 * @param activity			 	The activity it is used
+	 * @param textViewResourceId 	The layout it uses
+	 * @param entries 			 	The ArrayList that will be set up in the list
 	 */
-	public CalEventAdapter(Activity a, 
+	public CalEventAdapter(Activity activity, 
 			int textViewResourceId,
 			ArrayList<CalEvent> entries) {
-		super(a, textViewResourceId, entries);
+		super(activity, textViewResourceId, entries);
 		this.entries = entries;
-		this.activity = a;
+		this.activity = activity;
 	}
 
 	/**
@@ -45,14 +45,14 @@ public final class CalEventAdapter extends ArrayAdapter<CalEvent> {
 	 * @since 02-06-2013
 	 */
 	public final static class ViewHold {
-		/** R.id.evTitle */
-		public TextView item1;
-		/** R.id.evOrganizer */
-		public TextView item2;
-		/** R.id.evDescription */
-		public TextView item3;
-		/** R.id.evStEn */
-		public TextView item4;
+		/** R.id.calevent_title_value */
+		public TextView title;
+		/** R.id.calevent_organizer_value */
+		public TextView organizer;
+		/** R.id.calevent_description_value */
+		public TextView description;
+		/** R.id.calevent_time_value */
+		public TextView time;
 	}
 
 	@Override
@@ -60,36 +60,36 @@ public final class CalEventAdapter extends ArrayAdapter<CalEvent> {
 			final View convertView,
 			final ViewGroup parent) {
 		
-		View v = convertView;
+		View view = convertView;
 		final ViewHold holder;
 		
-		if (v == null) {
+		if (view == null) {
 			// Inflate the View
-			final LayoutInflater vi = (LayoutInflater) activity
+			final LayoutInflater viewInflater = (LayoutInflater) activity
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.item_calevent, null);
+			view = viewInflater.inflate(R.layout.item_calevent, null);
 			
 			// Make a new ViewHold, and find the Views
 			holder = new ViewHold();
-			holder.item1 = (TextView) v.findViewById(R.id.calevent_title_value);
-			holder.item2 = (TextView) v.findViewById(R.id.calevent_organizer_value);
-			holder.item3 = (TextView) v.findViewById(R.id.calevent_description_value);
-			holder.item4 = (TextView) v.findViewById(R.id.calevent_time_value);
-			v.setTag(holder);
+			holder.title 		= (TextView) view.findViewById(R.id.calevent_title_value);
+			holder.organizer 	= (TextView) view.findViewById(R.id.calevent_organizer_value);
+			holder.description 	= (TextView) view.findViewById(R.id.calevent_description_value);
+			holder.time 		= (TextView) view.findViewById(R.id.calevent_time_value);
+			view.setTag(holder);
 		} else {
-			holder = (ViewHold) v.getTag();
+			holder = (ViewHold) view.getTag();
 		}
 		
 		// Take the event, and fill its information into the Views
 		final CalEvent event = entries.get(position);
 		if (event != null) {
-			holder.item1.setText(event.title);
-			holder.item2.setText(event.organizer);
-			holder.item3.setText(event.description);
-			holder.item4.setText(event.getTimeWindow().toString());
+			holder.title		.setText(event.title);
+			holder.organizer	.setText(event.organizer);
+			holder.description	.setText(event.description);
+			holder.time			.setText(event.getTimeWindow().toString());
 		}
 		
-		return v;
+		return view;
 	}
 
 }

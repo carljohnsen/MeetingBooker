@@ -33,12 +33,12 @@ import android.widget.TextView;
  */
 public final class SettingsActivity extends Activity {
 
-	private final String TAG = SettingsActivity.class.getSimpleName();
-	private static ArrayList<Setting> config;
-	private static ListView settingList;
-	private SettingsAdapter adapter;
-	private static Context context;
-
+	private 		 final String 				TAG = SettingsActivity.class.getSimpleName();
+	private static 		ArrayList<Setting> 	config;
+	private static 		ListView 			settingList;
+	private 				SettingsAdapter 	adapter;
+	private static 		Context 			context;
+	
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,7 +56,7 @@ public final class SettingsActivity extends Activity {
 
 		// Read the config file
 		context = getApplicationContext();
-		config = StatMeth.readConfig(context);
+		config 	= StatMeth.readConfig(context);
 
 		// Set up the ListView
 		settingList = (ListView) findViewById(R.id.settings_list);
@@ -198,7 +198,7 @@ public final class SettingsActivity extends Activity {
 	public final void save(final View view) {
 		Log.d(TAG, "pressed Save button");
 		config = readList();
-		StatMeth.write(config, getApplicationContext());
+		StatMeth.writeConfig(config, getApplicationContext());
 		finish();
 	}
 

@@ -38,78 +38,15 @@ public final class StatMeth {
 	private static String TAG = StatMeth.class.getSimpleName();
 
 	// The query used to get the events from the Android calendar
-	private static final String[] COLS = new String[] {
+	private static final String[] COLUMNS = new String[] {
 			CalendarContract.Events.DTSTART, CalendarContract.Events.DTEND,
 			CalendarContract.Events.TITLE, CalendarContract.Events.DESCRIPTION,
 			CalendarContract.Events._ID, CalendarContract.Events.ORGANIZER };
 	private static Cursor cursor;
 	private static ArrayList<Setting> settings;
-	private static String calID; 
+	private static String calendarId; 
 
-	/**
-	 * Creates a new config.cfg file
-	 * 
-	 * @param context The context of the application
-	 */
-	private final static void configMake(final Context context) {
-		Log.d(TAG, "called configMake()");
-		try {
-			// Open the file
-			final FileOutputStream out = context.openFileOutput("config.cfg",
-					Context.MODE_PRIVATE);
-			final OutputStreamWriter outputStream = new OutputStreamWriter(out);
-			
-			// Write all the config lines
-			String line;
-			line = "extendstarttime true";
-			interpret(line, context);
-			line += "\n";
-			outputStream.write(line, 0, line.length());
-			line = "starttime 15";
-			interpret(line, context);
-			line += "\n";
-			outputStream.write(line, 0, line.length());
-			line = "extendendtime true";
-			interpret(line, context);
-			line += "\n";
-			outputStream.write(line, 0, line.length());
-			line = "endtime 15";
-			interpret(line, context);
-			line += "\n";
-			outputStream.write(line, 0, line.length());
-			line = "candelete true";
-			interpret(line, context);
-			line += "\n";
-			outputStream.write(line, 0, line.length());
-			line = "canend true";
-			interpret(line, context);
-			line += "\n";
-			outputStream.write(line, 0, line.length());
-			line = "enddelete true";
-			interpret(line, context);
-			line += "\n";
-			outputStream.write(line, 0, line.length());
-			line = "windowsize 60";
-			interpret(line, context);
-			line += "\n";
-			outputStream.write(line, 0, line.length());
-			line = "calendarid 2";
-			interpret(line, context);
-			line += "\n";
-			outputStream.write(line, 0, line.length());
-			line = "calendarname " + getCalendarName(context);
-			interpret(line, context);
-			line += "\n";
-			outputStream.write(line, 0, line.length());
-			
-			
-			// Close the file
-			outputStream.close();
-			out.close();
-		} catch (IOException e) {
-			Log.e(TAG, e.getMessage());
-		}
-	}
+	
 
 	/**
 	 * "Deletes" the given event. The method for deletion in this application,
@@ -136,6 +73,18 @@ public final class StatMeth {
 		// Update the calendar
 		cr.update(uri, cv, null, null);
 	}
+	
+	/**
+	 * Checks the end time of the given event is before the start time
+	 * 
+	 * @param event
+	 *            The given event
+	 * @return true, if the end is before the start
+	 */
+	public final static boolean eventStartIsBeforeEnd(final CalEvent event) {
+		Log.d(TAG, "called isBefore()");
+		return event.endTime < event.startTime;
+	}
 
 	/**
 	 * The method to get the name of the calendar
@@ -151,7 +100,7 @@ public final class StatMeth {
 			CalendarContract.Calendars.CALENDAR_DISPLAY_NAME 
 		};
 		// Make sure only the selcted calendar id name is fetched
-		final String id = "_ID = " + calID;
+		final String id = "_ID = " + calendarId;
 		
 		// Get the ContentResolver, and extract the Cursor
 		final ContentResolver cr = context.getContentResolver();
@@ -237,7 +186,7 @@ public final class StatMeth {
 	 * 
 	 * @param str The string that will be interpretet
 	 */
-	private final static void interpret(final String str, final Context context) {
+	private final static void interpretSetting(final String str, final Context context) {
 		// Find the whitespace in the String, and split it into two
 		final int index = str.indexOf(' ');
 		final String command = str.substring(0, index);
@@ -304,24 +253,14 @@ public final class StatMeth {
 			return;
 		}
 		if (command.equals("calendarid")) {
-			StatMeth.calID = value;
+			StatMeth.calendarId = value;
 			setting = new Setting(command, value, "hashmap", "Calendar ID : " + getCalendarName(context));
 			settings.add(setting);
 			return;
 		}
 	}
 
-	/**
-	 * Checks the end time of the given event is before the start time
-	 * 
-	 * @param event
-	 *            The given event
-	 * @return true, if the end is before the start
-	 */
-	public final static boolean isBefore(final CalEvent event) {
-		Log.d(TAG, "called isBefore()");
-		return event.endTime < event.startTime;
-	}
+	
 	
 	/**
 	 * Checks if time is < 08:00 or > 20:00
@@ -426,6 +365,71 @@ public final class StatMeth {
 		}
 		return true;
 	}
+	
+	/**
+	 * Creates a new config.cfg file
+	 * 
+	 * @param context The context of the application
+	 */
+	private final static void makeNewConfig(final Context context) {
+		Log.d(TAG, "called configMake()");
+		try {
+			// Open the file
+			final FileOutputStream out = context.openFileOutput("config.cfg",
+					Context.MODE_PRIVATE);
+			final OutputStreamWriter outputStream = new OutputStreamWriter(out);
+			
+			// Write all the config lines
+			String line;
+			line = "extendstarttime true";
+			interpretSetting(line, context);
+			line += "\n";
+			outputStream.write(line, 0, line.length());
+			line = "starttime 15";
+			interpretSetting(line, context);
+			line += "\n";
+			outputStream.write(line, 0, line.length());
+			line = "extendendtime true";
+			interpretSetting(line, context);
+			line += "\n";
+			outputStream.write(line, 0, line.length());
+			line = "endtime 15";
+			interpretSetting(line, context);
+			line += "\n";
+			outputStream.write(line, 0, line.length());
+			line = "candelete true";
+			interpretSetting(line, context);
+			line += "\n";
+			outputStream.write(line, 0, line.length());
+			line = "canend true";
+			interpretSetting(line, context);
+			line += "\n";
+			outputStream.write(line, 0, line.length());
+			line = "enddelete true";
+			interpretSetting(line, context);
+			line += "\n";
+			outputStream.write(line, 0, line.length());
+			line = "windowsize 60";
+			interpretSetting(line, context);
+			line += "\n";
+			outputStream.write(line, 0, line.length());
+			line = "calendarid 2";
+			interpretSetting(line, context);
+			line += "\n";
+			outputStream.write(line, 0, line.length());
+			line = "calendarname " + getCalendarName(context);
+			interpretSetting(line, context);
+			line += "\n";
+			outputStream.write(line, 0, line.length());
+			
+			
+			// Close the file
+			outputStream.close();
+			out.close();
+		} catch (IOException e) {
+			Log.e(TAG, e.getMessage());
+		}
+	}
 
 	/**
 	 * Used to generate a new default password
@@ -471,7 +475,7 @@ public final class StatMeth {
 		final ContentResolver contentResolver = context.getContentResolver();
 
 		// Calling the query
-		String query = "CALENDAR_ID = " + calID + " AND DTSTART <= ? AND DTEND > ?";
+		String query = "CALENDAR_ID = " + calendarId + " AND DTSTART <= ? AND DTEND > ?";
 		Time t = new Time();
 		t.setToNow();
 		String dtEnd = "" + t.toMillis(false);
@@ -479,7 +483,7 @@ public final class StatMeth {
 		String dtStart = "" + t.toMillis(false);
 		String[] selectionArgs = { dtStart, dtEnd };
 		cursor = contentResolver.query(CalendarContract.Events.CONTENT_URI,
-				COLS, query, selectionArgs, null);
+				COLUMNS, query, selectionArgs, null);
 		cursor.moveToFirst();
 
 		// Getting the used DateFormat from the Android device
@@ -541,7 +545,7 @@ public final class StatMeth {
 			// Read each line
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
-				interpret(line, context);
+				interpretSetting(line, context);
 			}
 			Log.d(TAG, "called interpret() " + settings.size() + " times");
 			
@@ -549,7 +553,7 @@ public final class StatMeth {
 			inputStreamReader.close();
 			in.close();
 		} catch (FileNotFoundException e) {
-			configMake(context);
+			makeNewConfig(context);
 		} catch (IOException e) {
 			Log.e(TAG, e.getMessage());
 		}
@@ -598,7 +602,7 @@ public final class StatMeth {
 
 		// Insert all the required information
 		final ContentValues values = new ContentValues();
-		values.put("calendar_id", calID);
+		values.put("calendar_id", calendarId);
 		values.put("title", event.title);
 		values.put("allDay", 0);
 		values.put("dtstart", event.startTime);
@@ -615,8 +619,8 @@ public final class StatMeth {
 		final ContentValues values2 = new ContentValues();
 		
 		// Get last inserted id
-		String[] COLS = { CalendarContract.Events._ID };
-		Cursor cursor = cr.query(CalendarContract.Events.CONTENT_URI, COLS,
+		String[] COLUMNS = { CalendarContract.Events._ID };
+		Cursor cursor = cr.query(CalendarContract.Events.CONTENT_URI, COLUMNS,
 				 null, null, null);
 		cursor.moveToLast();
 		long id = cursor.getLong(0);
@@ -755,12 +759,12 @@ public final class StatMeth {
 	}
 
 	/**
-	 * Writes the given ArrayList of Setting to the config file
+	 * Writes the given ArrayList of Settings to the config file
 	 * 
 	 * @param sett The given ArrayList
 	 * @param context The context of the application
 	 */
-	public final static void write(final ArrayList<Setting> sett,
+	public final static void writeConfig(final ArrayList<Setting> sett,
 			final Context context) {
 		Log.d(TAG, "called write()");
 		try {
