@@ -1,0 +1,14 @@
+Version 1.2:
+- Added notification bar element
+
+Version 1.1:
+- Fixed cached date issue. 
+	The problem happens when the application have been running for over a day. 
+	When that happened, the call to java.util.Calendar.get(), returned the date from the day before. 
+	Now android.text.format.Time is used.
+	This was a problem in NewEditActivity.add() and NewEditActivity.update()
+- Found Attendee testing code, which always added "meetingroom@test.rootdomain" as an attendee.
+	This is no longer needed, as the policy on attendee notification have changed.
+	
+Version 1.0:
+- Initial release

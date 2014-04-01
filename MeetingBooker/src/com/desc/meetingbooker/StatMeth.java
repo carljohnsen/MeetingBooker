@@ -20,7 +20,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CalendarContract;
-import android.provider.CalendarContract.Attendees;
 import android.provider.CalendarContract.Events;
 import android.text.format.DateFormat;
 import android.text.format.Time;
@@ -30,7 +29,7 @@ import android.util.Log;
  * A Class that holds all the static methods
  * 
  * @author carljohnsen
- * @version 1.0
+ * @version 1.1
  * @since 24-06-2013
  */
 public final class StatMeth {
@@ -65,7 +64,7 @@ public final class StatMeth {
 		Uri uri = null;
 		
 		// Change the start and end time of the event
-		final long time = new Date().getTime();
+		final long time = new Date().getTime() - 1000;
 		cv.put(Events.DTSTART, time);
 		cv.put(Events.DTEND, time + 1);
 		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
@@ -613,25 +612,6 @@ public final class StatMeth {
 		
 		// Insert the event
 		cr.insert(EVENTS_URI, values);
-		
-		// Get attendees uri
-		final Uri ATTENDEES_URI = Uri.parse(CalendarContract.Attendees.CONTENT_URI.toString());
-		final ContentValues values2 = new ContentValues();
-		
-		// Get last inserted id
-		String[] COLUMNS = { CalendarContract.Events._ID };
-		Cursor cursor = cr.query(CalendarContract.Events.CONTENT_URI, COLUMNS,
-				 null, null, null);
-		cursor.moveToLast();
-		long id = cursor.getLong(0);
-		
-		// Insert all the required information
-		values2.put(Attendees.ATTENDEE_NAME, "Meeting Room");
-		values2.put(Attendees.ATTENDEE_EMAIL, "meetingroom@test.rootdomain");
-		values2.put(Attendees.EVENT_ID, id);
-		
-		// Insert the attendee
-		cr.insert(ATTENDEES_URI, values2);
 
 	}
 

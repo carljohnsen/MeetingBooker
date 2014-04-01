@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 import android.os.Bundle;
 import android.annotation.SuppressLint;
@@ -13,6 +12,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -30,7 +30,7 @@ import android.widget.AdapterView.OnItemClickListener;
  * The Activity used when an event is being edited
  * 
  * @author Carl Johnsen
- * @version 1.0
+ * @version 1.1
  * @since 14-05-2013
  */
 public final class NewEditActivity extends Activity {
@@ -48,9 +48,7 @@ public final class NewEditActivity extends Activity {
 
 	// All of the data fields
 	private static 		TimeWindowAdapter 	   adapter;
-	private static final Calendar 			   calendar = Calendar.getInstance();
 	private static 		Context 			   context;
-	private static 		Date 				   date = new Date();
 	private static 		CalEvent 			   event;
 	private static 		int 				   index;
 	private static final String 				   TAG = NewEditActivity
@@ -147,31 +145,17 @@ public final class NewEditActivity extends Activity {
 		final int endHour 		= timeEnd.getCurrentHour();
 		final int endMin 		= timeEnd.getCurrentMinute();
 
-		// Convert timePicker readings to long
-		final String startTime = calendar.get(Calendar.DAY_OF_MONTH) + "-" + 
-				(calendar.get(Calendar.MONTH) + 1) + "-" + 
-				calendar.get(Calendar.YEAR) + " " + 
-				startHour + ":" + 
-				startMin;
-		final SimpleDateFormat formatter = new SimpleDateFormat(
-				"dd-MM-yyyy HH:mm", Locale.getDefault());
-		try {
-			date = formatter.parse(startTime);
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
-		}
-		final long start = date.getTime();
-		final String endTime = calendar.get(Calendar.DAY_OF_MONTH) + "-" + 
-				(calendar.get(Calendar.MONTH) + 1) + "-" + 
-				calendar.get(Calendar.YEAR) + " " + 
-				endHour + ":" + 
-				endMin;
-		try {
-			date = formatter.parse(endTime);
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
-		}
-		final long end = date.getTime();
+		// Set the time to now
+		Time time = new Time();
+		time.setToNow();
+
+		// Set the start time to the information read from TimePicker
+		time.set(0, startMin, startHour, time.monthDay, time.month, time.year);
+		final long start = time.toMillis(false);
+
+		// Set the end time to the information read from TimePicker
+		time.set(0, endMin, endHour, time.monthDay, time.month, time.year);
+		final long end = time.toMillis(false);
 
 		// Create a new CalEvent
 		final CalEvent event = new CalEvent(start, end, title, desc);
@@ -468,31 +452,17 @@ public final class NewEditActivity extends Activity {
 		final int endHour 		= timeEnd.getCurrentHour();
 		final int endMin 		= timeEnd.getCurrentMinute();
 
-		// Convert timePicker readings to long
-		final String startTime = calendar.get(Calendar.DAY_OF_MONTH) + "-" + 
-				(calendar.get(Calendar.MONTH) + 1) + "-" + 
-				calendar.get(Calendar.YEAR) + " " + 
-				startHour + ":" + 
-				startMin;
-		final SimpleDateFormat formatter = new SimpleDateFormat(
-				"dd-MM-yyyy HH:mm", Locale.getDefault());
-		try {
-			date = formatter.parse(startTime);
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
-		}
-		final long start = date.getTime();
-		final String endTime = calendar.get(Calendar.DAY_OF_MONTH) + "-" + 
-				(calendar.get(Calendar.MONTH) + 1) + "-" + 
-				calendar.get(Calendar.YEAR) + " " + 
-				endHour + ":" + 
-				endMin;
-		try {
-			date = formatter.parse(endTime);
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
-		}
-		final long end = date.getTime();
+		// Set the time to now
+		Time time = new Time();
+		time.setToNow();
+		
+		// Set the start time to the information read from TimePicker
+		time.set(0, startMin, startHour, time.monthDay, time.month, time.year);
+		final long start = time.toMillis(false);
+
+		// Set the end time to the information read from TimePicker
+		time.set(0, endMin, endHour, time.monthDay, time.month, time.year);
+		final long end = time.toMillis(false);
 
 		// Create a new CalEvent
 		final CalEvent newEvent = new CalEvent(start, end, title, desc,
