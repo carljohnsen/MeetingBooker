@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,7 +35,7 @@ import android.widget.TextView;
  * links to the other activities
  * 
  * @author Carl Johnsen
- * @version 1.0
+ * @version 1.2
  * @since 04-04-2013
  */
 public final class MainActivity extends Activity {
@@ -71,6 +72,7 @@ public final class MainActivity extends Activity {
 	private			TimerTask				touchTask;
 	private			Timer					touchTimer;
 	private	static	Window 					window;
+	private	static WifiManager				wifi;
 	
 	// TAG used for logging
 	private static final String TAG = MainActivity.class.getSimpleName();
@@ -99,8 +101,9 @@ public final class MainActivity extends Activity {
 		// Set content view
 		setContentView(R.layout.activity_main);
 		
-		// Get window
+		// Get window and wifi manager
 		window = getWindow();
+		wifi = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
 
 		// Get the context
 		context = getApplicationContext();
@@ -160,6 +163,7 @@ public final class MainActivity extends Activity {
 					@Override
 					public final void run() {
 						MainActivity.sync();
+						MainActivity.wifi.reconnect();
 					}
 					
 				});

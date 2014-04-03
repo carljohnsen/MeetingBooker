@@ -1,5 +1,7 @@
+TODO notification bar element
+
 Version 1.2:
-- Added notification bar element
+- Added WifiManager.reconnect() in the timer in MainActivity
 
 Version 1.1:
 - Fixed cached date issue. 
