@@ -1,5 +1,17 @@
 TODO notification bar element
 
+Version 1.3:
+- WifiManager.reconnect() made no difference, so it is removed
+- Remade the way TimeWindow's are found, so that instead of finding windows from current 
+	time and forth, it finds TimeWindow's from the next quarter and forth (ie. from 
+	xx:00, xx:15, xx:30 and xx:45)
+- Changed the way TimeWindow's are found from using java.util.Calendar, to using 
+	android.text.format.Time
+- Added global config file, so instead of manually configuring each tablet, only the global
+	config file needs changing. When it is changed, the tablets pull it down themselves.
+- Changed NewEditActivity.setTimePickers() from using java.util.SimpleDateFormat to using
+	android.text.format.Time
+
 Version 1.2:
 - Added WifiManager.reconnect() in the timer in MainActivity
 

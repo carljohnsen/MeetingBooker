@@ -1,10 +1,7 @@
 package com.desc.meetingbooker;
 
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import android.os.Bundle;
 import android.annotation.SuppressLint;
@@ -293,24 +290,35 @@ public final class NewEditActivity extends Activity {
 		Log.d(TAG, "called findTimeWindow()");
 		// Make a new ArrayList and find current time
 		ArrayList<TimeWindow> returnList = new ArrayList<TimeWindow>();
-		final long time = new Date().getTime();
-
-		// Find next midnight
-		final Calendar calendar = new GregorianCalendar();
-		calendar.set(Calendar.HOUR_OF_DAY, 23);
-		calendar.set(Calendar.MINUTE, 59);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		final long midnight = calendar.getTimeInMillis();
+		
+		// Set the time to now
+		Time time = new Time();
+		time.setToNow();
+		
+		// Set the time to the next quarter
+		if (time.minute > 45) {
+			time.set(0, 0, time.hour+1, time.monthDay, time.month, time.year);
+		} else if (time.minute > 30) {
+			time.set(0, 45, time.hour, time.monthDay, time.month, time.year);
+		} else if (time.minute > 15) {
+			time.set(0, 30, time.hour, time.monthDay, time.month, time.year);
+		} else {
+			time.set(0, 15, time.hour, time.monthDay, time.month, time.year);
+		}
+		final long start = time.toMillis(false);
+		
+		// Set the time 1 minute before midnight
+		time.set(0, 0, 23, time.monthDay, time.month, time.year);
+		final long midnight = time.toMillis(false);
 
 		if (MainActivity.current == null) {
 			// Find windows from now and the rest of the day
-			returnList = findHelp(returnList, time, midnight);
+			returnList = findHelp(returnList, start, midnight);
 			return returnList;
 		}
 		if (!MainActivity.current.isUnderway) {
 			// Find windows from now until current starts
-			returnList = findHelp(returnList, time,
+			returnList = findHelp(returnList, start,
 					MainActivity.current.startTime);
 		}
 		if (MainActivity.eventlist.isEmpty()) {
@@ -417,21 +425,18 @@ public final class NewEditActivity extends Activity {
 	@SuppressLint("SimpleDateFormat")
 	private final void setTimePickers(final TimeWindow window) {
 		Log.d(TAG, "called setTimePickers()");
+		
+		Time time = new Time();
+		
 		// Set the start TimePicker to the windows start time
-		int hour = Integer.parseInt(new SimpleDateFormat("HH")
-				.format(new Date(window.start)));
-		int minute = Integer.parseInt(new SimpleDateFormat("mm")
-				.format(new Date(window.start)));
-		timeStart.setCurrentHour(hour);
-		timeStart.setCurrentMinute(minute);
+		time.set(window.start);
+		timeStart.setCurrentHour(time.hour);
+		timeStart.setCurrentMinute(time.minute);
 
 		// Set the end TimePicker to the windows end time
-		hour = Integer.parseInt(new SimpleDateFormat("HH").format(new Date(
-				window.end)));
-		minute = Integer.parseInt(new SimpleDateFormat("mm").format(new Date(
-				window.end)));
-		timeEnd.setCurrentHour(hour);
-		timeEnd.setCurrentMinute(minute);
+		time.set(window.end);
+		timeEnd.setCurrentHour(time.hour);
+		timeEnd.setCurrentMinute(time.minute);
 
 	}
 
