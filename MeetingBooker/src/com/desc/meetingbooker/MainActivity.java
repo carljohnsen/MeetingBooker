@@ -1,7 +1,6 @@
 package com.desc.meetingbooker;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -189,7 +189,9 @@ public final class MainActivity extends Activity {
 	 */
 	private final static void currentIsDelayed() {
 		// Check if it has gone overtime, and has'nt been extended
-		final Long currentTime = new Date().getTime() + 10000;
+		Time time = new Time();
+		time.setToNow();
+		final Long currentTime = time.toMillis(false) + 10000;
 		if (current != null && 
 			!current.isUnderway && 
 			!isDelayed && 
@@ -227,7 +229,9 @@ public final class MainActivity extends Activity {
 		
 		// Checks whether there is a current event, and whether it already have 
 		// been extended, and whether it will go overtime in the next minute
-		final Long currentTime = new Date().getTime() + 60000;
+		Time time = new Time();
+		time.setToNow();
+		final Long currentTime = time.toMillis(false) + 60000;
 		if (current != null && !isOverTime && current.endTime <= currentTime) {
 			Log.d(TAG, "current have gone over time; extend end");
 			isOverTime = true;

@@ -27,7 +27,7 @@ import android.widget.AdapterView.OnItemClickListener;
  * The Activity used when an event is being edited
  * 
  * @author Carl Johnsen
- * @version 1.1
+ * @version 1.3
  * @since 14-05-2013
  */
 public final class NewEditActivity extends Activity {

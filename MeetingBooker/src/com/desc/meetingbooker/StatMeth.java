@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.text.Format;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -21,15 +21,14 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
-import android.text.format.DateFormat;
 import android.text.format.Time;
 import android.util.Log;
 
 /**
  * A Class that holds all the static methods
  * 
- * @author carljohnsen
- * @version 1.1
+ * @author Carl Johnsen
+ * @version 1.3
  * @since 24-06-2013
  */
 public final class StatMeth {
@@ -44,6 +43,7 @@ public final class StatMeth {
 	private static Cursor cursor;
 	private static ArrayList<Setting> settings;
 	private static String calendarId; 
+	private static long configTimestamp;
 
 	
 
@@ -314,6 +314,34 @@ public final class StatMeth {
 		}
 		return true;
 	}
+	
+	/**
+	 * Reads the global config times timestamp
+	 * 
+	 * @return true, if the global config file is newer than the current
+	 */
+	public final static boolean isGlobalConfigNewer() {
+		Log.d(TAG, "Called isGlobalConfigNewer()");
+		try {
+			// Define and open the url
+			URL url = new URL("http://www.fishohoy.dk/config.stm");
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(url.openStream()));
+			
+			// Read one line
+			String line = in.readLine();
+			
+			// Close the stream
+			in.close();
+			
+			// Parse the read line, and return
+			long timestamp = Long.parseLong(line);
+			return timestamp > configTimestamp;
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+		return false;
+	}
 
 	/**
 	 * Checks whether or not there is free time to extend the end time of a
@@ -485,9 +513,6 @@ public final class StatMeth {
 				COLUMNS, query, selectionArgs, null);
 		cursor.moveToFirst();
 
-		// Getting the used DateFormat from the Android device
-		final Format tf = DateFormat.getTimeFormat(context);
-
 		Long start = 0L;
 
 		// Writing all the events to the eventlist
@@ -502,7 +527,6 @@ public final class StatMeth {
 					cursor.getLong(1), 	 // End Time
 					cursor.getString(2), // Title
 					cursor.getString(3), // Description
-					tf, 				 // TimeFormat
 					isUnderway, 		 // Is underway
 					cursor.getLong(4), 	 // Event ID
 					cursor.getString(5)  // Organizer
@@ -530,6 +554,11 @@ public final class StatMeth {
 	 */
 	public final static ArrayList<Setting> readConfig(final Context context) {
 		Log.d(TAG, "called readConfig()");
+		
+		if (isGlobalConfigNewer()) {
+			return readGlobalConfig(context);
+		}
+		
 		// Make a new ArrayList
 		settings = new ArrayList<Setting>();
 
@@ -556,6 +585,40 @@ public final class StatMeth {
 		} catch (IOException e) {
 			Log.e(TAG, e.getMessage());
 		}
+		return settings;
+	}
+	
+	/**
+	 * Reads the global config file from http
+	 * 
+	 * @param context The context of the application
+	 * @return A HashMap of (command, value) pairs
+	 */
+	public final static ArrayList<Setting> readGlobalConfig(final Context context) {
+		Log.d(TAG, "calledReadGlobalConfig()");
+		
+		// Make a new ArrayList
+		settings = new ArrayList<Setting>();
+		try {
+			// Define the url and open the stream
+			URL url = new URL("http://www.fishohoy.dk/config.cfg");
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(url.openStream()));
+			
+			// Read lines, and interpret them
+			String line;
+			while ((line = in.readLine()) != null) {
+				interpretSetting(line, context);
+			}
+			
+			// Close the stream
+			in.close();
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+		
+		// Write the newly read config file
+		writeConfig(settings, context);
 		return settings;
 	}
 

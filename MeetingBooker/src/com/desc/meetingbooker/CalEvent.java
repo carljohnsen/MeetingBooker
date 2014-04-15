@@ -1,18 +1,17 @@
 package com.desc.meetingbooker;
 
-import java.text.Format;
+import android.text.format.Time;
 
 /**
  * A Class that resembles an event in the calendar
  * 
  * @author Carl Johnsen
- * @version 1.0
+ * @version 1.3
  * @since 04-04-2013
  */
 public final class CalEvent {
 
 	protected 			boolean 	isUnderway;
-	protected 			Format 		dateFormat;
 	protected 			long 		id;
 	protected 	final 	Long 		endTime;
 	protected 	final 	Long 		startTime;
@@ -35,8 +34,7 @@ public final class CalEvent {
 	public CalEvent(final long startTime, 
 			final long 	endTime, 
 			final String 	title,
-			final String 	description, 
-			final Format 	timeFormat, 
+			final String 	description,
 			final boolean isUnderway,
 			final long 	id, 
 			final String 	organizer) {
@@ -51,7 +49,6 @@ public final class CalEvent {
 		this.startTime 		= startTime;
 		this.endTime 		= endTime;
 		this.title 			= title;
-		this.dateFormat 	= timeFormat;
 		this.isUnderway 	= isUnderway;
 		this.id 			= id;
 		this.organizer 		= organizer;
@@ -113,7 +110,9 @@ public final class CalEvent {
 	 * @return A String representation of the events end time
 	 */
 	public final String getEndTime() {
-		return dateFormat.format(endTime);
+		Time time = new Time();
+		time.set(endTime);
+		return time.format("HH:mm");
 	}
 
 	/**
@@ -122,7 +121,9 @@ public final class CalEvent {
 	 * @return A String representation of the events start time
 	 */
 	public final String getStartTime() {
-		return dateFormat.format(startTime);
+		Time time = new Time();
+		time.set(startTime);
+		return time.format("HH:mm");
 	}
 
 	/**
@@ -140,9 +141,10 @@ public final class CalEvent {
 	 * @return A String representation of the event
 	 */
 	public final String toString() {
+		Time time = new Time();
 		return "Title : "    	+ title				  			+ "\n" + 
-			"Start : "      	+ dateFormat.format(startTime) 	+ "\n" + 
-			"End : "         	+ dateFormat.format(endTime)   	+ "\n" + 
+			"Start : "      	+ time.format("HH:mm") 			+ "\n" + 
+			"End : "         	+ time.format("HH:mm")   		+ "\n" + 
 			"Description : " 	+ description 			  		+ "\n" + 
 			"isUnderway : "  	+ isUnderway 			  		+ "\n" + 
 			"Organizer : "   	+ organizer;

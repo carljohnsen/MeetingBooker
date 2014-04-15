@@ -11,6 +11,8 @@ Version 1.3:
 	config file needs changing. When it is changed, the tablets pull it down themselves.
 - Changed NewEditActivity.setTimePickers() from using java.util.SimpleDateFormat to using
 	android.text.format.Time
+- Removed references to java.util.Date in MainActivity
+- Removed the java.text.Format from CalEvent, and calls to CalEvents constructor
 
 Version 1.2:
 - Added WifiManager.reconnect() in the timer in MainActivity
