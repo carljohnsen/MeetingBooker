@@ -9,11 +9,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.app.NotificationCompat;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -96,8 +99,9 @@ public final class MainActivity extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
-		// Set content view
+		// Set content view and get window
 		setContentView(R.layout.activity_main);
+		window = getWindow();
 
 		// Get the context
 		context = getApplicationContext();
@@ -166,6 +170,9 @@ public final class MainActivity extends Activity {
 		
 		// Initialize the touch timer
 		touchTimer = new Timer();
+		
+		// Show the notification
+		makeNotification();
 		
 		Log.d(TAG, "onCreate() done");
 	}
@@ -358,6 +365,30 @@ public final class MainActivity extends Activity {
 		final Intent intent = new Intent(this, NewEditActivity.class);
 		intent.putExtra("type", 0);
 		startActivityForResult(intent, 1);
+	}
+	
+	/**
+	 * Builds and shows the notification that the application is running.
+	 * This is used, so that the application can be accessed from the 
+	 * notification bar
+	 */
+	private final void makeNotification() {
+		Log.d(TAG, "Called makeNotification()");
+		NotificationCompat.Builder builder = 
+			new NotificationCompat.Builder(this)
+			.setSmallIcon(R.drawable.ic_launcher)
+			.setContentTitle("Notification title!")
+			.setContentText("Notification text!");
+		Intent resultIntent = new Intent(this, MainActivity.class);
+		PendingIntent resultPending = 
+			PendingIntent.getActivity(
+				this, 0, resultIntent, 
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		builder.setContentIntent(resultPending);
+		int notificationId = 001;
+		NotificationManager notifyMgr = 
+			(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		notifyMgr.notify(notificationId, builder.build());
 	}
 	
 	/**

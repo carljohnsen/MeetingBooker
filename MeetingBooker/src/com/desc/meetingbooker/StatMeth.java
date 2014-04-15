@@ -43,7 +43,7 @@ public final class StatMeth {
 	private static Cursor cursor;
 	private static ArrayList<Setting> settings;
 	private static String calendarId; 
-	private static long configTimestamp;
+	private static long configTimestamp = 0L;
 
 	
 
@@ -338,7 +338,7 @@ public final class StatMeth {
 			long timestamp = Long.parseLong(line);
 			return timestamp > configTimestamp;
 		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, "ERR! " + e.getMessage());
 		}
 		return false;
 	}
