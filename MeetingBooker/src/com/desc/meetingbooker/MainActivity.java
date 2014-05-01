@@ -37,7 +37,7 @@ import android.widget.TextView;
  * links to the other activities
  * 
  * @author Carl Johnsen
- * @version 1.3
+ * @version 1.4
  * @since 04-04-2013
  */
 public final class MainActivity extends Activity {
@@ -80,13 +80,15 @@ public final class MainActivity extends Activity {
 
 	// All of the config fields
 	protected static boolean canEnd;
-	protected static boolean endDelete;
-	protected static int 	 	endExtend;
-	protected static boolean extendEnd;
-	protected static boolean extendStart;
+	protected static boolean canEndDelete;
+	protected static boolean canDelayDelete;
+	protected static boolean canExtendEnd;
+	protected static int 	 	endExtendAmount;
+	protected static boolean canExtendStart;
+	protected static int 	 	startExtendAmount;
 	protected static String  	roomName;
-	protected static int 	 	startExtend;
-
+	
+	
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -206,9 +208,9 @@ public final class MainActivity extends Activity {
 			
 			Log.d(TAG, "current is delayed; extend start");
 			isDelayed = true;
-			if ((current.endTime - current.startTime) > (startExtend * 60000)) {
+			if ((current.endTime - current.startTime) > (startExtendAmount * 60000)) {
 				StatMeth.updateStart(current, context, current.startTime
-						+ (startExtend * 60000));
+						+ (startExtendAmount * 60000));
 			} else {
 				StatMeth.updateStart(current, context, current.endTime - 60000);
 			}
@@ -221,7 +223,12 @@ public final class MainActivity extends Activity {
 			isDelayed && 
 			current.startTime <= currentTime) {
 			Log.d(TAG, "current is still delayed; delete current");
-			StatMeth.delete(current, context);
+			if (canDelayDelete) {
+				StatMeth.delete(current, context);
+			} else {
+				current.description = current.description + " - not started";
+				StatMeth.update(current, context);
+			}
 		}
 	}
 
@@ -306,7 +313,7 @@ public final class MainActivity extends Activity {
 	 */
 	public final void endMeeting(final View view) {
 		Log.d(TAG, "pressed EndMeeting button");
-		if (endDelete) {
+		if (canEndDelete) {
 			StatMeth.updateEnd(current, context);
 		} else {
 			current.description = current.description + " - ended";
@@ -325,12 +332,12 @@ public final class MainActivity extends Activity {
 		// Check if there is a next event
 		if (!eventlist.isEmpty()) {
 			final long interval = eventlist.get(0).startTime - current.endTime;
-			if (interval <= (60000 * endExtend)) {
+			if (interval <= (60000 * endExtendAmount)) {
 				return eventlist.get(0).startTime;
 			}
 		}
 		// If the eventlist is empty, give endExtend minutes
-		return current.endTime + (60000 * endExtend);
+		return current.endTime + (60000 * endExtendAmount);
 	}
 	
 	/**
@@ -432,6 +439,9 @@ public final class MainActivity extends Activity {
 	 */
 	public final void startNextMeeting(final View view) {
 		Log.d(TAG, "pressed NextMeeting button");
+		if (current.description.endsWith("- not started")) {
+			current.description = current.description.substring(0, current.description.length()-13);
+		}
 		StatMeth.updateStart(current, context);
 	}
 
@@ -474,13 +484,13 @@ public final class MainActivity extends Activity {
 		}
 
 		// If the config allows it, check if current have gone over its end time
-		if (extendEnd) {
+		if (canExtendEnd) {
 			currentGoneOvertime();
 		}
 		
 		// If the config allows it, check if current is delayed, and havn't been
 		// started
-		if (extendStart) {
+		if (canExtendStart) {
 			currentIsDelayed();
 		}
 
@@ -518,10 +528,11 @@ public final class MainActivity extends Activity {
 			}
 		}
 
-		// Check if the end meeting has been checked
-		// if it is, and it has ended, it changes background to yellow
-		if (!endDelete && current != null
-				&& current.description.endsWith("ended")) {
+		// Check if the meeting has been ended, or hasnt been started yet.
+		// If either matches, it turns the background to yellow
+		if (!canEndDelete && current != null && (
+				current.description.endsWith("ended") || 
+				current.description.endsWith("not started"))) {
 			mainView.setBackgroundColor(Color.YELLOW);
 			currentAvail.setText(R.string.text_available);
 			currentUpcom.setText(R.string.text_last_meet);

@@ -28,7 +28,7 @@ import android.util.Log;
  * A Class that holds all the static methods
  * 
  * @author Carl Johnsen
- * @version 1.3
+ * @version 1.4
  * @since 24-06-2013
  */
 public final class StatMeth {
@@ -194,25 +194,25 @@ public final class StatMeth {
 		// Make the new Setting, and change it according to its information
 		final Setting setting;
 		if (command.equals("extendendtime")) {
-			MainActivity.extendEnd = Boolean.parseBoolean(value);
+			MainActivity.canExtendEnd = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean", "Extend end time");
 			settings.add(setting);
 			return;
 		}
 		if (command.equals("endtime")) {
-			MainActivity.endExtend = Integer.parseInt(value);
+			MainActivity.endExtendAmount = Integer.parseInt(value);
 			setting = new Setting(command, value, "int", "Minutes to extend by");
 			settings.add(setting);
 			return;
 		}
 		if (command.equals("extendstarttime")) {
-			MainActivity.extendStart = Boolean.parseBoolean(value);
+			MainActivity.canExtendStart = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean", "Extend start time");
 			settings.add(setting);
 			return;
 		}
 		if (command.equals("starttime")) {
-			MainActivity.startExtend = Integer.parseInt(value);
+			MainActivity.startExtendAmount = Integer.parseInt(value);
 			setting = new Setting(command, value, "int",
 					"Minutes to extend with");
 			settings.add(setting);
@@ -233,7 +233,7 @@ public final class StatMeth {
 			return;
 		}
 		if (command.equals("enddelete")) {
-			MainActivity.endDelete = Boolean.parseBoolean(value);
+			MainActivity.canEndDelete = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean", "End delete");
 			settings.add(setting);
 			return;
@@ -254,6 +254,12 @@ public final class StatMeth {
 		if (command.equals("calendarid")) {
 			StatMeth.calendarId = value;
 			setting = new Setting(command, value, "hashmap", "Calendar ID : " + getCalendarName(context));
+			settings.add(setting);
+			return;
+		}
+		if (command.equals("delaydelete")) {
+			MainActivity.canDelayDelete = Boolean.parseBoolean(value);
+			setting = new Setting(command, value, "boolean", "Delay delete");
 			settings.add(setting);
 			return;
 		}
@@ -445,6 +451,10 @@ public final class StatMeth {
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "calendarname " + getCalendarName(context);
+			interpretSetting(line, context);
+			line += "\n";
+			outputStream.write(line, 0, line.length());
+			line = "delaydelete false";
 			interpretSetting(line, context);
 			line += "\n";
 			outputStream.write(line, 0, line.length());

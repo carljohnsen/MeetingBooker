@@ -1,3 +1,11 @@
+Version 1.4:
+- Instead of meetings being deleted as a result of delay (ie. no one has pressed the start) 
+	it now appends "not started" at the end of the meeting description, and turns the background
+	to yellow. This is done with the new setting MainActivity.canDelayDelete
+- Changed some of the variable names of some of the settings, to make them more self explanatory
+- NOTE: The application will not write "- not started" unless the setting canExtendStart is set 
+	to true.
+
 Version 1.3:
 - WifiManager.reconnect() made no difference, so it is removed
 - Remade the way TimeWindow's are found, so that instead of finding windows from current 
