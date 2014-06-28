@@ -28,7 +28,7 @@ import android.widget.TextView;
  * the config file.
  * 
  * @author Carl Johnsen
- * @version 1.0
+ * @version 1.5
  * @since 27-05-2013
  */
 public final class SettingsActivity extends Activity {
@@ -199,6 +199,7 @@ public final class SettingsActivity extends Activity {
 		Log.d(TAG, "pressed Save button");
 		config = readList();
 		StatMeth.writeConfig(config, getApplicationContext());
+		StatMeth.remoteLog("Updated configuration");
 		finish();
 	}
 
@@ -209,6 +210,7 @@ public final class SettingsActivity extends Activity {
 	 * @author Carl Johnsen
 	 * @version 1.0
 	 * @since 28-01-2014 
+	 * TODO lav så den automatisk opdatere kalender navnet!
 	 */
 	public final static class CustomListFragment extends DialogFragment {
 		private static String TAG = CustomListFragment.class.getSimpleName();
@@ -424,10 +426,11 @@ public final class SettingsActivity extends Activity {
 									// are the same, and if the two new typed
 									// are the same
 									if (new1.equals(new2)
-											&& old.equals(storedpw)) {
+											&& StatMeth.md5(old).equals(storedpw)) {
 										Log.d(TAG, "new password: all ok");
 										error = 0;
-										StatMeth.savePassword(new1, context);
+										StatMeth.savePassword(StatMeth.md5(new1), context);
+										StatMeth.remoteLog("Changed password");
 										return;
 									}
 
@@ -444,7 +447,7 @@ public final class SettingsActivity extends Activity {
 
 									// If the typed old differs from the stored
 									// old
-									if (!old.equals(storedpw)) {
+									if (!StatMeth.md5(old).equals(storedpw)) {
 										Log.d(TAG, "new password: old was"
 												+ " wrong");
 										error = 2;

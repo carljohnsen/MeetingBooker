@@ -37,7 +37,7 @@ import android.widget.TextView;
  * links to the other activities
  * 
  * @author Carl Johnsen
- * @version 1.4
+ * @version 1.5
  * @since 04-04-2013
  */
 public final class MainActivity extends Activity {
@@ -88,6 +88,9 @@ public final class MainActivity extends Activity {
 	protected static int 	 	startExtendAmount;
 	protected static String  	roomName;
 	
+	// Constant values
+	private final static String ended = "- ended";
+	private final static String notStarted = "- not started";
 	
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
@@ -170,6 +173,16 @@ public final class MainActivity extends Activity {
 		};
 		timer.scheduleAtFixedRate(timerTask, 10, 5000);
 		
+		// Skriv til logserveren!!!
+		Timer logtimer = new Timer();
+		TimerTask logtask = new TimerTask() {
+			@Override
+			public final void run() {
+				StatMeth.remoteLog("I am still alive!");
+			}
+		};
+		logtimer.scheduleAtFixedRate(logtask, 10, 3600000);
+		
 		// Initialize the touch timer
 		touchTimer = new Timer();
 		
@@ -226,7 +239,7 @@ public final class MainActivity extends Activity {
 			if (canDelayDelete) {
 				StatMeth.delete(current, context);
 			} else {
-				current.description = current.description + " - not started";
+				current.description = current.description + notStarted;
 				StatMeth.update(current, context);
 			}
 		}
@@ -237,7 +250,7 @@ public final class MainActivity extends Activity {
 	 */
 	private final static void currentGoneOvertime() {
 		// Check if the event have ended
-		if (current != null && current.description.endsWith("ended")) {
+		if (current != null && current.description.endsWith(ended)) {
 			return;
 		}
 		
@@ -316,10 +329,11 @@ public final class MainActivity extends Activity {
 		if (canEndDelete) {
 			StatMeth.updateEnd(current, context);
 		} else {
-			current.description = current.description + " - ended";
+			current.description = current.description + ended;
 			StatMeth.update(current, context);
 			sync();
 		}
+		StatMeth.remoteLog("Ended meeting: " + current.description);
 	}
 
 	/**
@@ -439,10 +453,12 @@ public final class MainActivity extends Activity {
 	 */
 	public final void startNextMeeting(final View view) {
 		Log.d(TAG, "pressed NextMeeting button");
-		if (current.description.endsWith("- not started")) {
-			current.description = current.description.substring(0, current.description.length()-13);
+		if (current.description.endsWith(notStarted)) {
+			current.description = current.description.substring(0, 
+					current.description.length() - notStarted.length());
 		}
 		StatMeth.updateStart(current, context);
+		StatMeth.remoteLog("Started meeting: " + current.title);
 	}
 
 	/**
@@ -531,8 +547,8 @@ public final class MainActivity extends Activity {
 		// Check if the meeting has been ended, or hasnt been started yet.
 		// If either matches, it turns the background to yellow
 		if (!canEndDelete && current != null && (
-				current.description.endsWith("ended") || 
-				current.description.endsWith("not started"))) {
+				current.description.endsWith(ended) || 
+				current.description.endsWith(notStarted))) {
 			mainView.setBackgroundColor(Color.YELLOW);
 			currentAvail.setText(R.string.text_available);
 			currentUpcom.setText(R.string.text_last_meet);
@@ -623,7 +639,7 @@ public final class MainActivity extends Activity {
 									// SettingsActivity.
 									// If they weren't, Start this fragment
 									// again, and notify the user
-									if (typedpw.equals(storedpw)) {
+									if (StatMeth.md5(typedpw).equals(storedpw)) {
 										wasWrong = false;
 										final Intent intent = new Intent(
 												MainActivity.context,

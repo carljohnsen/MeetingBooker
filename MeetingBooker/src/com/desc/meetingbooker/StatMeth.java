@@ -7,7 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -28,7 +32,7 @@ import android.util.Log;
  * A Class that holds all the static methods
  * 
  * @author Carl Johnsen
- * @version 1.4
+ * @version 1.5
  * @since 24-06-2013
  */
 public final class StatMeth {
@@ -43,9 +47,8 @@ public final class StatMeth {
 	private static Cursor cursor;
 	private static ArrayList<Setting> settings;
 	private static String calendarId; 
-	private static long configTimestamp = 0L;
-
-	
+	//private static long configTimestamp = 0L;
+	protected static String logServer = null;
 
 	/**
 	 * "Deletes" the given event. The method for deletion in this application,
@@ -263,9 +266,13 @@ public final class StatMeth {
 			settings.add(setting);
 			return;
 		}
+		if (command.equals("remotelog")) {
+			StatMeth.logServer = value;
+			setting = new Setting(command, value, "String", "Remote logging server");
+			settings.add(setting);
+			return;
+		}
 	}
-
-	
 	
 	/**
 	 * Checks if time is < 08:00 or > 20:00
@@ -327,10 +334,11 @@ public final class StatMeth {
 	 * @return true, if the global config file is newer than the current
 	 */
 	public final static boolean isGlobalConfigNewer() {
-		Log.d(TAG, "Called isGlobalConfigNewer()");
+		return false;
+		/*Log.d(TAG, "Called isGlobalConfigNewer()");
 		try {
 			// Define and open the url
-			URL url = new URL("http://www.fishohoy.dk/config.stm");
+			URL url = new URL("");
 			BufferedReader in = new BufferedReader(
 					new InputStreamReader(url.openStream()));
 			
@@ -346,7 +354,7 @@ public final class StatMeth {
 		} catch (Exception e) {
 			Log.e(TAG, "ERR! " + e.getMessage());
 		}
-		return false;
+		return false;*/
 	}
 
 	/**
@@ -458,13 +466,43 @@ public final class StatMeth {
 			interpretSetting(line, context);
 			line += "\n";
 			outputStream.write(line, 0, line.length());
-			
+			line = "remotelog not_set";
+			interpretSetting(line, context);
+			line += "\n";
+			outputStream.write(line, 0, line.length());
 			
 			// Close the file
 			outputStream.close();
 			out.close();
 		} catch (IOException e) {
 			Log.e(TAG, e.getMessage());
+		}
+	}
+	
+	/**
+	 * Hashes the given String with the md5 hashing algorithm
+	 * 
+	 * @param data The data that should be hashed
+	 * @return The hashed data
+	 */
+	public final static String md5(final String data) {
+		try {
+			// Create the hash
+			MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+			digest.update(data.getBytes());
+			byte[] message = digest.digest();
+			
+			// Create the String
+			StringBuffer str = new StringBuffer();
+			for (int i = 0; i < message.length; i++) {
+				str.append(Integer.toHexString(0xFF & message[i]));
+			}
+			
+			// return result
+			return str.toString();
+		} catch (NoSuchAlgorithmException e) {
+			Log.e(TAG, "No such algorithm: " + e.getMessage());
+			return null;
 		}
 	}
 
@@ -476,7 +514,7 @@ public final class StatMeth {
 	 */
 	public final static String newPassword(final Context context) {
 		Log.d(TAG, "called newPassword()");
-		final String stdPwd = "a";
+		final String stdPwd = StatMeth.md5("a");
 		try {
 			// Open the file
 			final FileOutputStream out = context.openFileOutput("pwd",
@@ -611,7 +649,7 @@ public final class StatMeth {
 		settings = new ArrayList<Setting>();
 		try {
 			// Define the url and open the stream
-			URL url = new URL("http://www.fishohoy.dk/config.cfg");
+			URL url = new URL("");
 			BufferedReader in = new BufferedReader(
 					new InputStreamReader(url.openStream()));
 			
@@ -630,6 +668,42 @@ public final class StatMeth {
 		// Write the newly read config file
 		writeConfig(settings, context);
 		return settings;
+	}
+	
+	/**
+	 * Writes message to remote logging server
+	 * Assumes that server does not require any other information, than the message
+	 * Executes the writing process in a new thread, so that it ensured not to run on the UI thread
+	 * 
+	 * @param message The message to be written
+	 */
+	public final static void remoteLog(final String message) {
+		// If the server have not been defined, dont try to connect
+		if (StatMeth.logServer == null || StatMeth.logServer.equals("not_set")) {
+			Log.e(TAG, "Remote logging server not set");
+			return;
+		}
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					// Create the socket, and define the in and out streams
+					Socket socket = new Socket(StatMeth.logServer, 5000);
+					PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+					BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					
+					out.write(message + "</br>");
+					out.flush();
+					Log.d(TAG, "Wrote to remote logging server");
+					
+					// Close the streams and the socket
+					in.close();
+					out.close();
+					socket.close();
+				} catch (Exception e) {
+					Log.e(TAG, "Error writing to logging server: " + e.getMessage());
+				}
+			}
+		}).start();
 	}
 
 	/**
@@ -780,6 +854,7 @@ public final class StatMeth {
 		
 		// Set the new start time to one second ago
 		cv.put(Events.DTSTART, new Date().getTime() - 1000);
+		cv.put(Events.DESCRIPTION, event.description);
 		uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.id);
 		
 		// Update, and call sync()

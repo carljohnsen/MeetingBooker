@@ -182,6 +182,7 @@ public final class NewEditActivity extends Activity {
 		// If not, notify the user
 		if (StatMeth.isFree(event, context)) {
 			StatMeth.setNewEvent(event, context);
+			StatMeth.remoteLog("Added new meeting: " + event.title);
 			finish();
 		} else {
 			final AlertDialog dialog = new AlertDialog.Builder(this).create();
@@ -233,6 +234,7 @@ public final class NewEditActivity extends Activity {
 						Log.d(TAG, "pressed OK button");
 						StatMeth.delete(event, context);
 						MainActivity.sync();
+						StatMeth.remoteLog("Deleted event: " + event.title);
 						finish();
 					}
 
@@ -497,6 +499,7 @@ public final class NewEditActivity extends Activity {
 		// If not, notify the user
 		if (StatMeth.isUpdatable(newEvent, context)) {
 			StatMeth.update(newEvent, context);
+			StatMeth.remoteLog("Updated event: " + newEvent.title);
 			finish();
 		} else {
 			final AlertDialog dialog = new AlertDialog.Builder(this).create();

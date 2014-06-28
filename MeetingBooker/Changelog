@@ -1,3 +1,15 @@
+Version 1.5:
+- Added remote logging:
+	- As a timer in MainActivity in onCreate(), and as remote logs in endMeeting() 
+		and startNextMeeting()
+	- As a function in StatMeth: remoteLog()
+	- As remote logs from NewEditActivity in add(), update() and delete()
+	- As remote logs from SettingsActivity in PasswordFragment (when updating password) and save()
+- The adress for the remote logging server, is added as an setting (Default value is "not_set")
+- Changed from storing configuration password as cleartext, to storing as a md5 hash in 
+	StatMeth.md5() Chose md5, because the password is not crucial, as it is only used for 
+	the application configuration.
+
 Version 1.4:
 - Instead of meetings being deleted as a result of delay (ie. no one has pressed the start) 
 	it now appends "not started" at the end of the meeting description, and turns the background
