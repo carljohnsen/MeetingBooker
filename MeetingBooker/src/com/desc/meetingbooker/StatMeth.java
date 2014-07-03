@@ -49,6 +49,7 @@ public final class StatMeth {
 	private static String calendarId; 
 	//private static long configTimestamp = 0L;
 	protected static String logServer = null;
+	protected static Context context;
 
 	/**
 	 * "Deletes" the given event. The method for deletion in this application,
@@ -585,7 +586,7 @@ public final class StatMeth {
 		}
 		cursor.close();
 
-		// Sorts eventlist by start time
+		// Sorts the event list by start time
 		Collections.sort(eventlist, new CustomComparator());
 
 		Log.d(TAG, "readCalendar() is done");
@@ -594,13 +595,13 @@ public final class StatMeth {
 	}
 
 	/**
-	 * Reads the config file, and then it interprets it
+	 * Reads the configuration file, and then it interprets it
 	 * 
 	 * @param context
 	 *            The context of the application
 	 * @return A HashMap of (command, value) pairs
 	 */
-	public final static ArrayList<Setting> readConfig(final Context context) {
+	public final static ArrayList<Setting> readConfig() {
 		Log.d(TAG, "called readConfig()");
 		
 		if (isGlobalConfigNewer()) {
@@ -637,7 +638,7 @@ public final class StatMeth {
 	}
 	
 	/**
-	 * Reads the global config file from http
+	 * Reads the global configuration file from HTTP
 	 * 
 	 * @param context The context of the application
 	 * @return A HashMap of (command, value) pairs
@@ -648,7 +649,7 @@ public final class StatMeth {
 		// Make a new ArrayList
 		settings = new ArrayList<Setting>();
 		try {
-			// Define the url and open the stream
+			// Define the URL and open the stream
 			URL url = new URL("");
 			BufferedReader in = new BufferedReader(
 					new InputStreamReader(url.openStream()));
@@ -678,8 +679,8 @@ public final class StatMeth {
 	 * @param message The message to be written
 	 */
 	public final static void remoteLog(final String message) {
-		// If the server have not been defined, dont try to connect
-		if (StatMeth.logServer == null || StatMeth.logServer.equals("not_set")) {
+		// If the server have not been defined, don't try to connect
+		if (logServer == null || logServer.equals("not_set")) {
 			Log.e(TAG, "Remote logging server not set");
 			return;
 		}
@@ -687,7 +688,7 @@ public final class StatMeth {
 			public void run() {
 				try {
 					// Create the socket, and define the in and out streams
-					Socket socket = new Socket(StatMeth.logServer, 5000);
+					Socket socket = new Socket(logServer, 5000);
 					PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 					BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					
@@ -699,8 +700,8 @@ public final class StatMeth {
 					in.close();
 					out.close();
 					socket.close();
-				} catch (Exception e) {
-					Log.e(TAG, "Error writing to logging server: " + e.getMessage());
+				} catch (IOException ioe) {
+					Log.e(TAG, "Error writing to logging server: " + ioe.getMessage());
 				}
 			}
 		}).start();
@@ -916,7 +917,7 @@ public final class StatMeth {
 			Log.e(TAG, e.getMessage());
 		}
 		// Read the to make sure that save went OK
-		readConfig(context);
+		readConfig();
 	}
 
 }

@@ -1,3 +1,7 @@
+Version 1.6:
+- Added ManagementServer, which is a socket server, so that the configuration server, can connect
+	to the application.
+
 Version 1.5:
 - Added remote logging:
 	- As a timer in MainActivity in onCreate(), and as remote logs in endMeeting() 

@@ -56,7 +56,7 @@ public final class SettingsActivity extends Activity {
 
 		// Read the config file
 		context = getApplicationContext();
-		config 	= StatMeth.readConfig(context);
+		config 	= StatMeth.readConfig();
 
 		// Set up the ListView
 		settingList = (ListView) findViewById(R.id.settings_list);

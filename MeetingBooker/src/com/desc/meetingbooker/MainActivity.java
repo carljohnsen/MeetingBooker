@@ -78,7 +78,7 @@ public final class MainActivity extends Activity {
 	// TAG used for logging
 	private static final String TAG = MainActivity.class.getSimpleName();
 
-	// All of the config fields
+	// All of the configuration fields
 	protected static boolean canEnd;
 	protected static boolean canEndDelete;
 	protected static boolean canDelayDelete;
@@ -109,8 +109,8 @@ public final class MainActivity extends Activity {
 		window = getWindow();
 
 		// Get the context
-		context = getApplicationContext();
-		StatMeth.readConfig(context);
+		StatMeth.context = getApplicationContext();
+		StatMeth.readConfig();
 
 		// Cast all the Views
 		blackBox		 	= (TextView)		findViewById(R.id.main_black_box);
