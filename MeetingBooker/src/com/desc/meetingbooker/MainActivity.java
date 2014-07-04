@@ -43,48 +43,48 @@ import android.widget.TextView;
 public final class MainActivity extends Activity {
 	
 	// All of the Views
-	private static TextView 	  blackBox;
-	private static TextView 	  calendarName;
-	private static View 		  currentWrap;
-	private static TextView 	  currentAvail;
-	private static TextView 	  currentDescription;
-	private static TextView 	  currentTime;
-	private static TextView 	  currentOrganizer;
-	private static TextView 	  currentTitle;
-	private static TextView 	  currentUpcom;
+	private static TextView   blackBox;
+	private static TextView   calendarName;
+	private static View 	  currentWrap;
+	private static TextView   currentAvail;
+	private static TextView   currentDescription;
+	private static TextView   currentTime;
+	private static TextView   currentOrganizer;
+	private static TextView   currentTitle;
+	private static TextView   currentUpcom;
 	private static TextView	  endMeetingButton;
-	private static ListView 	  eventListView;
-	private static View 		  mainView;
+	private static ListView	  eventListView;
+	private static View 	  mainView;
 	private static View		  mainWrap;
 	private static TextView	  noUpcoming;
 	private static TextView	  nextMeetingButton;
 	private static TextView	  upcomingMeetings;
 	
 	// All of the data fields
-	private   	static ArrayAdapter<CalEvent> 	adapter;
-	private 	static Context 					context;
-	protected 	static CalEvent 				current = null;
+	private   	static 	ArrayAdapter<CalEvent> 	adapter;
+	private 	static 	Context					context;
+	protected 	static 	CalEvent 				current = null;
 	protected 	static 	ArrayList<CalEvent> 	eventlist = 
 													new ArrayList<CalEvent>();
-	private 	static	boolean				hasPressed = false;
-	private	static 	boolean				isDelayed = false;
-	private	static 	boolean				isOverTime = false;
-	private			Timer					timer;
-	private			TimerTask				timerTask;
-	private			TimerTask				touchTask;
-	private			Timer					touchTimer;
-	private	static	Window 					window;
+	private 	static	boolean					hasPressed = false;
+	private		static 	boolean					isDelayed = false;
+	private		static 	boolean					isOverTime = false;
+	private				Timer					timer;
+	private				TimerTask				timerTask;
+	private				TimerTask				touchTask;
+	private				Timer					touchTimer;
+	private		static	Window 					window;
 	
 	// TAG used for logging
 	private static final String TAG = MainActivity.class.getSimpleName();
 
 	// All of the configuration fields
-	protected static boolean canEnd;
-	protected static boolean canEndDelete;
-	protected static boolean canDelayDelete;
-	protected static boolean canExtendEnd;
+	protected static boolean 	canEnd;
+	protected static boolean 	canEndDelete;
+	protected static boolean 	canDelayDelete;
+	protected static boolean 	canExtendEnd;
 	protected static int 	 	endExtendAmount;
-	protected static boolean canExtendStart;
+	protected static boolean 	canExtendStart;
 	protected static int 	 	startExtendAmount;
 	protected static String  	roomName;
 	
@@ -269,7 +269,7 @@ public final class MainActivity extends Activity {
 	/**
 	 * Shows or hides curNextLay
 	 * 
-	 * @param val Shows curNextLay if true
+	 * @param shouldShow Shows curNextLay if true
 	 */
 	private final static void showCurrent(final boolean shouldShow) {
 		if (shouldShow) {

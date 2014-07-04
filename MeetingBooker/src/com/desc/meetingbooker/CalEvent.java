@@ -6,7 +6,7 @@ import android.text.format.Time;
  * A Class that resembles an event in the calendar
  * 
  * @author Carl Johnsen
- * @version 1.3
+ * @version 1.6
  * @since 04-04-2013
  */
 public final class CalEvent {
@@ -111,7 +111,7 @@ public final class CalEvent {
 	 */
 	public final String getEndTime() {
 		Time time = new Time();
-		time.set(endTime);
+		time.set(this.endTime);
 		return time.format("HH:mm");
 	}
 
@@ -122,7 +122,7 @@ public final class CalEvent {
 	 */
 	public final String getStartTime() {
 		Time time = new Time();
-		time.set(startTime);
+		time.set(this.startTime);
 		return time.format("HH:mm");
 	}
 
@@ -140,14 +140,8 @@ public final class CalEvent {
 	 * 
 	 * @return A String representation of the event
 	 */
-	public final String toString() {
-		Time time = new Time();
-		return "Title : "    	+ title				  			+ "\n" + 
-			"Start : "      	+ time.format("HH:mm") 			+ "\n" + 
-			"End : "         	+ time.format("HH:mm")   		+ "\n" + 
-			"Description : " 	+ description 			  		+ "\n" + 
-			"isUnderway : "  	+ isUnderway 			  		+ "\n" + 
-			"Organizer : "   	+ organizer;
+	public final String toString(String asdf) {
+		return this.title + " - " + this.getTimeWindow().toString();
 	}
 	
 }

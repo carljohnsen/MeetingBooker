@@ -49,6 +49,11 @@ public class ManagementServer {
 			
 			String response = in.readLine();
 			if (!response.equals("OK") || in.readLine().equals("")) {
+				out.write("ERR\r\n");
+				out.flush();
+				in.close();
+				out.close();
+				socket.close();
 				throw new IOException();
 			}
 			
@@ -57,7 +62,7 @@ public class ManagementServer {
 			out.close();
 			socket.close();
 		} catch (IOException ioe) {
-			Log.e(TAG, "IOException in register()!" + ioe.getMessage());
+			Log.e(TAG, "IOException in register()! " + ioe.getMessage());
 		}
 	}
 	
@@ -80,7 +85,7 @@ public class ManagementServer {
 				new ServerThread(socket, in, out).start();
 			}
 		} catch (IOException ioe) {
-			Log.e(TAG, "IOException in serverLoop!" + ioe.getMessage());
+			Log.e(TAG, "IOException in serverLoop! " + ioe.getMessage());
 		}
 	}
 
@@ -165,6 +170,23 @@ public class ManagementServer {
 				}
 				out.write("\r\n");
 				out.flush();
+				return;
+			}
+			if (element.equals("status")) {
+				if (MainActivity.current != null && MainActivity.current.isUnderway) {
+					out.write("OCCUPIED\r\n");
+				} else {
+					out.write("FREE\r\n");
+				}
+				if (MainActivity.current != null) {
+					out.write(MainActivity.current.toString() + "\r\n");
+				}
+				for (CalEvent event : MainActivity.eventlist) {
+					out.write(event.toString() + "\r\n");
+				}
+				out.write("\r\n");
+				out.flush();
+				return;
 			}
 		}
 		
@@ -179,7 +201,7 @@ public class ManagementServer {
 				out.close();
 				socket.close();
 			} catch (IOException ioe) {
-				Log.e(TAG, "IOException in run()!" + ioe.getMessage());
+				Log.e(TAG, "IOException in run()! " + ioe.getMessage());
 			}
 		}
 		

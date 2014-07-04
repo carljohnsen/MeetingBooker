@@ -1,6 +1,9 @@
 Version 1.6:
 - Added ManagementServer, which is a socket server, so that the configuration server, can connect
 	to the application.
+- Added static Context in StatMeth
+- Removed Context as an argument for StatMeth.readConfig()
+- Changed CalEvent.toString(), to give a simpler String (And it wasn't used anywhere else)
 
 Version 1.5:
 - Added remote logging:
@@ -9,13 +12,13 @@ Version 1.5:
 	- As a function in StatMeth: remoteLog()
 	- As remote logs from NewEditActivity in add(), update() and delete()
 	- As remote logs from SettingsActivity in PasswordFragment (when updating password) and save()
-- The adress for the remote logging server, is added as an setting (Default value is "not_set")
-- Changed from storing configuration password as cleartext, to storing as a md5 hash in 
+- The address for the remote logging server, is added as an setting (Default value is "not_set")
+- Changed from storing configuration password as clear text, to storing as a md5 hash in 
 	StatMeth.md5() Chose md5, because the password is not crucial, as it is only used for 
 	the application configuration.
 
 Version 1.4:
-- Instead of meetings being deleted as a result of delay (ie. no one has pressed the start) 
+- Instead of meetings being deleted as a result of delay (i.e. no one has pressed the start) 
 	it now appends "not started" at the end of the meeting description, and turns the background
 	to yellow. This is done with the new setting MainActivity.canDelayDelete
 - Changed some of the variable names of some of the settings, to make them more self explanatory
@@ -25,12 +28,12 @@ Version 1.4:
 Version 1.3:
 - WifiManager.reconnect() made no difference, so it is removed
 - Remade the way TimeWindow's are found, so that instead of finding windows from current 
-	time and forth, it finds TimeWindow's from the next quarter and forth (ie. from 
+	time and forth, it finds TimeWindow's from the next quarter and forth (i.e. from 
 	xx:00, xx:15, xx:30 and xx:45)
 - Changed the way TimeWindow's are found from using java.util.Calendar, to using 
 	android.text.format.Time
-- Added global config file, so instead of manually configuring each tablet, only the global
-	config file needs changing. When it is changed, the tablets pull it down themselves.
+- Added global configuration file, so instead of manually configuring each tablet, only the global
+	configuration file needs changing. When it is changed, the tablets pull it down themselves.
 - Changed NewEditActivity.setTimePickers() from using java.util.SimpleDateFormat to using
 	android.text.format.Time
 - Removed references to java.util.Date in MainActivity
