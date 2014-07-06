@@ -198,7 +198,7 @@ public final class SettingsActivity extends Activity {
 	public final void save(final View view) {
 		Log.d(TAG, "pressed Save button");
 		config = readList();
-		StatMeth.writeConfig(config, getApplicationContext());
+		StatMeth.writeConfig(config);
 		StatMeth.remoteLog("Updated configuration");
 		finish();
 	}
@@ -235,10 +235,10 @@ public final class SettingsActivity extends Activity {
 			final TextView id = (TextView) v
 					.findViewById(R.id.list_picker_id_value);
 			
-			name.setText(StatMeth.getCalendarName(context));
+			name.setText(StatMeth.getCalendarName());
 			id.setText(setting.value);
 			
-			final ArrayList<CalName> list = StatMeth.getCalendarNames(context);
+			final ArrayList<CalName> list = StatMeth.getCalendarNames();
 			CalNameAdapter adapter = new CalNameAdapter(this.getActivity(), R.layout.item_calname, list);
 			listView.setAdapter(adapter);
 			listView.setOnItemClickListener(new OnItemClickListener() {
@@ -420,7 +420,7 @@ public final class SettingsActivity extends Activity {
 									final String new2 = confText.getText()
 											.toString();
 									final String storedpw = StatMeth
-											.getPassword(context);
+											.getPassword();
 
 									// Check if the typed old and the stored old
 									// are the same, and if the two new typed
@@ -429,7 +429,7 @@ public final class SettingsActivity extends Activity {
 											&& StatMeth.md5(old).equals(storedpw)) {
 										Log.d(TAG, "new password: all ok");
 										error = 0;
-										StatMeth.savePassword(StatMeth.md5(new1), context);
+										StatMeth.savePassword(StatMeth.md5(new1));
 										StatMeth.remoteLog("Changed password");
 										return;
 									}

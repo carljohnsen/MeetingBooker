@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -74,6 +75,7 @@ public final class MainActivity extends Activity {
 	private				TimerTask				touchTask;
 	private				Timer					touchTimer;
 	private		static	Window 					window;
+	private 	static WifiManager				wifiManager;
 	
 	// TAG used for logging
 	private static final String TAG = MainActivity.class.getSimpleName();
@@ -97,7 +99,7 @@ public final class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "called onCreate()");
 
-		// Hide Status bar and App title bar (before setContentView())
+		// Hide status bar and application title bar (before setContentView())
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -108,9 +110,16 @@ public final class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		window = getWindow();
 
-		// Get the context
+		/**
+		 * Set the StatMeth context, and read the configuration.
+		 * As this is the first activity that opens, when the application
+		 * starts, StatMeth.context will always be set.
+		 */
 		StatMeth.context = getApplicationContext();
 		StatMeth.readConfig();
+		
+		// Find the wifi manager
+		wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
 
 		// Cast all the Views
 		blackBox		 	= (TextView)		findViewById(R.id.main_black_box);
@@ -222,10 +231,10 @@ public final class MainActivity extends Activity {
 			Log.d(TAG, "current is delayed; extend start");
 			isDelayed = true;
 			if ((current.endTime - current.startTime) > (startExtendAmount * 60000)) {
-				StatMeth.updateStart(current, context, current.startTime
+				StatMeth.updateStart(current, current.startTime
 						+ (startExtendAmount * 60000));
 			} else {
-				StatMeth.updateStart(current, context, current.endTime - 60000);
+				StatMeth.updateStart(current, current.endTime - 60000);
 			}
 			return;
 		}
@@ -237,10 +246,10 @@ public final class MainActivity extends Activity {
 			current.startTime <= currentTime) {
 			Log.d(TAG, "current is still delayed; delete current");
 			if (canDelayDelete) {
-				StatMeth.delete(current, context);
+				StatMeth.delete(current);
 			} else {
 				current.description = current.description + notStarted;
-				StatMeth.update(current, context);
+				StatMeth.update(current);
 			}
 		}
 	}
@@ -262,7 +271,7 @@ public final class MainActivity extends Activity {
 		if (current != null && !isOverTime && current.endTime <= currentTime) {
 			Log.d(TAG, "current have gone over time; extend end");
 			isOverTime = true;
-			StatMeth.updateEnd(current, context, findExtendedTimeWindow());
+			StatMeth.updateEnd(current, findExtendedTimeWindow());
 		}
 	}
 
@@ -299,6 +308,9 @@ public final class MainActivity extends Activity {
 		lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_OFF;
 		window.setAttributes(lp);
 		mainView.setClickable(true);
+		if (wifiManager.isWifiEnabled()) {
+			wifiManager.setWifiEnabled(false);
+		}
 	}
 
 	/**
@@ -327,10 +339,10 @@ public final class MainActivity extends Activity {
 	public final void endMeeting(final View view) {
 		Log.d(TAG, "pressed EndMeeting button");
 		if (canEndDelete) {
-			StatMeth.updateEnd(current, context);
+			StatMeth.updateEnd(current);
 		} else {
 			current.description = current.description + ended;
-			StatMeth.update(current, context);
+			StatMeth.update(current);
 			sync();
 		}
 		StatMeth.remoteLog("Ended meeting: " + current.description);
@@ -359,6 +371,13 @@ public final class MainActivity extends Activity {
 	 */
 	public static final void lighten() {
 		Log.d(TAG, "called lighten()");
+		
+		// If dim() have been called, then wifi have been turned off
+		if (!wifiManager.isWifiEnabled()) {
+			wifiManager.setWifiEnabled(true);
+		}
+		
+		// Check if the screen have been pressed
 		if (hasPressed) {
 			mainWrap.setVisibility(View.VISIBLE);
 			blackBox.setVisibility(RelativeLayout.GONE);
@@ -446,7 +465,7 @@ public final class MainActivity extends Activity {
 	}
 
 	/**
-	 * The method called by the "StartNextMeeting button". Changes the start
+	 * The method called by the "StartNextMeeting button". Changes the	 * @param context The context of the application start
 	 * time of the next event, to the current time.
 	 * 
 	 * @param view The View from the button
@@ -457,7 +476,7 @@ public final class MainActivity extends Activity {
 			current.description = current.description.substring(0, 
 					current.description.length() - notStarted.length());
 		}
-		StatMeth.updateStart(current, context);
+		StatMeth.updateStart(current);
 		StatMeth.remoteLog("Started meeting: " + current.title);
 	}
 
@@ -479,7 +498,7 @@ public final class MainActivity extends Activity {
 
 		// Reads all events from the calendar on the present day into an
 		// ArrayList
-		eventlist = StatMeth.readCalendar(context);
+		eventlist = StatMeth.readCalendar();
 		Log.d(TAG, "found " + eventlist.size() + " events today");
 		
 		// Check if it should display "Upcoming meetings", or inform that there 
@@ -633,7 +652,7 @@ public final class MainActivity extends Activity {
 									final String typedpw = pwtext.getText()
 											.toString();
 									final String storedpw = StatMeth
-											.getPassword(context);
+											.getPassword();
 									
 									// If the two passwords are equal, start
 									// SettingsActivity.

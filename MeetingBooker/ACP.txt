@@ -1,0 +1,133 @@
+Documentation of the Application Control Protocol (ACP), which is a protocol 
+that i have created, so that i could introduce remote management of the 
+application.
+
+Created on: 06-07-2014 (6th July 2014)
+Last Modified: 06-07-2014 (6th July 2014)
+
+Features:
+- The Server can keep track of registered clients
+- The Server can request information from the clients, and send them information
+- The Server can keep track of clients that are still alive
+
+The protocol consists of two parts: a server side, and a client side. The 
+Server side is run from a server, and is the one that keeps track of all the 
+information. The Client side only knows its own data, and is not aware of other 
+clients.
+The client side is described first, as it is this who initiates communication.
+Every line of communication, is seperated by carriage return line feed ('\r\n'),
+so that lines are easily distinquished. A stream of communication is always 
+ended by an empty line containing only '\r\n'. All communication is made in 
+all capital letters, except for names and data.
+
+The Client side:
+The communication starts with the Client registering itself to the Server. It 
+does so by sending 'SERVER' as the first line. Then it sends its name, and then 
+its listening port. The reason it doesn't send its address, is because the 
+Server automatically has this information, when the connection is established.
+Here is an example registration:
+
+SERVER\r\n
+Client01\r\n
+5000\r\n
+\r\n
+
+In this example, the Client registers itself with the name 'Client01', and with 
+listening port 5000.
+The Server then either responds 'OK\r\n\r\n' if everything was in order, or 
+'ERR\r\n\r\n' if there was an error. Upon error, it is up to the Client, to 
+do the registering again.
+
+After registration, the Client only have one more action to peform, and that is 
+remote logging. Remote logging is performed, by initiating a connection to the 
+Server, stating the action, the name of the Client and then writing an log 
+entry. Here is an example, using the same name as before:
+
+LOG\r\n
+Client01\r\n
+Password was updated\r\n
+\r\n
+
+The name is used, to ensure that the Client have already registered, and that 
+it comes from the correct Client. The server can respond in three ways: Write 
+'OK\r\n\r\n' if everything was correct, write 'NOREG\r\n\r\n' if the Client 
+isn't a registered one, or it can write 'ERR\r\n\r\n' if there was an error.
+
+That was the request part of the Client. The response part is covered in the 
+description of the Server side.
+
+The Server Side:
+A Server has four options to communicate with a Client:
+- Alive request: i.e. Heartbeat. Used to check if the Client is still up.
+- Get request: Used to request information from a Client. 
+- Set request: Used to send information to a Client.
+- Status request: Used to recieve the Status of the Client.
+All requests must begin with an initiated 'HELLO\r\n[Client name]\r\n', so that 
+the Clients can be certain, that the Server knows the Client.
+
+Alive request:
+An alive request:
+An alive request is used, to keep track of alive Clients. An request consists 
+of a 'HELLO [name of Client]' and then the line 'ALIVE'. 
+Here is an example alive request, to Client01:
+
+HELLO Client01\r\n
+ALIVE\r\n
+\r\n
+
+
+Get request:
+A get request is used to request information from the Client. An request starts 
+with a 'HELLO [name of Client]' and then the type of information 
+requested.
+Here is an example get request, where the Server requests the configuration 
+file from the Client with the name Client01:
+
+HELLO Client01\r\n
+GET\r\n
+CONFIG\r\n
+\r\n
+
+There are only one type of get request at the moment:
+- CONFIG: requests the configuration from the Client.
+If there was an error in parsing the request, the Client will send back an 
+'ERR\r\n\r\n', and it is then up to the server, to re-initiate the request.
+If there was no error, the Client will send back a line containing 'OK', and 
+then all the lines of requested data, and to end the communication, an empty 
+line. The Server will then send back 'OK\r\n\r\n' or 'ERR\r\n\r\n' depending on 
+the information sent.
+  
+  
+Set request:
+A set request is used to send information to the Client. An example usage, would 
+be to send an updated configuration file to the Client. The request starts with 
+a 'HELLO [name of Client], then the lines of data and then a blank 
+line to indicate end of data.
+Here is an example of a set request, where the server sends 2 lines of 
+configuration to Client01:
+
+HELLO Client01\r\n
+SET\r\n
+CONFIG\r\n
+extendend true\r\n
+endtime 15\r\n
+\r\n
+
+The Client will then send back an 'OK\r\n\r\n' or an 'ERR\r\n\r\n' depending on 
+if there was an error or not. 
+
+
+Status request:
+This is used to request the status of the Client. An request is initiated with 
+the line 'HELLO [name of Client]', and then the line 'STATUS'. 
+Here is an example of a status request:
+
+HELLO Client01\r\n
+STATUS\r\n
+\r\n
+
+The Client then responds 'OK' on the first line, followed by either 'OCCUPIED' 
+or 'FREE', depending on the status. After that the Client sends the list of 
+meetings, that it has on display (i.e. from current time, up until midnight).
+When the Server have read this information, the Server responds with either 
+'ERR\r\n\r\n' or 'OK\r\n\r\n' depending on if there was an error or not.

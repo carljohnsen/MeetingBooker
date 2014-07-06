@@ -131,15 +131,23 @@ public class ManagementServer {
 		 */
 		private void interpret(final BufferedReader in, final PrintWriter out) throws IOException {
 			String line = in.readLine();
-			if (line.equals("HELLO " + MainActivity.roomName)) {
+			if (line.equals("HELLO") && in.readLine().equals(MainActivity.roomName)) {
 				String action = in.readLine();
 				String element = in.readLine();
-				if (action.equals("alive") && element.equals("")) {
+				if (action.equals("ALIVE") && element.equals("")) {
 					respondAlive(out);
 					return;
 				}
-				if (action.equals("get") && !element.equals("") && in.readLine().equals("")) {
+				if (action.equals("GET") && !element.equals("") && in.readLine().equals("")) {
 					respondGet(out, element);
+					return;
+				}
+				if (action.equals("SET") && !element.equals("")) {
+					respondSet(in, out, element);
+					return;
+				}
+				if (action.equals("STATUS") && element.equals("")) {
+					respondStatus(out);
 					return;
 				}
 			}
@@ -151,7 +159,7 @@ public class ManagementServer {
 		 * @param out The output stream from the socket
 		 */
 		private void respondAlive(final PrintWriter out) {
-			out.write("yes\r\n");
+			out.write("YES\r\n");
 			out.write("\r\n");
 			out.flush();
 		}
@@ -163,7 +171,7 @@ public class ManagementServer {
 		 * @param element The requested element (for example "config" for the configuration file)
 		 */
 		private void respondGet(final PrintWriter out, final String element) {
-			if (element.equals("config")) {
+			if (element.equals("CONFIG")) {
 				ArrayList<Setting> settings = StatMeth.readConfig();
 				for (Setting setting : settings) {
 					out.write(setting.name + " " + setting.value + "\r\n");
@@ -172,22 +180,76 @@ public class ManagementServer {
 				out.flush();
 				return;
 			}
-			if (element.equals("status")) {
-				if (MainActivity.current != null && MainActivity.current.isUnderway) {
-					out.write("OCCUPIED\r\n");
+		}
+		
+		/**
+		 * Reads the configuration from the server, and responds depending on 
+		 * the correctness of the read configuration.
+		 * 
+		 * @param in The input stream from the socket, i.e. where the 
+		 * configuration data comes from
+		 * @param out The output stream from the socket, i.e. where the 
+		 * response will be written to
+		 * @param element The second line read from the socket. It is this, 
+		 * that defines what the outcome should be
+		 * @throws IOException Is thrown if there is a problem, when reading 
+		 * from the BufferedReader (i.e. in)
+		 */
+		private void respondSet(final BufferedReader in, 
+				final PrintWriter out, final String element) 
+						throws IOException {
+			if (element.equals("CONFIG")) {
+				ArrayList<Setting> settings = StatMeth.readConfig();
+				String setting = in.readLine();
+				boolean error = false;
+				while (!setting.equals("")) {
+					Setting tmp = StatMeth.interpretSetting(setting);
+					if (tmp != null) {
+						for (int i = 0; i < settings.size(); i++) {
+							if (settings.get(i).name.equals(tmp.name)) {
+								settings.set(i, tmp);
+							}
+						}
+					} else {
+						error = true;
+					}
+					setting = in.readLine();
+				}
+				if (error) {
+					out.write("ERROR\r\n\r\n");
+					out.flush();
 				} else {
-					out.write("FREE\r\n");
+					StatMeth.writeConfig(settings);
+					out.write("OK\r\n\r\n");
+					out.flush();
 				}
-				if (MainActivity.current != null) {
-					out.write(MainActivity.current.toString() + "\r\n");
-				}
-				for (CalEvent event : MainActivity.eventlist) {
-					out.write(event.toString() + "\r\n");
-				}
-				out.write("\r\n");
-				out.flush();
-				return;
 			}
+		}
+		
+		/**
+		 * Writes an response to an 'status' request, which have the form:
+		 * OCCUPIED/FREE\r\n
+		 * [List of meetings]\r\n
+		 * \r\n
+		 * 
+		 * @param out The output stream, where status will be written to
+		 */
+		private void respondStatus(final PrintWriter out) {
+			out.write("OK\r\n");
+			if (MainActivity.current != null && MainActivity.current.isUnderway) {
+				out.write("OCCUPIED\r\n");
+			} else {
+				out.write("FREE\r\n");
+			}
+			if (MainActivity.current != null) {
+				out.write(MainActivity.current.toString() + "\r\n");
+			}
+			for (CalEvent event : MainActivity.eventlist) {
+				out.write(event.toString() + "\r\n");
+			}
+			out.write("\r\n");
+			out.flush();
+			return;
 		}
 		
 		/**

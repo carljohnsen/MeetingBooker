@@ -27,7 +27,7 @@ import android.widget.AdapterView.OnItemClickListener;
  * The Activity used when an event is being edited
  * 
  * @author Carl Johnsen
- * @version 1.3
+ * @version 1.6
  * @since 14-05-2013
  */
 public final class NewEditActivity extends Activity {
@@ -180,8 +180,8 @@ public final class NewEditActivity extends Activity {
 		
 		// If the selected time is available, insert the event
 		// If not, notify the user
-		if (StatMeth.isFree(event, context)) {
-			StatMeth.setNewEvent(event, context);
+		if (StatMeth.isFree(event)) {
+			StatMeth.setNewEvent(event);
 			StatMeth.remoteLog("Added new meeting: " + event.title);
 			finish();
 		} else {
@@ -232,7 +232,7 @@ public final class NewEditActivity extends Activity {
 					public void onClick(final DialogInterface dialog,
 							final int which) {
 						Log.d(TAG, "pressed OK button");
-						StatMeth.delete(event, context);
+						StatMeth.delete(event);
 						MainActivity.sync();
 						StatMeth.remoteLog("Deleted event: " + event.title);
 						finish();
@@ -497,8 +497,8 @@ public final class NewEditActivity extends Activity {
 		
 		// If the selected time is available, update the event
 		// If not, notify the user
-		if (StatMeth.isUpdatable(newEvent, context)) {
-			StatMeth.update(newEvent, context);
+		if (StatMeth.isUpdatable(newEvent)) {
+			StatMeth.update(newEvent);
 			StatMeth.remoteLog("Updated event: " + newEvent.title);
 			finish();
 		} else {

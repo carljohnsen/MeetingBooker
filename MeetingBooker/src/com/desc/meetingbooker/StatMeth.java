@@ -32,7 +32,7 @@ import android.util.Log;
  * A Class that holds all the static methods
  * 
  * @author Carl Johnsen
- * @version 1.5
+ * @version 1.6
  * @since 24-06-2013
  */
 public final class StatMeth {
@@ -57,10 +57,8 @@ public final class StatMeth {
 	 * millisecond later 
 	 * 
 	 * @param event The given event
-	 * @param context The context of the application
 	 */
-	public final static void delete(final CalEvent event, 
-			final Context context) {
+	public final static void delete(final CalEvent event) {
 		Log.d(TAG, "called delete()");
 		// Get the ContentResolver and the URI
 		final ContentResolver cr = context.getContentResolver();
@@ -92,11 +90,9 @@ public final class StatMeth {
 	/**
 	 * The method to get the name of the calendar
 	 * 
-	 * @param context The context of the app, used to extract the CONTENT_URI 
-	 * 				  and the ContentResolver
 	 * @return The name of the calendar
 	 */
-	public final static String getCalendarName(final Context context) {
+	public final static String getCalendarName() {
 		Log.d(TAG, "called getCalendarName()");
 		// The query
 		final String[] que = { 
@@ -120,11 +116,9 @@ public final class StatMeth {
 	/**
 	 * Used for retrieving possible Calendar names, and ID's
 	 * 
-	 * @param context The context of the app, used to extract the CONTENT_URI
-	 * 				   and the ContentResolver
 	 * @return An ArrayList of CalName
 	 */
-	public final static ArrayList<CalName> getCalendarNames(final Context context) {
+	public final static ArrayList<CalName> getCalendarNames() {
 		Log.d(TAG, "called getCalendarNames()");
 		
 		ArrayList<CalName> result = new ArrayList<CalName>();
@@ -158,10 +152,9 @@ public final class StatMeth {
 	/**
 	 * Used for retrieving the password from private file pwd
 	 * 
-	 * @param context The context of the application
 	 * @return The password needed to unlock the settings menu
 	 */
-	public final static String getPassword(final Context context) {
+	public final static String getPassword() {
 		Log.d(TAG, "called getPassword()");
 		try {
 			// Open the file
@@ -177,7 +170,7 @@ public final class StatMeth {
 			in.close();
 			return password;
 		} catch (FileNotFoundException e) {
-			return newPassword(context);
+			return newPassword();
 		} catch (IOException e) {
 			return "ERROR";
 		}
@@ -189,7 +182,7 @@ public final class StatMeth {
 	 * 
 	 * @param str The string that will be interpretet
 	 */
-	private final static void interpretSetting(final String str, final Context context) {
+	public final static Setting interpretSetting(final String str) {
 		// Find the whitespace in the String, and split it into two
 		final int index = str.indexOf(' ');
 		final String command = str.substring(0, index);
@@ -200,79 +193,69 @@ public final class StatMeth {
 		if (command.equals("extendendtime")) {
 			MainActivity.canExtendEnd = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean", "Extend end time");
-			settings.add(setting);
-			return;
+			return setting;
 		}
 		if (command.equals("endtime")) {
 			MainActivity.endExtendAmount = Integer.parseInt(value);
 			setting = new Setting(command, value, "int", "Minutes to extend by");
-			settings.add(setting);
-			return;
+			return setting;
 		}
 		if (command.equals("extendstarttime")) {
 			MainActivity.canExtendStart = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean", "Extend start time");
-			settings.add(setting);
-			return;
+			return setting;
 		}
 		if (command.equals("starttime")) {
 			MainActivity.startExtendAmount = Integer.parseInt(value);
 			setting = new Setting(command, value, "int",
 					"Minutes to extend with");
-			settings.add(setting);
-			return;
+			return setting;
 		}
 		if (command.equals("candelete")) {
 			NewEditActivity.candelete = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean",
 					"Show the delete button");
-			settings.add(setting);
-			return;
+			return setting;
 		}
 		if (command.equals("canend")) {
 			MainActivity.canEnd = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean",
 					"Show the End Meeting button");
-			settings.add(setting);
-			return;
+			return setting;
 		}
 		if (command.equals("enddelete")) {
 			MainActivity.canEndDelete = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean", "End delete");
-			settings.add(setting);
-			return;
+			return setting;
 		}
 		if (command.equals("windowsize")) {
 			NewEditActivity.windowSize = Integer.parseInt(value);
 			setting = new Setting(command, value, "int",
 					"Length of TimeWindows");
-			settings.add(setting);
-			return;
+			return setting;
 		}
 		if (command.equals("calendarname")) {
 			MainActivity.roomName = value;
 			setting = new Setting(command, value, "String", "Calendar name");
-			settings.add(setting);
-			return;
+			return setting;
 		}
 		if (command.equals("calendarid")) {
 			StatMeth.calendarId = value;
-			setting = new Setting(command, value, "hashmap", "Calendar ID : " + getCalendarName(context));
-			settings.add(setting);
-			return;
+			setting = new Setting(command, value, "hashmap", "Calendar ID : " + getCalendarName());
+			return setting;
 		}
 		if (command.equals("delaydelete")) {
 			MainActivity.canDelayDelete = Boolean.parseBoolean(value);
 			setting = new Setting(command, value, "boolean", "Delay delete");
-			settings.add(setting);
-			return;
+			return setting;
 		}
 		if (command.equals("remotelog")) {
 			StatMeth.logServer = value;
 			setting = new Setting(command, value, "String", "Remote logging server");
-			settings.add(setting);
-			return;
+			return setting;
 		}
+		// If it was interpreted wrong, return null to indicate error
+		return null;
 	}
 	
 	/**
@@ -297,10 +280,9 @@ public final class StatMeth {
 	 * @param event The selected time
 	 * @return true, if it does not overlap
 	 */
-	public final static boolean isFree(final CalEvent event, 
-			final Context context) {
+	public final static boolean isFree(final CalEvent event) {
 		Log.d(TAG, "called isFree()");
-		ArrayList<CalEvent> eventlist = readCalendar(context);
+		ArrayList<CalEvent> eventlist = readCalendar();
 		if (!eventlist.isEmpty()) {
 			// Check against all other events today
 			final int len = eventlist.size();
@@ -369,11 +351,10 @@ public final class StatMeth {
 	 *            its own time
 	 * @return true, if there is free time to extend
 	 */
-	public final static boolean isUpdatable(final CalEvent event,
-			final Context context) {
+	public final static boolean isUpdatable(final CalEvent event) {
 		Log.d(TAG, "called isUpdatable");
 		
-		ArrayList<CalEvent> eventlist = readCalendar(context);
+		ArrayList<CalEvent> eventlist = readCalendar();
 		
 		// Return true, if the only event, is the one that is being updated
 		if (eventlist.isEmpty()) {
@@ -410,10 +391,8 @@ public final class StatMeth {
 	
 	/**
 	 * Creates a new config.cfg file
-	 * 
-	 * @param context The context of the application
 	 */
-	private final static void makeNewConfig(final Context context) {
+	private final static void makeNewConfig() {
 		Log.d(TAG, "called configMake()");
 		try {
 			// Open the file
@@ -424,51 +403,51 @@ public final class StatMeth {
 			// Write all the config lines
 			String line;
 			line = "extendstarttime true";
-			interpretSetting(line, context);
+			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "starttime 15";
-			interpretSetting(line, context);
+			settings.add(interpretSetting(line));;
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "extendendtime true";
-			interpretSetting(line, context);
+			settings.add(interpretSetting(line));;
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "endtime 15";
-			interpretSetting(line, context);
+			settings.add(interpretSetting(line));;
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "candelete true";
-			interpretSetting(line, context);
+			settings.add(interpretSetting(line));;
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "canend true";
-			interpretSetting(line, context);
+			settings.add(interpretSetting(line));;
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "enddelete true";
-			interpretSetting(line, context);
+			settings.add(interpretSetting(line));;
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "windowsize 60";
-			interpretSetting(line, context);
+			settings.add(interpretSetting(line));;
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "calendarid 2";
-			interpretSetting(line, context);
+			settings.add(interpretSetting(line));;
 			line += "\n";
 			outputStream.write(line, 0, line.length());
-			line = "calendarname " + getCalendarName(context);
-			interpretSetting(line, context);
+			line = "calendarname " + getCalendarName();
+			settings.add(interpretSetting(line));;
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "delaydelete false";
-			interpretSetting(line, context);
+			settings.add(interpretSetting(line));;
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			line = "remotelog not_set";
-			interpretSetting(line, context);
+			settings.add(interpretSetting(line));;
 			line += "\n";
 			outputStream.write(line, 0, line.length());
 			
@@ -510,10 +489,9 @@ public final class StatMeth {
 	/**
 	 * Used to generate a new default password
 	 * 
-	 * @param context The context of the application
 	 * @return The default password, if everything went well
 	 */
-	public final static String newPassword(final Context context) {
+	public final static String newPassword() {
 		Log.d(TAG, "called newPassword()");
 		final String stdPwd = StatMeth.md5("a");
 		try {
@@ -535,13 +513,10 @@ public final class StatMeth {
 	/**
 	 * The method that reads the calendar
 	 * 
-	 * @param context The context of the app. Used to extract the CONTENT_URI 
-	 * 				  and the ContentResolver
 	 * @return An ArrayList of CalEvents, that either is started, or is in the
 	 *         future
 	 */
-	public final static ArrayList<CalEvent> readCalendar(
-			final Context context) {
+	public final static ArrayList<CalEvent> readCalendar() {
 		Log.d(TAG, "called readCalendar()");
 		
 		// The ArrayList to hold the events
@@ -597,15 +572,13 @@ public final class StatMeth {
 	/**
 	 * Reads the configuration file, and then it interprets it
 	 * 
-	 * @param context
-	 *            The context of the application
 	 * @return A HashMap of (command, value) pairs
 	 */
 	public final static ArrayList<Setting> readConfig() {
 		Log.d(TAG, "called readConfig()");
 		
 		if (isGlobalConfigNewer()) {
-			return readGlobalConfig(context);
+			return readGlobalConfig();
 		}
 		
 		// Make a new ArrayList
@@ -622,7 +595,7 @@ public final class StatMeth {
 			// Read each line
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
-				interpretSetting(line, context);
+				settings.add(interpretSetting(line));
 			}
 			Log.d(TAG, "called interpret() " + settings.size() + " times");
 			
@@ -630,7 +603,7 @@ public final class StatMeth {
 			inputStreamReader.close();
 			in.close();
 		} catch (FileNotFoundException e) {
-			makeNewConfig(context);
+			makeNewConfig();
 		} catch (IOException e) {
 			Log.e(TAG, e.getMessage());
 		}
@@ -640,10 +613,9 @@ public final class StatMeth {
 	/**
 	 * Reads the global configuration file from HTTP
 	 * 
-	 * @param context The context of the application
 	 * @return A HashMap of (command, value) pairs
 	 */
-	public final static ArrayList<Setting> readGlobalConfig(final Context context) {
+	public final static ArrayList<Setting> readGlobalConfig() {
 		Log.d(TAG, "calledReadGlobalConfig()");
 		
 		// Make a new ArrayList
@@ -657,7 +629,7 @@ public final class StatMeth {
 			// Read lines, and interpret them
 			String line;
 			while ((line = in.readLine()) != null) {
-				interpretSetting(line, context);
+				settings.add(interpretSetting(line));
 			}
 			
 			// Close the stream
@@ -667,7 +639,7 @@ public final class StatMeth {
 		}
 		
 		// Write the newly read config file
-		writeConfig(settings, context);
+		writeConfig(settings);
 		return settings;
 	}
 	
@@ -711,10 +683,8 @@ public final class StatMeth {
 	 * Used for changing the password for the settings menu
 	 * 
 	 * @param password The new password
-	 * @param context The context of the application
 	 */
-	public final static void savePassword(final String password,
-			final Context context) {
+	public final static void savePassword(final String password) {
 		Log.d(TAG, "called savePassword()");
 		try {
 			// Open the file
@@ -735,11 +705,8 @@ public final class StatMeth {
 	 * The method for inserting into the calendar
 	 * 
 	 * @param event The event that should be inserted
-	 * @param context The context of this application, used to extract the
-	 *           	  CONTENT_URI and the ContentResolver
 	 */
-	public final static void setNewEvent(final CalEvent event,
-			final Context context) {
+	public final static void setNewEvent(final CalEvent event) {
 		Log.d(TAG, "called setNewEvent()");
 
 		// Get the URI and the ContentResolver
@@ -768,10 +735,8 @@ public final class StatMeth {
 	 * event in the calendar
 	 * 
 	 * @param event The event that has been updated
-	 * @param context The context of the application
 	 */
-	public final static void update(final CalEvent event, 
-			final Context context) {
+	public final static void update(final CalEvent event) {
 		Log.d(TAG, "called update()");
 		// Get the ContentResolver and the URI
 		final ContentResolver cr = context.getContentResolver();
@@ -793,11 +758,8 @@ public final class StatMeth {
 	 * Changes the end time of the given event, to the current time
 	 * 
 	 * @param event The event that should be updated
-	 * @param context The context of the app, used to extract the CONTENT_URI 
-	 * 				  and the ContentResolver
 	 */
-	public final static void updateEnd(final CalEvent event,
-			final Context context) {
+	public final static void updateEnd(final CalEvent event) {
 		Log.d(TAG, "called updateEnd(CalEvent)");
 		// Get the ContentResolver and the URI
 		final ContentResolver cr = context.getContentResolver();
@@ -817,12 +779,9 @@ public final class StatMeth {
 	 * Changes the end time of the given event, to the given time
 	 * 
 	 * @param event The event that should be updated
-	 * @param context The context of the app, used to extract the CONTENT_URI 
-	 * 				  and the ContentResolver
 	 * @param time The time the event should now end on
 	 */
-	public final static void updateEnd(final CalEvent event,
-			final Context context, final long time) {
+	public final static void updateEnd(final CalEvent event, final long time) {
 		Log.d(TAG, "called updateEnd(CalEvent, long)");
 		// Get the ContentResolver and the URI
 		final ContentResolver cr = context.getContentResolver();
@@ -842,11 +801,8 @@ public final class StatMeth {
 	 * Changes the start time of the given event, to the current time
 	 * 
 	 * @param event The event that should be updated
-	 * @param context The context of the app, used to extract the CONTENT_URI 
-	 * 				  and the ContentResolver
 	 */
-	public final static void updateStart(final CalEvent event,
-			final Context context) {
+	public final static void updateStart(final CalEvent event) {
 		Log.d(TAG, "called updateStart(CalEvent)");
 		// Get the ContentResolver and the uri
 		final ContentResolver cr = context.getContentResolver();
@@ -867,11 +823,9 @@ public final class StatMeth {
 	 * Changes the start time of the given event, to the given time
 	 * 
 	 * @param event The event that should be updated
-	 * @param context The context of the application
 	 * @param time The time that the start should be set to
 	 */
-	public final static void updateStart(final CalEvent event,
-			final Context context, final long time) {
+	public final static void updateStart(final CalEvent event, final long time) {
 		Log.d(TAG, "called updateStart(CalEvent, long)");
 		// Get the ContentResolver and the URI
 		final ContentResolver cr = context.getContentResolver();
@@ -891,10 +845,8 @@ public final class StatMeth {
 	 * Writes the given ArrayList of Settings to the config file
 	 * 
 	 * @param sett The given ArrayList
-	 * @param context The context of the application
 	 */
-	public final static void writeConfig(final ArrayList<Setting> sett,
-			final Context context) {
+	public final static void writeConfig(final ArrayList<Setting> sett) {
 		Log.d(TAG, "called write()");
 		try {
 			// Open the file

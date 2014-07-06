@@ -4,6 +4,15 @@ Version 1.6:
 - Added static Context in StatMeth
 - Removed Context as an argument for StatMeth.readConfig()
 - Changed CalEvent.toString(), to give a simpler String (And it wasn't used anywhere else)
+- Trying WifiManager again. This time it turns off wifi, when dim() is called 
+	i.e. at night. It is turned on again in lighten(), which is called when it 
+	is day again.
+- Modified StatMeth.interpretSetting(), so that it doesn't take Context as 
+	argument, and so that instead of filling the ArrayList in StatMeth, it 
+	returns the Setting.
+- Removed all Context arguments from StatMeth.
+- Context removal also applied to MainActivity, NewEditActivity and SettingsActivity.
+- Added the specification file for the 'Application Control Protocol' (ACP)
 
 Version 1.5:
 - Added remote logging:
