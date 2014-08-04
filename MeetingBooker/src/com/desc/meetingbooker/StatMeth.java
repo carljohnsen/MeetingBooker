@@ -48,7 +48,7 @@ public final class StatMeth {
 	private static ArrayList<Setting> settings;
 	private static String calendarId; 
 	//private static long configTimestamp = 0L;
-	protected static String logServer = null;
+	protected static String manServer = null;
 	protected static Context context;
 
 	/**
@@ -250,7 +250,7 @@ public final class StatMeth {
 			return setting;
 		}
 		if (command.equals("remotelog")) {
-			StatMeth.logServer = value;
+			StatMeth.manServer = value;
 			setting = new Setting(command, value, "String", "Remote logging server");
 			return setting;
 		}
@@ -652,7 +652,7 @@ public final class StatMeth {
 	 */
 	public final static void remoteLog(final String message) {
 		// If the server have not been defined, don't try to connect
-		if (logServer == null || logServer.equals("not_set")) {
+		if (manServer == null || manServer.equals("not_set")) {
 			Log.e(TAG, "Remote logging server not set");
 			return;
 		}
@@ -660,13 +660,26 @@ public final class StatMeth {
 			public void run() {
 				try {
 					// Create the socket, and define the in and out streams
-					Socket socket = new Socket(logServer, 5000);
+					Socket socket = new Socket(manServer, 5000);
 					PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 					BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					
-					out.write(message + "</br>");
+					out.write("LOG\r\n");
+					out.write(MainActivity.roomName + "\r\n");
+					out.write(message + "\r\n");
+					out.write("\r\n");
 					out.flush();
-					Log.d(TAG, "Wrote to remote logging server");
+					
+					String response = in.readLine();
+					if (response.equals("OK") && in.readLine().equals("")) {
+						Log.d(TAG, "Wrote to remote logging server");
+					} else if (response.equals("ERR") && in.readLine().equals("")) {
+						Log.e(TAG, "Error when writing to remote logging server");
+					} else if (response.equals("NOREG") && in.readLine().equals("")) {
+						Log.e(TAG, "Remote log server claims that this tablet hasn't registered");
+					} else {
+						Log.e(TAG, "Unknown response from log server");
+					}
 					
 					// Close the streams and the socket
 					in.close();

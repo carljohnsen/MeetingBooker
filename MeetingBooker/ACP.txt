@@ -3,8 +3,9 @@ that i have created, so that i could introduce remote management of the
 application.
 
 Created on: 06-07-2014 (6th July 2014)
-Last Modified: 06-07-2014 (6th July 2014)
+Last Modified: 29-07-2014 (29th July 2014)
 
+--------------------------------------------------------------------------------
 Features:
 - The Server can keep track of registered clients
 - The Server can request information from the clients, and send them information
@@ -20,7 +21,9 @@ so that lines are easily distinquished. A stream of communication is always
 ended by an empty line containing only '\r\n'. All communication is made in 
 all capital letters, except for names and data.
 
-The Client side:
+--------------------------------------------------------------------------------
+The Client side
+--------------------------------------------------------------------------------
 The communication starts with the Client registering itself to the Server. It 
 does so by sending 'SERVER' as the first line. Then it sends its name, and then 
 its listening port. The reason it doesn't send its address, is because the 
@@ -56,7 +59,9 @@ isn't a registered one, or it can write 'ERR\r\n\r\n' if there was an error.
 That was the request part of the Client. The response part is covered in the 
 description of the Server side.
 
-The Server Side:
+--------------------------------------------------------------------------------
+The Server Side
+--------------------------------------------------------------------------------
 A Server has four options to communicate with a Client:
 - Alive request: i.e. Heartbeat. Used to check if the Client is still up.
 - Get request: Used to request information from a Client. 
@@ -65,6 +70,7 @@ A Server has four options to communicate with a Client:
 All requests must begin with an initiated 'HELLO\r\n[Client name]\r\n', so that 
 the Clients can be certain, that the Server knows the Client.
 
+--------------------------------------------------------------------------------
 Alive request:
 An alive request:
 An alive request is used, to keep track of alive Clients. An request consists 
@@ -75,7 +81,7 @@ HELLO Client01\r\n
 ALIVE\r\n
 \r\n
 
-
+--------------------------------------------------------------------------------
 Get request:
 A get request is used to request information from the Client. An request starts 
 with a 'HELLO [name of Client]' and then the type of information 
@@ -97,7 +103,7 @@ then all the lines of requested data, and to end the communication, an empty
 line. The Server will then send back 'OK\r\n\r\n' or 'ERR\r\n\r\n' depending on 
 the information sent.
   
-  
+--------------------------------------------------------------------------------
 Set request:
 A set request is used to send information to the Client. An example usage, would 
 be to send an updated configuration file to the Client. The request starts with 
@@ -116,7 +122,7 @@ endtime 15\r\n
 The Client will then send back an 'OK\r\n\r\n' or an 'ERR\r\n\r\n' depending on 
 if there was an error or not. 
 
-
+--------------------------------------------------------------------------------
 Status request:
 This is used to request the status of the Client. An request is initiated with 
 the line 'HELLO [name of Client]', and then the line 'STATUS'. 

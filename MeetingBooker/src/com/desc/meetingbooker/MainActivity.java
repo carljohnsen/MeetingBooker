@@ -76,6 +76,7 @@ public final class MainActivity extends Activity {
 	private				Timer					touchTimer;
 	private		static	Window 					window;
 	private 	static WifiManager				wifiManager;
+	private				Thread					serverThread;
 	
 	// TAG used for logging
 	private static final String TAG = MainActivity.class.getSimpleName();
@@ -89,6 +90,7 @@ public final class MainActivity extends Activity {
 	protected static boolean 	canExtendStart;
 	protected static int 	 	startExtendAmount;
 	protected static String  	roomName;
+	protected static boolean 	configUpdated = false;
 	
 	// Constant values
 	private final static String ended = "- ended";
@@ -116,6 +118,7 @@ public final class MainActivity extends Activity {
 		 * starts, StatMeth.context will always be set.
 		 */
 		StatMeth.context = getApplicationContext();
+		this.context = getApplicationContext();
 		StatMeth.readConfig();
 		
 		// Find the wifi manager
@@ -183,20 +186,27 @@ public final class MainActivity extends Activity {
 		timer.scheduleAtFixedRate(timerTask, 10, 5000);
 		
 		// Skriv til logserveren!!!
-		Timer logtimer = new Timer();
+		/*Timer logtimer = new Timer();
 		TimerTask logtask = new TimerTask() {
 			@Override
 			public final void run() {
 				StatMeth.remoteLog("I am still alive!");
 			}
 		};
-		logtimer.scheduleAtFixedRate(logtask, 10, 3600000);
+		logtimer.scheduleAtFixedRate(logtask, 10, 3600000);*/
 		
 		// Initialize the touch timer
 		touchTimer = new Timer();
 		
 		// Show the notification
 		makeNotification();
+		
+		// Start the ManagementServer, if it isn't already
+		if (serverThread != null) {
+			Log.d(TAG, "Starting the ManagementServer");
+			serverThread = new ManagementServer();
+			serverThread.start();
+		}
 		
 		Log.d(TAG, "onCreate() done");
 	}
@@ -209,8 +219,23 @@ public final class MainActivity extends Activity {
 		// Check if there are new events in the calendar, and check if there is
 		// a new roomName
 		tempLighten(mainView);
+		if (configUpdated) {
+			checkServerThread();
+		}
 		sync();
 		calendarName.setText(roomName);
+	}
+	
+	/**
+	 * Checks if the ManagementServer thread is alive, and if it isn't 
+	 * (i.e. because no server adress was found in config), it starts a
+	 * new ManagementServer thread.
+	 */
+	private final void checkServerThread() {
+		if (serverThread == null || !serverThread.isAlive()) {
+			serverThread = new ManagementServer();
+			serverThread.start();
+		}
 	}
 	
 	/**

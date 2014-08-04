@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.util.Log;
@@ -37,7 +36,6 @@ public final class SettingsActivity extends Activity {
 	private static 		ArrayList<Setting> 	config;
 	private static 		ListView 			settingList;
 	private 				SettingsAdapter 	adapter;
-	private static 		Context 			context;
 	
 	@Override
 	protected final void onCreate(final Bundle savedInstanceState) {
@@ -55,7 +53,6 @@ public final class SettingsActivity extends Activity {
 		setContentView(R.layout.activity_settings);
 
 		// Read the config file
-		context = getApplicationContext();
 		config 	= StatMeth.readConfig();
 
 		// Set up the ListView
@@ -78,6 +75,9 @@ public final class SettingsActivity extends Activity {
 							.findViewById(R.id.setting_check);
 					// check / uncheck
 					box.setChecked(!box.isChecked());
+					final Setting setting = config.get(position);
+					setting.value = "" + box.isChecked();
+					config.set(position, setting);
 
 					// If its either extendend or extendstart, gray out the
 					// time selectors
@@ -108,7 +108,8 @@ public final class SettingsActivity extends Activity {
 							return;
 						}
 					}
-					NumberFragment.index = position;
+					NumberFragment.org_index = position;
+					NumberFragment.rel_index = position - settingList.getFirstVisiblePosition();
 					final NumberFragment fragment = new NumberFragment();
 					fragment.show(getFragmentManager(), "BLA");
 					return;
@@ -116,14 +117,16 @@ public final class SettingsActivity extends Activity {
 
 				// Check if it is a String, so that it should show stringfrag.
 				if (config.get(position).valueType.equals("String")) {
-					StringFragment.index = position;
+					StringFragment.org_index = position;
+					StringFragment.rel_index = position - settingList.getFirstVisiblePosition();
 					final StringFragment fragment = new StringFragment();
 					fragment.show(getFragmentManager(), "BLA");
 					return;
 				}
 
 				if (config.get(position).valueType.equals("hashmap")) {
-					CustomListFragment.index = position;
+					CustomListFragment.org_index = position;
+					CustomListFragment.rel_index = position - settingList.getFirstVisiblePosition();
 					CustomListFragment.setting = config.get(position);
 					final CustomListFragment fragment = new CustomListFragment();
 					fragment.show(getFragmentManager(), "BLA");
@@ -185,7 +188,7 @@ public final class SettingsActivity extends Activity {
 			temp.add(set);
 		}
 
-		// Return the AraryList
+		// Return the ArrayList
 		return temp;
 	}
 
@@ -197,9 +200,10 @@ public final class SettingsActivity extends Activity {
 	 */
 	public final void save(final View view) {
 		Log.d(TAG, "pressed Save button");
-		config = readList();
+		//config = readList();
 		StatMeth.writeConfig(config);
 		StatMeth.remoteLog("Updated configuration");
+		MainActivity.configUpdated = true;
 		finish();
 	}
 
@@ -214,7 +218,8 @@ public final class SettingsActivity extends Activity {
 	 */
 	public final static class CustomListFragment extends DialogFragment {
 		private static String TAG = CustomListFragment.class.getSimpleName();
-		private static int index;
+		private static int rel_index;
+		private static int org_index;
 		private static Setting setting;
 
 		@Override
@@ -263,9 +268,9 @@ public final class SettingsActivity extends Activity {
 							Log.d(TAG, "pressed OK button");
 							// Save the selected CalName, and save it in a
 							// Setting
-							config.set(index, setting);
+							config.set(org_index, setting);
 
-							final View vi = settingList.getChildAt(index);
+							final View vi = settingList.getChildAt(rel_index);
 							TextView tv = (TextView) vi
 									.findViewById(R.id.setting_value);
 							tv.setText(setting.value);
@@ -300,7 +305,8 @@ public final class SettingsActivity extends Activity {
 	public final static class NumberFragment extends DialogFragment {
 
 		private static String TAG = NumberFragment.class.getSimpleName();
-		private static int index;
+		private static int org_index;
+		private static int rel_index;
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -317,7 +323,7 @@ public final class SettingsActivity extends Activity {
 					.findViewById(R.id.number_picker_picker);
 
 			// Find the ListViews child
-			final View vi = settingList.getChildAt(index);
+			final View vi = settingList.getChildAt(rel_index);
 			final TextView tv = (TextView) vi.findViewById(R.id.setting_name);
 
 			// Set the boundries of the NumberPicker
@@ -344,11 +350,14 @@ public final class SettingsActivity extends Activity {
 							// Read the NumberPicker and save the information
 							final NumberPicker picker = (NumberPicker) v
 									.findViewById(R.id.number_picker_picker);
-							final int number = picker.getValue();
-							final View vi = settingList.getChildAt(index);
+							final String number = picker.getValue() + "";
+							final View vi = settingList.getChildAt(rel_index);
 							final TextView tv = (TextView) vi
 									.findViewById(R.id.setting_value);
-							tv.setText("" + number);
+							tv.setText(number);
+							Setting setting = config.get(org_index);
+							setting.value = number;
+							config.set(org_index, setting);
 						}
 
 					});
@@ -487,7 +496,8 @@ public final class SettingsActivity extends Activity {
 	public final static class StringFragment extends DialogFragment {
 
 		private static String TAG = StringFragment.class.getSimpleName();
-		private static int index;
+		private static int org_index;
+		private static int rel_index;
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -503,7 +513,7 @@ public final class SettingsActivity extends Activity {
 			final EditText edit = (EditText) v.findViewById(R.id.string_edit_edit);
 
 			// Find the ListViews child
-			final View vi = settingList.getChildAt(index);
+			final View vi = settingList.getChildAt(rel_index);
 			final TextView tv1 = (TextView) vi.findViewById(R.id.setting_value);
 			final TextView tv2 = (TextView) vi.findViewById(R.id.setting_name);
 
@@ -526,8 +536,11 @@ public final class SettingsActivity extends Activity {
 											.findViewById(R.id.string_edit_edit);
 									final String name = edit.getText()
 											.toString();
+									final Setting setting = config.get(org_index);
+									setting.value = name;
+									config.set(org_index, setting);
 									final View vi = settingList
-											.getChildAt(index);
+											.getChildAt(rel_index);
 									final TextView tv = (TextView) vi
 											.findViewById(R.id.setting_value);
 									tv.setText(name);

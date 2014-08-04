@@ -13,6 +13,8 @@ Version 1.6:
 - Removed all Context arguments from StatMeth.
 - Context removal also applied to MainActivity, NewEditActivity and SettingsActivity.
 - Added the specification file for the 'Application Control Protocol' (ACP)
+- Fixed bug in SettingsActivity, where View.getChildAt() looks at the lists relative index,
+	i.e. not the index of the entire list, only the index of the visible list
 
 Version 1.5:
 - Added remote logging:

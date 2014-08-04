@@ -17,27 +17,19 @@ import android.util.Log;
  * @version 1.6
  * @since 03-07-2014
  */
-public class ManagementServer {
+public class ManagementServer extends Thread {
 	
-	protected int port;
+	protected int port = 5000;
 	protected ServerSocket serverSocket;
 	private final static String TAG = ManagementServer.class.getSimpleName();
 	
 	/**
-	 * The constructor for a new ManagementServer object.
-	 * 
-	 * @param port The port that the server accepts connections on.
-	 */
-	public ManagementServer(final int port) {
-		this.port = port;
-	}
-	
-	/**
 	 * Registers the tablet on the logging server, and states its name and listening port.
+	 * Assumes that StatMeth.manServer is not null
 	 */
 	private void register() {
 		try {
-			Socket socket = new Socket(StatMeth.logServer, 5000);
+			Socket socket = new Socket(StatMeth.manServer, 5000);
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
@@ -66,16 +58,21 @@ public class ManagementServer {
 		}
 	}
 	
+	@Override
+	public void run() {
+		if (StatMeth.manServer != null || !StatMeth.manServer.equals("not_set")) {
+			register();
+			serverLoop();
+		} else {
+			return;
+		}
+	}
+	
 	/**
 	 * The method, which starts the server loop, i.e. keeps accepting connections, 
 	 * until the application closes. 
 	 */
 	protected void serverLoop() {
-		if (StatMeth.logServer != null || !StatMeth.logServer.equals("not_set")) {
-			register();
-		} else {
-			return;
-		}
 		try {
 			serverSocket = new ServerSocket(port); 
 			while (true) {

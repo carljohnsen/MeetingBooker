@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.text.format.Time;
 import android.util.Log;
@@ -45,7 +44,6 @@ public final class NewEditActivity extends Activity {
 
 	// All of the data fields
 	private static 		TimeWindowAdapter 	   adapter;
-	private static 		Context 			   context;
 	private static 		CalEvent 			   event;
 	private static 		int 				   index;
 	private static final String 				   TAG = NewEditActivity
@@ -70,8 +68,6 @@ public final class NewEditActivity extends Activity {
 		
 		// Set the content view
 		setContentView(R.layout.activity_new_edit);
-		
-		context = getApplicationContext();
 
 		// Cast all the views
 		activityTitle 		= (TextView)	findViewById(R.id.new_edit_title);
