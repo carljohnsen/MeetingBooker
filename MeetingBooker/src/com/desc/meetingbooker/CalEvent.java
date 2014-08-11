@@ -136,12 +136,23 @@ public final class CalEvent {
 	}
 
 	/**
-	 * Method for getting a String representation of the event
+	 * Method for getting a String representation of the event 
+	 * in the format "title - start - end"
 	 * 
 	 * @return A String representation of the event
 	 */
-	public final String toString(String asdf) {
+	public final String toString() {
 		return this.title + " - " + this.getTimeWindow().toString();
+	}
+	
+	/**
+	 * Method for getting a String representation of the event
+	 * in the format "'title' 'desc' start end"
+	 * 
+	 * @return A String representation of the event
+	 */
+	public final String toString2() {
+		return "'" + title + "' '" + description + "' " + getTimeWindow().toString2(); 
 	}
 	
 }

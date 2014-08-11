@@ -15,6 +15,10 @@ Version 1.6:
 - Added the specification file for the 'Application Control Protocol' (ACP)
 - Fixed bug in SettingsActivity, where View.getChildAt() looks at the lists relative index,
 	i.e. not the index of the entire list, only the index of the visible list
+- Fixed bug in MainActivity, where if delay shouldn't delete, it would append "- not started" twice
+- Changed from using java.util.Date to using android.text.Time in TimeWindow
+- Added TimeWindow.toString2(), which gives the string representation in another format
+- Added CalEvent.toString2(), which gives the string representation in another format
 
 Version 1.5:
 - Added remote logging:

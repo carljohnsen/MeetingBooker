@@ -40,7 +40,7 @@ public class ManagementServer extends Thread {
 			out.flush();
 			
 			String response = in.readLine();
-			if (!response.equals("OK") || in.readLine().equals("")) {
+			if (!response.equals("OK")) {
 				out.write("ERR\r\n");
 				out.flush();
 				in.close();
@@ -53,6 +53,7 @@ public class ManagementServer extends Thread {
 			in.close();
 			out.close();
 			socket.close();
+			Log.d(TAG, "Registered with server");
 		} catch (IOException ioe) {
 			Log.e(TAG, "IOException in register()! " + ioe.getMessage());
 		}
@@ -128,14 +129,15 @@ public class ManagementServer extends Thread {
 		 */
 		private void interpret(final BufferedReader in, final PrintWriter out) throws IOException {
 			String line = in.readLine();
-			if (line.equals("HELLO") && in.readLine().equals(MainActivity.roomName)) {
+			String name = in.readLine();
+			if (line.equals("HELLO") && name.equals(MainActivity.roomName)) {
 				String action = in.readLine();
 				String element = in.readLine();
 				if (action.equals("ALIVE") && element.equals("")) {
 					respondAlive(out);
 					return;
 				}
-				if (action.equals("GET") && !element.equals("") && in.readLine().equals("")) {
+				if (action.equals("GET") && !element.equals("")) {
 					respondGet(out, element);
 					return;
 				}
@@ -147,6 +149,10 @@ public class ManagementServer extends Thread {
 					respondStatus(out);
 					return;
 				}
+			} else {
+				StatMeth.remoteLog("Could not parse request. " + 
+						"First line : '" + line + "'. " +
+						"Second line : '" + name + "'");
 			}
 		}
 		
@@ -156,8 +162,7 @@ public class ManagementServer extends Thread {
 		 * @param out The output stream from the socket
 		 */
 		private void respondAlive(final PrintWriter out) {
-			out.write("YES\r\n");
-			out.write("\r\n");
+			out.write("YES\r\n\r\n");
 			out.flush();
 		}
 		
@@ -171,7 +176,7 @@ public class ManagementServer extends Thread {
 			if (element.equals("CONFIG")) {
 				ArrayList<Setting> settings = StatMeth.readConfig();
 				for (Setting setting : settings) {
-					out.write(setting.name + " " + setting.value + "\r\n");
+					out.write(setting.toString() + "\r\n");
 				}
 				out.write("\r\n");
 				out.flush();
@@ -213,7 +218,7 @@ public class ManagementServer extends Thread {
 					setting = in.readLine();
 				}
 				if (error) {
-					out.write("ERROR\r\n\r\n");
+					out.write("ERR\r\n\r\n");
 					out.flush();
 				} else {
 					StatMeth.writeConfig(settings);
@@ -239,10 +244,10 @@ public class ManagementServer extends Thread {
 				out.write("FREE\r\n");
 			}
 			if (MainActivity.current != null) {
-				out.write(MainActivity.current.toString() + "\r\n");
+				out.write(MainActivity.current.toString2() + "\r\n");
 			}
 			for (CalEvent event : MainActivity.eventlist) {
-				out.write(event.toString() + "\r\n");
+				out.write(event.toString2() + "\r\n");
 			}
 			out.write("\r\n");
 			out.flush();

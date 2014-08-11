@@ -32,5 +32,9 @@ public final class Setting {
 		this.value 			= value;
 		this.valueType 		= valueType;
 	}
+	
+	public String toString() {
+		return name + " " + value;
+	}
 
 }

@@ -244,6 +244,12 @@ public final class MainActivity extends Activity {
 	 * deleted, if the config allows it
 	 */
 	private final static void currentIsDelayed() {
+		// If meeting is underway, or if it has already been delayed, 
+		// and if delay can't delete, no interaction is needed
+		if (!canDelayDelete && current != null && (current.isUnderway || isDelayed)) {
+			return;
+		}
+		
 		// Check if it has gone overtime, and has'nt been extended
 		Time time = new Time();
 		time.setToNow();

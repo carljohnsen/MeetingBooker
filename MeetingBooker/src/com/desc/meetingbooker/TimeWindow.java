@@ -1,13 +1,12 @@
 package com.desc.meetingbooker;
 
-import java.util.Date;
-import android.text.format.DateFormat;
+import android.text.format.Time;
 
 /**
  * A class which is used to represent a time window, i.e. A window of time
  * where there the calendar is not booked
  * 
- * @version 1.0
+ * @version 1.6
  * @author Carl Johnsen
  * @since 14-05-2013
  */
@@ -15,6 +14,7 @@ public final class TimeWindow {
 	
 	protected final long start;
 	protected final long end;
+	private final Time time;
 	
 	/**
 	 * Creates a new TimeWindow
@@ -25,6 +25,7 @@ public final class TimeWindow {
 	public TimeWindow(final long start, final long end) {
 		this.start 	= start;
 		this.end 	= end;
+		this.time 	= new Time();
 	}
 	
 	/**
@@ -33,7 +34,8 @@ public final class TimeWindow {
 	 * @return A String representation of the TimeWindows start time
 	 */
 	public final String getStartString() {
-		return DateFormat.format("kk:mm", new Date(this.start)).toString();
+		time.set(start);
+		return time.format("%H:%M");
 	}
 	
 	/**
@@ -42,18 +44,26 @@ public final class TimeWindow {
 	 * @return A String representation of the TimeWindows end time
 	 */
 	public final String getEndString() {
-		return DateFormat.format("kk:mm", new Date(this.end)).toString();
+		time.set(end);
+		return time.format("%H:%M");
 	}
 	
 	/**
-	 * Get a String representation of the TimeWindow
+	 * Get a String representation of the TimeWindow in the format "12:00 - 13:00"
 	 * 
 	 * @return A String representation of the TimeWindow
 	 */
 	public final String toString() {
-		return DateFormat.format("kk:mm", new Date(this.start)).toString() + 
-				" - " + 
-				DateFormat.format("kk:mm", new Date(this.end)).toString();
+		return getStartString() + " - " + getEndString();
+	}
+	
+	/**
+	 * Get a string representation of the TimeWindow in the format "12:00 13:00"
+	 * 
+	 * @return A String representation of the TimeWindow
+	 */
+	public final String toString2() {
+		return getStartString() + " " + getEndString();
 	}
 
 }
