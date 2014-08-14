@@ -15,7 +15,7 @@ import android.widget.CheckBox;
  * An custom ArrayAdapter for SettingsActivity
  * 
  * @author Carl Johnsen
- * @version 1.0
+ * @version 1.6
  * @since 28-06-2013
  */
 public final class SettingsAdapter extends ArrayAdapter<Setting> {
@@ -84,7 +84,7 @@ public final class SettingsAdapter extends ArrayAdapter<Setting> {
 			holder.name.setText(setting.description);
 			if (setting.valueType.equals("boolean")) {
 				holder.value.setVisibility(TextView.GONE);
-				holder.checkbox.setChecked(Boolean.parseBoolean(setting.value));
+				holder.checkbox.setChecked(StatMeth.parseBool(setting.value));
 			} else {
 				holder.value.setText(setting.value);
 				holder.checkbox.setVisibility(CheckBox.GONE);

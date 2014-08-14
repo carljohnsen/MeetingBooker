@@ -202,7 +202,7 @@ public final class MainActivity extends Activity {
 		makeNotification();
 		
 		// Start the ManagementServer, if it isn't already
-		if (serverThread != null) {
+		if (serverThread == null || !serverThread.isAlive()) {
 			Log.d(TAG, "Starting the ManagementServer");
 			serverThread = new ManagementServer();
 			serverThread.start();

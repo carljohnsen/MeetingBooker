@@ -190,8 +190,8 @@ public final class StatMeth {
 		
 		// Make the new Setting, and change it according to its information
 		final Setting setting;
-		if (command.equals("extendendtime")) {
-			MainActivity.canExtendEnd = Boolean.parseBoolean(value);
+		if (command.equals("extendend")) {
+			MainActivity.canExtendEnd = parseBool(value);
 			setting = new Setting(command, value, "boolean", "Extend end time");
 			return setting;
 		}
@@ -200,8 +200,8 @@ public final class StatMeth {
 			setting = new Setting(command, value, "int", "Minutes to extend by");
 			return setting;
 		}
-		if (command.equals("extendstarttime")) {
-			MainActivity.canExtendStart = Boolean.parseBoolean(value);
+		if (command.equals("extendstart")) {
+			MainActivity.canExtendStart = parseBool(value);
 			setting = new Setting(command, value, "boolean", "Extend start time");
 			return setting;
 		}
@@ -212,19 +212,19 @@ public final class StatMeth {
 			return setting;
 		}
 		if (command.equals("candelete")) {
-			NewEditActivity.candelete = Boolean.parseBoolean(value);
+			NewEditActivity.candelete = parseBool(value);
 			setting = new Setting(command, value, "boolean",
 					"Show the delete button");
 			return setting;
 		}
 		if (command.equals("canend")) {
-			MainActivity.canEnd = Boolean.parseBoolean(value);
+			MainActivity.canEnd = parseBool(value);
 			setting = new Setting(command, value, "boolean",
 					"Show the End Meeting button");
 			return setting;
 		}
 		if (command.equals("enddelete")) {
-			MainActivity.canEndDelete = Boolean.parseBoolean(value);
+			MainActivity.canEndDelete = parseBool(value);
 			setting = new Setting(command, value, "boolean", "End delete");
 			return setting;
 		}
@@ -245,7 +245,7 @@ public final class StatMeth {
 			return setting;
 		}
 		if (command.equals("delaydelete")) {
-			MainActivity.canDelayDelete = Boolean.parseBoolean(value);
+			MainActivity.canDelayDelete = parseBool(value);
 			setting = new Setting(command, value, "boolean", "Delay delete");
 			return setting;
 		}
@@ -402,7 +402,7 @@ public final class StatMeth {
 			
 			// Write all the config lines
 			String line;
-			line = "extendstarttime true";
+			line = "extendstart true";
 			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
@@ -410,7 +410,7 @@ public final class StatMeth {
 			settings.add(interpretSetting(line));;
 			line += "\n";
 			outputStream.write(line, 0, line.length());
-			line = "extendendtime true";
+			line = "extendend true";
 			settings.add(interpretSetting(line));;
 			line += "\n";
 			outputStream.write(line, 0, line.length());
@@ -508,6 +508,16 @@ public final class StatMeth {
 		} catch (IOException e) {
 			return "ERROR";
 		}
+	}
+	
+	/**
+	 * Parses a String into a boolean. Looks for "true", "false", "1" or "0"
+	 * 
+	 * @param str The String that will be parsed
+	 * @return True if the String is either "true" or "1", otherwise false
+	 */
+	public static final boolean parseBool(final String str) {
+		return str.equals("true") || str.equals("1");
 	}
 	
 	/**

@@ -19,6 +19,7 @@ Version 1.6:
 - Changed from using java.util.Date to using android.text.Time in TimeWindow
 - Added TimeWindow.toString2(), which gives the string representation in another format
 - Added CalEvent.toString2(), which gives the string representation in another format
+- Added StatMeth.parseBool(), which parses "true", "false", "1" and "0"
 
 Version 1.5:
 - Added remote logging:

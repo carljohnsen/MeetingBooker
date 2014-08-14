@@ -63,7 +63,7 @@ public final class TimeWindow {
 	 * @return A String representation of the TimeWindow
 	 */
 	public final String toString2() {
-		return getStartString() + " " + getEndString();
+		return "'" + getStartString() + "' '" + getEndString() + "'";
 	}
 
 }
