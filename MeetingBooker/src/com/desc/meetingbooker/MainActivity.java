@@ -369,6 +369,7 @@ public final class MainActivity extends Activity {
 	 */
 	public final void endMeeting(final View view) {
 		Log.d(TAG, "pressed EndMeeting button");
+		final String tempTitle = current.title;
 		if (canEndDelete) {
 			StatMeth.updateEnd(current);
 		} else {
@@ -376,7 +377,7 @@ public final class MainActivity extends Activity {
 			StatMeth.update(current);
 			sync();
 		}
-		StatMeth.remoteLog("Ended meeting: " + current.description);
+		StatMeth.remoteLog("Ended meeting: " + tempTitle);
 	}
 
 	/**
