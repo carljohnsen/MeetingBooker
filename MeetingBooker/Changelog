@@ -1,5 +1,8 @@
 Version 1.7:
 - Fixed NullPointer bug when ending the only meeting that day (MainActivity.endMeeting())
+- Changed the ALIVE request from being 'server to client' to being 'client to server'
+- Changed the way MainActivity.context was initially set
+- Made the number pickers in SettingsActivity, only show quarters
 
 Version 1.6:
 - Added ManagementServer, which is a socket server, so that the configuration server, can connect

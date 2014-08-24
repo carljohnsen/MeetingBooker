@@ -3,7 +3,7 @@ that i have created, so that i could introduce remote management of the
 application.
 
 Created on: 06-07-2014 (6th July 2014)
-Last Modified: 29-07-2014 (29th July 2014)
+Last Modified: 24-08-2014 (24th August 2014)
 
 --------------------------------------------------------------------------------
 Features:
@@ -41,7 +41,7 @@ The Server then either responds 'OK\r\n\r\n' if everything was in order, or
 'ERR\r\n\r\n' if there was an error. Upon error, it is up to the Client, to 
 do the registering again.
 
-After registration, the Client only have one more action to peform, and that is 
+After registration, the Client have two actions to perform, the first is 
 remote logging. Remote logging is performed, by initiating a connection to the 
 Server, stating the action, the name of the Client and then writing an log 
 entry. Here is an example, using the same name as before:
@@ -56,14 +56,27 @@ it comes from the correct Client. The server can respond in three ways: Write
 'OK\r\n\r\n' if everything was correct, write 'NOREG\r\n\r\n' if the Client 
 isn't a registered one, or it can write 'ERR\r\n\r\n' if there was an error.
 
-That was the request part of the Client. The response part is covered in the 
-description of the Server side.
+The other action that the client can make, is the ALIVE request. It is used for 
+ensuring that the client is alive. The reason that it is the client, and not 
+the server that makes this request, is that sometimes the server could'nt reach 
+the client, but the client could always reach the server.
+Here is an example request:
+
+HELLO\r\n
+Client01\r\n
+ALIVE\r\n
+\r\n
+
+The starts by saying hello, followed by its name and the request stated. The 
+server then responds 'OK\r\n\r\n' on success and 'NOREG\r\n\r\n' if the client 
+hasn't registered, and 'ERR\r\n\r\n' if there was an error.
 
 --------------------------------------------------------------------------------
 The Server Side
 --------------------------------------------------------------------------------
 A Server has four options to communicate with a Client:
-- Alive request: i.e. Heartbeat. Used to check if the Client is still up.
+- ## DEPRECATED ## Alive request: i.e. Heartbeat. Used to check if the Client 
+	is still up.
 - Get request: Used to request information from a Client. 
 - Set request: Used to send information to a Client.
 - Status request: Used to recieve the Status of the Client.
@@ -71,16 +84,18 @@ All requests must begin with an initiated 'HELLO\r\n[Client name]\r\n', so that
 the Clients can be certain, that the Server knows the Client.
 
 --------------------------------------------------------------------------------
-Alive request:
-An alive request:
-An alive request is used, to keep track of alive Clients. An request consists 
-of a 'HELLO [name of Client]' and then the line 'ALIVE'. 
-Here is an example alive request, to Client01:
-
-HELLO Client01\r\n
-ALIVE\r\n
-\r\n
-
+## DEPRECATED ##
+# Alive request:
+# An alive request:
+# An alive request is used, to keep track of alive Clients. An request consists 
+# of a 'HELLO [name of Client]' and then the line 'ALIVE'. 
+# Here is an example alive request, to Client01:
+#
+# HELLO\r\n
+# Client01\r\n
+# ALIVE\r\n
+# \r\n
+##
 --------------------------------------------------------------------------------
 Get request:
 A get request is used to request information from the Client. An request starts 
@@ -89,7 +104,8 @@ requested.
 Here is an example get request, where the Server requests the configuration 
 file from the Client with the name Client01:
 
-HELLO Client01\r\n
+HELLO\r\n
+Client01\r\n
 GET\r\n
 CONFIG\r\n
 \r\n
@@ -112,7 +128,8 @@ line to indicate end of data.
 Here is an example of a set request, where the server sends 2 lines of 
 configuration to Client01:
 
-HELLO Client01\r\n
+HELLO\r\n
+Client01\r\n
 SET\r\n
 CONFIG\r\n
 extendend true\r\n
@@ -128,7 +145,8 @@ This is used to request the status of the Client. An request is initiated with
 the line 'HELLO [name of Client]', and then the line 'STATUS'. 
 Here is an example of a status request:
 
-HELLO Client01\r\n
+HELLO\r\n
+Client01\r\n
 STATUS\r\n
 \r\n
 

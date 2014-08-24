@@ -14,7 +14,7 @@ import android.util.Log;
  * A class, that defines a socket server, that listens on port 5000.
  * 
  * @author Carl Johnsen
- * @version 1.6
+ * @version 1.7
  * @since 03-07-2014
  */
 public class ManagementServer extends Thread {
@@ -53,6 +53,62 @@ public class ManagementServer extends Thread {
 		}
 	}
 
+	private class AliveThread extends Thread {
+		@Override
+		public void run() {
+			try {
+				while (true) {
+					// Open the socket and streams 
+					Socket socket = new Socket(StatMeth.manServer, 5000);
+					PrintWriter out = new PrintWriter(socket.getOutputStream(),
+							true);
+					BufferedReader in = new BufferedReader(new InputStreamReader(
+							socket.getInputStream()));
+					
+					// Write the request
+					out.write("HELLO\r\n");
+					out.write(MainActivity.roomName + "\r\n");
+					out.write("ALIVE\r\n");
+					out.write("\r\n");
+					out.flush();
+					
+					// Get the response, and interpret it
+					final String response = in.readLine();
+					final String emptyLine = in.readLine();
+					if (!emptyLine.equals("")) {
+						final String errMsg = "Response wasn't ended properly";
+						Log.e(TAG, errMsg);
+						StatMeth.remoteLog(errMsg);
+					}
+					if (response.equals("OK")) {
+						Log.d(TAG, "Made alive request");
+					} else if (response.equals("NOREG")) {
+						Log.e(TAG, "Server claims client isn't registered");
+					} else if (response.equals("ERR")) {
+						Log.e(TAG, "There was an error when making alive" + 
+								" request");
+					} else {
+						Log.e(TAG, "Client did not understand response");
+					}
+					
+					// Close the socket and streams
+					in.close();
+					out.close();
+					socket.close();
+					
+					// Wait one hour
+					Thread.sleep(3600 * 1000);
+				}
+			} catch (IOException ioe) {
+				StatMeth.remoteLog("IOException in AliveThread : " 
+						+ ioe.getMessage());
+			} catch (InterruptedException ie) {
+				StatMeth.remoteLog("InterruptedExeption in AliveThread : "
+						+ ie.getMessage());
+			}
+		}
+	}
+	
 	/**
 	 * A server that handles the registration of the tablet
 	 * 
@@ -96,6 +152,9 @@ public class ManagementServer extends Thread {
 				out.close();
 				socket.close();
 				Log.d(TAG, "Registered with server");
+				
+				// Start the alive thread
+				new AliveThread().start();
 			} catch (IOException ioe) {
 				Log.e(TAG, "IOException in register()! " + ioe.getMessage());
 			}
@@ -186,6 +245,7 @@ public class ManagementServer extends Thread {
 		 * 
 		 * @param out
 		 *            The output stream from the socket
+		 * @deprecated
 		 */
 		private void respondAlive(final PrintWriter out) {
 			out.write("YES\r\n\r\n");

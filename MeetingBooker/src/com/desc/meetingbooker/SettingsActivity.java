@@ -27,7 +27,7 @@ import android.widget.TextView;
  * the config file.
  * 
  * @author Carl Johnsen
- * @version 1.5
+ * @version 1.7
  * @since 27-05-2013
  */
 public final class SettingsActivity extends Activity {
@@ -327,13 +327,19 @@ public final class SettingsActivity extends Activity {
 			final TextView tv = (TextView) vi.findViewById(R.id.setting_name);
 
 			// Set the boundries of the NumberPicker
+			String[] quarters;
 			if ((tv.getText() + "").startsWith("Length")) {
 				n.setMinValue(15);
 				n.setMaxValue(60);
+				quarters = new String[] { "15", "30", "45", "60" };
 			} else {
 				n.setMinValue(0);
 				n.setMaxValue(30);
+				quarters = new String[] { "0", "15", "30" };
 			}
+			
+			// Set the NumberPicker to display in quarters
+			n.setDisplayedValues(quarters);
 
 			// Remove focus from the NumberPicker
 			n.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);

@@ -38,7 +38,7 @@ import android.widget.TextView;
  * links to the other activities
  * 
  * @author Carl Johnsen
- * @version 1.5
+ * @version 1.7
  * @since 04-04-2013
  */
 public final class MainActivity extends Activity {
@@ -118,7 +118,7 @@ public final class MainActivity extends Activity {
 		 * starts, StatMeth.context will always be set.
 		 */
 		StatMeth.context = getApplicationContext();
-		this.context = getApplicationContext();
+		MainActivity.context = getApplicationContext();
 		StatMeth.readConfig();
 		
 		// Find the wifi manager
