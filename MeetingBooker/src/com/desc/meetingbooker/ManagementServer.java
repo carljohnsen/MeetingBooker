@@ -303,6 +303,7 @@ public class ManagementServer extends Thread {
 						for (int i = 0; i < settings.size(); i++) {
 							if (settings.get(i).name.equals(tmp.name)) {
 								settings.set(i, tmp);
+								break;
 							}
 						}
 					} else {

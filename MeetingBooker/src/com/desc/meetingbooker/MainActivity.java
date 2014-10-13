@@ -75,7 +75,7 @@ public final class MainActivity extends Activity {
 	private				TimerTask				touchTask;
 	private				Timer					touchTimer;
 	private		static	Window 					window;
-	private 	static WifiManager				wifiManager;
+	private 	static 	WifiManager				wifiManager;
 	private				Thread					serverThread;
 	
 	// TAG used for logging
@@ -83,6 +83,7 @@ public final class MainActivity extends Activity {
 
 	// All of the configuration fields
 	protected static boolean 	canEnd;
+	protected static boolean	canStart;
 	protected static boolean 	canEndDelete;
 	protected static boolean 	canDelayDelete;
 	protected static boolean 	canExtendEnd;
@@ -586,7 +587,11 @@ public final class MainActivity extends Activity {
 			
 			// If there is a current event, show the curNextLay
 			if (current != null) {
-				nextMeetingButton.setVisibility(Button.VISIBLE);
+				if (canStart) {
+					nextMeetingButton.setVisibility(Button.VISIBLE);
+				} else {
+					nextMeetingButton.setVisibility(Button.GONE);
+				}
 				endMeetingButton.setVisibility(Button.GONE);
 				setCurrent(current);
 				showCurrent(true);

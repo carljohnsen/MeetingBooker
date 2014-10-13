@@ -32,7 +32,7 @@ import android.util.Log;
  * A Class that holds all the static methods
  * 
  * @author Carl Johnsen
- * @version 1.6
+ * @version 1.7
  * @since 24-06-2013
  */
 public final class StatMeth {
@@ -254,6 +254,11 @@ public final class StatMeth {
 			setting = new Setting(command, value, "String", "Remote logging server");
 			return setting;
 		}
+		if (command.equals("canstart")) {
+			MainActivity.canStart = parseBool(value);
+			setting = new Setting(command, value, "boolean", "Show the start meeting button");
+			return setting;
+		}
 		// If it was interpreted wrong, return null to indicate error
 		return null;
 	}
@@ -406,50 +411,66 @@ public final class StatMeth {
 			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			
 			line = "starttime 15";
-			settings.add(interpretSetting(line));;
+			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			
 			line = "extendend true";
-			settings.add(interpretSetting(line));;
+			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			
 			line = "endtime 15";
-			settings.add(interpretSetting(line));;
+			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			
 			line = "candelete true";
-			settings.add(interpretSetting(line));;
+			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			
 			line = "canend true";
-			settings.add(interpretSetting(line));;
+			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			
 			line = "enddelete true";
-			settings.add(interpretSetting(line));;
+			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			
 			line = "windowsize 60";
-			settings.add(interpretSetting(line));;
+			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			
 			line = "calendarid 2";
-			settings.add(interpretSetting(line));;
+			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			
 			line = "calendarname " + getCalendarName();
-			settings.add(interpretSetting(line));;
+			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			
 			line = "delaydelete false";
-			settings.add(interpretSetting(line));;
+			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			
 			line = "remotelog not_set";
-			settings.add(interpretSetting(line));;
+			settings.add(interpretSetting(line));
 			line += "\n";
 			outputStream.write(line, 0, line.length());
+			
+			line = "canstart true";
+			outputStream.write(line, 0, line.length());
+			line += "\n";
+			settings.add(interpretSetting(line));
 			
 			// Close the file
 			outputStream.close();
